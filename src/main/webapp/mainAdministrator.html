@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<!--suppress ALL-->
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理界面-LeDao校园二手交易平台</title>
+    <link rel="short icon" href="/static/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.7.0/themes/metro-blue/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.7.0/themes/icon.css"/>
+    <script type="text/javascript" src="/static/jquery-easyui-1.7.0/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.7.0/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.7.0/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/static/js/jquerySession.js"></script>
+    <script type="text/javascript">
+
+        if (window.name != "refresh") {
+            location.reload();
+            window.name = "refresh";
+        } else {
+            window.name = "";
+        }
+
+        $(document).ready(function () {
+
+            $.ajax({
+                url: "/getUserInfo",
+                type: "get",
+                data: {},
+                success: function (result) {
+                    if (result.success == true) {
+                        $("#currentUserNickName").html(result.currentUser.nickName);
+                        var type = result.currentUser.type;
+                        if (type == 1) {
+                            $("#currentUserType").html("管理员");
+                        } else {
+                            $("#currentUserType").html("普通用户");
+                            window.location.href = "/mainGeneralUser.html";
+                        }
+                        var status = result.currentUser.status;
+                        if (status == 1) {
+                            $("#currentUserStatus").html("正常");
+                        } else {
+                            $("#currentUserStatus").html("封禁");
+                            $("#currentUserStatus").css("color", "red");
+                        }
+                    } else {
+                        window.location.href = "/login.html";
+                    }
+                },
+            });
+
+            // 监听右键事件，创建右键菜单
+            $('#tabs').tabs({
+                onContextMenu: function (e, title, index) {
+                    e.preventDefault();
+                    if (index > 0) {
+                        $('#menu').menu('show', {
+                            left: e.pageX,
+                            top: e.pageY
+                        }).data("tabTitle", title);
+                    }
+                }
+            });
+
+            // 右键菜单click
+            $("#menu").menu({
+                onClick: function (item) {
+                    closeTab(this, item.name);
+                }
+            });
+
+            function closeTab(menu, type) {
+                var allTabs = $("#tabs").tabs('tabs');
+                var allTabtitle = [];
+                $.each(allTabs, function (i, n) {
+                    var opt = $(n).panel('options');
+                    if (opt.closable)
+                        allTabtitle.push(opt.title);
+                });
+                var curTabTitle = $(menu).data("tabTitle");
+                var curTabIndex = $("#tabs").tabs("getTabIndex", $("#tabs").tabs("getTab", curTabTitle));
+                switch (type) {
+                    case "1": // 刷新当前标签页
+                        var currentTab = $('#tabs').tabs('getSelected');
+                        var url = $(currentTab.panel('options')).attr('href');
+                        $('#tabs').tabs('update', {
+                            tab: currentTab,
+                            options: {
+                                href: url
+                            }
+                        });
+                        currentTab.panel('refresh');
+                        // var panel = $("#tabs").tabs("getTab", curTabTitle).panel("refresh");
+                        break;
+                    case "2": // 关闭当前标签页
+                        $("#tabs").tabs("close", curTabIndex);
+                        return false;
+                        break;
+                    case "3": // 关闭全部标签页
+                        for (var i = 0; i < allTabtitle.length; i++) {
+                            $('#tabs').tabs('close', allTabtitle[i]);
+                        }
+                        break;
+                    case "4": // 关闭其他标签页
+                        for (var i = 0; i < allTabtitle.length; i++) {
+                            if (curTabTitle != allTabtitle[i])
+                                $('#tabs').tabs('close', allTabtitle[i]);
+                        }
+                        $('#tabs').tabs('select', curTabTitle);
+                        break;
+                    case "5": // 关闭右侧标签页
+                        for (var i = curTabIndex; i < allTabtitle.length; i++) {
+                            $('#tabs').tabs('close', allTabtitle[i]);
+                        }
+                        $('#tabs').tabs('select', curTabTitle);
+                        break;
+                    case "6": // 关闭左侧标签页
+                        for (var i = 0; i < curTabIndex - 1; i++) {
+                            $('#tabs').tabs('close', allTabtitle[i]);
+                        }
+                        $('#tabs').tabs('select', curTabTitle);
+                        break;
+
+                }
+
+            }
+        });
+
+        function logout() {
+            $.messager.confirm("系统提示", "您确定要退出系统吗?", function (r) {
+                if (r) {
+                    window.location.href = "/logout";
+                }
+            });
+        }
+
+        function openTab(text, url, iconCls) {
+            if ($("#tabs").tabs("exists", text)) {
+                $("#tabs").tabs("select", text);
+            } else {
+                var content = "<iframe frameborder=0 scrolling='auto' style='width:100%;height:99.3%' src='/admin/" + url + "'></iframe>";
+                $("#tabs").tabs("add", {
+                    title: text,
+                    iconCls: iconCls,
+                    closable: true,
+                    content: content
+                });
+            }
+        }
+    </script>
+</head>
+<body class="easyui-layout">
+<div region="north" style="height: 82px;background-color: #daeef5">
+    <table style="padding: 2px" width="100%">
+        <tr>
+            <td width="50%">
+                <img alt="logo" src="/static/images/logo.png" style="height: 65px"/>
+            </td>
+            <td valign="bottom" align="right" width="50%">
+                <span style="font-size: 18px">&nbsp;&nbsp;<strong>当前用户：</strong><span
+                        id="currentUserNickName" style="color: blue"></span></span>
+                <span style="font-size: 18px">&nbsp;&nbsp;<strong>当前身份：</strong><span
+                        id="currentUserType" style="color: orange"></span></span>
+                <span style="font-size: 18px">&nbsp;&nbsp;<strong>当前状态：</strong><span
+                        id="currentUserStatus" style="color: green"></span></span>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div region="center">
+    <div class="easyui-tabs" fit="true" border="false" id="tabs">
+        <div title="首页" data-options="iconCls:'icon-home'">
+            <div align="center" style="padding-top: 160px"><span
+                    style="font-size: 40px;color: orangered">LeDao博客系统后台首页</span></div>
+        </div>
+    </div>
+</div>
+
+<div region="west" style="width: 200px" title="导航菜单" split="true">
+    <div style="padding-top: 10px;padding-left: 10px;">
+        <a href="javascript:openTab('用户管理','userManage.html','icon-userManage')" class="easyui-linkbutton"
+           data-options="plain:true,iconCls:'icon-userManage'" style="width: 150px;">用户管理</a>
+        <a href="javascript:logout()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-exit'"
+           style="width: 150px;float: left">安全退出</a>
+    </div>
+</div>
+<div id="menu" class="easyui-menu">
+    <div id="mm-tabrefresh" data-options="name:'1',iconCls:'icon-refresh'"> 刷新当前标签页</div>
+    <div class="menu-sep"></div>
+    <div id="mm-tabclose" data-options="name:'2',iconCls:'icon-closetab'">关闭当前标签页</div>
+    <div id="mm-tabcloseall" data-options="name:'3',iconCls:'icon-closealltab'">关闭全部标签页</div>
+    <div id="mm-tabcloseother" data-options="name:'4',iconCls:'icon-closeothertab'">关闭其他标签页</div>
+    <div id="mm-tabcloseright" data-options="name:'5',iconCls:'icon-closerighttab'">关闭右侧标签页</div>
+    <div id="mm-tabcloseleft" data-options="name:'6',iconCls:'icon-closelefttab'">关闭左侧标签页</div>
+</div>
+<div region="south" style="height: 30px;padding: 5px" align="center">
+    Copyright © www.zoutl.cn
+</div>
+</body>
+</html>

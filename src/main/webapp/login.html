@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<!--suppress ALL-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>后台登录-LeDao校园二手交易平台</title>
+    <meta name="author" content="DeathGhost"/>
+    <link rel="short icon" href="static/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="static/css/styleLoginPage.css"/>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="static/js/verifyCode.js"></script>
+    <script src="static/js/Particleground.js"></script>
+    <style>
+        body {
+            height: 100%;
+            background: #16a085;
+            overflow: hidden;
+        }
+
+        canvas {
+            z-index: -1;
+            position: absolute;
+        }
+
+        .black_overlay {
+            display: none;
+            position: absolute;
+            top: 0%;
+            left: 0%;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 1001;
+            -moz-opacity: 0.8;
+            opacity: .80;
+            filter: alpha(opacity=80);
+        }
+
+        .white_content {
+            display: none;
+            position: absolute;
+            top: 25%;
+            left: 35%;
+            width: 25%;
+            height: 15%;
+            padding: 16px;
+            border: solid black;
+            background-color: white;
+            z-index: 1002;
+            overflow: auto;
+        }
+
+        body {
+            height: 100%;
+            background: #16a085;
+            overflow: hidden;
+        }
+
+        canvas {
+            z-index: -1;
+            position: absolute;
+        }
+
+        .black_overlay {
+            display: none;
+            position: absolute;
+            top: 0%;
+            left: 0%;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 1001;
+            -moz-opacity: 0.8;
+            opacity: .80;
+            filter: alpha(opacity=80);
+        }
+
+        .white_content {
+            display: none;
+            position: absolute;
+            top: 25%;
+            left: 35%;
+            width: 25%;
+            height: 15%;
+            padding: 16px;
+            border: solid black;
+            background-color: white;
+            z-index: 1002;
+            overflow: auto;
+        }
+    </style>
+    <script th:inline="javascript">
+
+        $(document).ready(function () {
+            //粒子背景特效
+            $('body').particleground({
+                dotColor: '#5cbdaa',
+                lineColor: '#5cbdaa'
+            });
+        });
+
+        function submitData() {
+            var userName = $("#userName").val();
+            var password = $("#password").val();
+            var imageCode = $("#imageCode").val();
+            if (userName == "") {
+                alert("请输入用户名！");
+                return;
+            }
+            if (password == "") {
+                alert("请输入密码！");
+                return;
+            }
+            if (imageCode == "") {
+                alert("请输入验证码！");
+                return;
+            }
+            $.ajax({
+                url: "/login",
+                type: "post",
+                data: {userName: userName, password: password, imageCode: imageCode},
+                success: function (result) {
+                    if (result.success == true) {
+                        if (result.currentUserType == 1) {
+                            window.location.href = "/mainAdministrator.html";
+                        } else {
+                            window.location.href = "/mainGeneralUser.html";
+                        }
+                    } else {
+                        alert(result.errorInfo);
+                    }
+                },
+            });
+        }
+
+        if (window.name != "refresh") {
+            location.reload();
+            window.name = "refresh";
+        } else {
+            window.name = "";
+        }
+
+    </script>
+</head>
+<body>
+<form id="fm" action="/login" method="post">
+    <dl class="admin_login">
+        <dt>
+            <strong>后台登录</strong>
+            <em>background login</em>
+        </dt>
+        <dd class="user_icon">
+            <input type="text" id="userName" name="userName" placeholder="账号" class="login_txtbx"/>
+        </dd>
+        <dd class="pwd_icon">
+            <input type="password" id="password" name="password" placeholder="密码" class="login_txtbx"/>
+        </dd>
+        <dd class="val_icon">
+            <div class="checkcode">
+                <input type="text" id="imageCode" name="imageCode" placeholder="验证码" maxlength="4" class="login_txtbx">
+                <img id="imgObj" title="看不清，换一张" src="/drawImage" onclick="changeImg()"/>
+            </div>
+        </dd>
+        <dd>
+            <a href="javascript:submitData()"><input type="button" id="loginBtn" value="立即登陆"
+                                                     class="submit_btn"/></a>
+        </dd>
+        <dd>
+            <p>© www.zoutl.cn 版权所有</p>
+        </dd>
+    </dl>
+</form>
+</div>
+</body>
+</html>

@@ -1,0 +1,280 @@
+.icon-blank {
+    background: url('icons/blank.gif') no-repeat center center;
+}
+
+.icon-add {
+    background: url('icons/edit_add.png') no-repeat center center;
+}
+
+.icon-edit {
+    background: url('icons/pencil.png') no-repeat center center;
+}
+
+.icon-clear {
+    background: url('icons/clear.png') no-repeat center center;
+}
+
+.icon-remove {
+    background: url('icons/edit_remove.png') no-repeat center center;
+}
+
+.icon-save {
+    background: url('icons/filesave.png') no-repeat center center;
+}
+
+.icon-cut {
+    background: url('icons/cut.png') no-repeat center center;
+}
+
+.icon-ok {
+    background: url('icons/ok.png') no-repeat center center;
+}
+
+.icon-no {
+    background: url('icons/no.png') no-repeat center center;
+}
+
+.icon-cancel {
+    background: url('icons/cancel.png') no-repeat center center;
+}
+
+.icon-reload {
+    background: url('icons/reload.png') no-repeat center center;
+}
+
+.icon-search {
+    background: url('icons/search.png') no-repeat center center;
+}
+
+.icon-print {
+    background: url('icons/print.png') no-repeat center center;
+}
+
+.icon-help {
+    background: url('icons/help.png') no-repeat center center;
+}
+
+.icon-undo {
+    background: url('icons/undo.png') no-repeat center center;
+}
+
+.icon-redo {
+    background: url('icons/redo.png') no-repeat center center;
+}
+
+.icon-back {
+    background: url('icons/back.png') no-repeat center center;
+}
+
+.icon-sum {
+    background: url('icons/sum.png') no-repeat center center;
+}
+
+.icon-tip {
+    background: url('icons/tip.png') no-repeat center center;
+}
+
+.icon-filter {
+    background: url('icons/filter.png') no-repeat center center;
+}
+
+.icon-man {
+    background: url('icons/man.png') no-repeat center center;
+}
+
+.icon-lock {
+    background: url('icons/lock.png') no-repeat center center;
+}
+
+.icon-more {
+    background: url('icons/more.png') no-repeat center center;
+}
+
+
+.icon-mini-add {
+    background: url('icons/mini_add.png') no-repeat center center;
+}
+
+.icon-mini-edit {
+    background: url('icons/mini_edit.png') no-repeat center center;
+}
+
+.icon-mini-refresh {
+    background: url('icons/mini_refresh.png') no-repeat center center;
+}
+
+.icon-large-picture {
+    background: url('icons/large_picture.png') no-repeat center center;
+}
+
+.icon-large-clipart {
+    background: url('icons/large_clipart.png') no-repeat center center;
+}
+
+.icon-large-shapes {
+    background: url('icons/large_shapes.png') no-repeat center center;
+}
+
+.icon-large-smartart {
+    background: url('icons/large_smartart.png') no-repeat center center;
+}
+
+.icon-large-chart {
+    background: url('icons/large_chart.png') no-repeat center center;
+}
+
+.icon-home {
+    background: url('usericons/home.png') no-repeat center center;
+}
+
+.icon-submit {
+    background: url('usericons/submit.png') no-repeat center center;
+}
+
+.icon-navigation {
+    background: url('usericons/navigation.gif') no-repeat center center;
+}
+
+.icon-folderOpen {
+    background: url('usericons/folder-open.gif') no-repeat center center;
+}
+
+.icon-folder {
+    background: url('usericons/folder.gif') no-repeat center center;
+}
+
+.icon-clothes {
+    background: url('usericons/clothes.png') no-repeat center center;
+}
+
+.icon-fridge {
+    background: url('usericons/cat_fridge.png') no-repeat center center;
+}
+
+.icon-food {
+    background: url('usericons/food.png') no-repeat center center;
+}
+
+.icon-camera {
+    background: url('usericons/Camera.png') no-repeat center center;
+}
+
+
+.icon-refresh {
+    background: url('usericons/refresh.png') no-repeat center center;
+}
+
+.icon-reset {
+    background: url('usericons/reset.png') no-repeat center center;
+}
+
+.icon-closetab {
+    background: url('usericons/closetab.png') no-repeat center center;
+}
+
+.icon-closealltab {
+    background: url('usericons/closealltab.png') no-repeat center center;
+}
+
+.icon-closeothertab {
+    background: url('usericons/closeothertab.png') no-repeat center center;
+}
+
+.icon-closerighttab {
+    background: url('usericons/closerighttab.png') no-repeat center center;
+}
+
+.icon-closelefttab {
+    background: url('usericons/closelefttab.png') no-repeat center center;
+}
+
+.menu-plugin {
+    background: url('usericons/plugin.gif') no-repeat center center;
+}
+
+.icon-writeBlog {
+    background: url('usericons/writeBlog.gif') no-repeat center center;
+}
+
+.icon-blogTypeManage {
+    background: url('usericons/blogTypeManage.gif') no-repeat center center;
+}
+
+.icon-blogManage {
+    background: url('usericons/blogManage.gif') no-repeat center center;
+}
+
+.icon-interviewRecordManage {
+    background: url('usericons/interviewRecordManege.gif') no-repeat center center;
+}
+
+.icon-linkManage {
+    background: url('usericons/linkManage.gif') no-repeat center center;
+}
+
+.icon-commentManage {
+    background: url('usericons/commentManage.gif') no-repeat center center;
+}
+
+.icon-likeManage {
+    background: url('usericons/likeManage.gif') no-repeat center center;
+}
+
+.icon-ipBanManage {
+    background: url('usericons/ipBanManage.gif') no-repeat center center;
+}
+
+.icon-backup {
+    background: url('usericons/backup.gif') no-repeat center center;
+}
+
+.icon-changeSkin {
+    background: url('usericons/changeSkin.gif') no-repeat center center;
+}
+
+.icon-sendMail {
+    background: url('usericons/sendMail.gif') no-repeat center center;
+}
+
+.icon-exit {
+    background: url('usericons/exit.gif') no-repeat center center;
+}
+
+.icon-setMenuBlog {
+    background: url('usericons/setMenuBlog.gif') no-repeat center center;
+}
+
+.icon-changeCodeStyle {
+    background: url('usericons/codeStyle.gif') no-repeat center center;
+}
+
+.icon-countIpNumByDay {
+    background: url('usericons/countIpNumByDay.gif') no-repeat center center;
+}
+
+.icon-countInterviewNumByDay {
+    background: url('usericons/icon-countInterviewNumByDay.gif') no-repeat center center;
+}
+
+.icon-redis {
+    background: url('usericons/redis.gif') no-repeat center center;
+}
+
+.icon-userManage {
+    background: url('usericons/icon-userManage.gif') no-repeat center center;
+}
+.icon-goodsAdd {
+    background: url('usericons/goodsAdd.gif') no-repeat center center;
+}
+
+
+
+
+
+
+
+
+
+
+
+

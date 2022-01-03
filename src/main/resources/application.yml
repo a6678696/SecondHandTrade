@@ -1,0 +1,33 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+  tomcat:
+    uri-encoding: UTF-8
+
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 0
+      max-file-size: 10MB
+      max-request-size: 100MB
+  #数据库连接配置
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/db_secondhandtrade?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8
+    username: root
+    password: 123456
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  thymeleaf:
+    cache: false
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+  # 如果是放在src/main/java目录下 classpath:/com/*/*/mapper/*Mapper.xml
+  # 如果是放在resource目录 classpath:/mapper/**.xml
+  mapper-locations: classpath:/mapper/**.xml
