@@ -263,8 +263,13 @@
 .icon-userManage {
     background: url('usericons/icon-userManage.gif') no-repeat center center;
 }
+
 .icon-goodsAdd {
     background: url('usericons/goodsAdd.gif') no-repeat center center;
+}
+
+.icon-banUser {
+    background: url('usericons/banUser.gif') no-repeat center center;
 }
 
 

@@ -26,12 +26,28 @@ public interface UserService {
     List<User> list(QueryWrapper<User> userQueryWrapper, Page<User> userPage);
 
     /**
+     * 获取记录数
+     *
+     * @param userQueryWrapper
+     * @return
+     */
+    Integer getCount(QueryWrapper<User> userQueryWrapper);
+
+    /**
      * 根据用户名查找用户
      *
      * @param userName
      * @return
      */
     User findByUserName(String userName);
+
+    /**
+     * 根据id查找用户
+     *
+     * @param id
+     * @return
+     */
+    User findById(Integer id);
 
     /**
      * 添加用户

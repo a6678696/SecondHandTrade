@@ -41,14 +41,20 @@ public class IndexController {
             User currentUser = userService.findByUserName(user.getUserName());
             //用户存在时
             if (currentUser != null) {
-                //密码正确时
-                if (currentUser.getPassword().equals(user.getPassword())) {
-                    resultMap.put("success", true);
-                    resultMap.put("currentUserType", currentUser.getType());
-                    session.setAttribute("currentUser", currentUser);
+                //用户没有被封禁
+                if (currentUser.getStatus() == 1) {
+                    //密码正确时
+                    if (currentUser.getPassword().equals(user.getPassword())) {
+                        resultMap.put("success", true);
+                        resultMap.put("currentUserType", currentUser.getType());
+                        session.setAttribute("currentUser", currentUser);
+                    } else {
+                        resultMap.put("success", false);
+                        resultMap.put("errorInfo", "用户名或密码错误,请重新输入!!");
+                    }
                 } else {
                     resultMap.put("success", false);
-                    resultMap.put("errorInfo", "用户名或密码错误,请重新输入!!");
+                    resultMap.put("errorInfo", "你的账号已被封禁，如要解禁联系管理员\n管理员邮箱为：1234567890@qq.com");
                 }
             } else {
                 resultMap.put("success", false);

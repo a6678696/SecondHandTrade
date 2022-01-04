@@ -35,13 +35,6 @@
             } else {
               $("#currentUserType").html("普通用户");
             }
-            var status = result.currentUser.status;
-            if (status == 1) {
-              $("#currentUserStatus").html("正常");
-            } else {
-              $("#currentUserStatus").html("封禁");
-              $("#currentUserStatus").css("color", "red");
-            }
           } else {
             window.location.href = "/login.html";
           }
@@ -160,8 +153,6 @@
                         id="currentUserNickName" style="color: blue"></span></span>
         <span style="font-size: 18px">&nbsp;&nbsp;<strong>当前身份：</strong><span
                 id="currentUserType" style="color: orange"></span></span>
-        <span style="font-size: 18px">&nbsp;&nbsp;<strong>当前状态：</strong><span
-                id="currentUserStatus" style="color: green"></span></span>
       </td>
     </tr>
   </table>
@@ -178,7 +169,7 @@
 
 <div region="west" style="width: 200px" title="导航菜单" split="true">
   <div style="padding-top: 10px;padding-left: 10px;">
-    <a href="javascript:openTab('发布闲置','userManage.html','icon-goodsAdd')" class="easyui-linkbutton"
+    <a href="javascript:openTab('发布闲置','goodsManage.html','icon-goodsAdd')" class="easyui-linkbutton"
        data-options="plain:true,iconCls:'icon-goodsAdd'" style="width: 150px;">发布闲置</a>
     <a href="javascript:logout()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-exit'"
        style="width: 150px;float: left">安全退出</a>

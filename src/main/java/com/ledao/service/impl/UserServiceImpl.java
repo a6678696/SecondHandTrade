@@ -30,9 +30,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Integer getCount(QueryWrapper<User> userQueryWrapper) {
+        return userMapper.selectCount(userQueryWrapper);
+    }
+
+    @Override
     public User findByUserName(String userName) {
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
         userQueryWrapper.eq("userName", userName);
+        return userMapper.selectOne(userQueryWrapper);
+    }
+
+    @Override
+    public User findById(Integer id) {
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("id", id);
         return userMapper.selectOne(userQueryWrapper);
     }
 

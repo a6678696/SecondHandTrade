@@ -35,13 +35,6 @@
                             $("#currentUserType").html("普通用户");
                             window.location.href = "/mainGeneralUser.html";
                         }
-                        var status = result.currentUser.status;
-                        if (status == 1) {
-                            $("#currentUserStatus").html("正常");
-                        } else {
-                            $("#currentUserStatus").html("封禁");
-                            $("#currentUserStatus").css("color", "red");
-                        }
                     } else {
                         window.location.href = "/login.html";
                     }
@@ -160,8 +153,6 @@
                         id="currentUserNickName" style="color: blue"></span></span>
                 <span style="font-size: 18px">&nbsp;&nbsp;<strong>当前身份：</strong><span
                         id="currentUserType" style="color: orange"></span></span>
-                <span style="font-size: 18px">&nbsp;&nbsp;<strong>当前状态：</strong><span
-                        id="currentUserStatus" style="color: green"></span></span>
             </td>
         </tr>
     </table>
