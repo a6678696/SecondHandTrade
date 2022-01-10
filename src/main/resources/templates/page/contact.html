@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<!--suppress ALL-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<div id="b">
+    <div class="col-md-6" style="margin-left: 25%">
+        <form role="form" method="post" action="/user/login">
+            <h3 style="text-align: center">联系我们&nbsp;&nbsp;</h3>
+            <input type="hidden" class="form-control" id="userName" name="userName"
+                   th:value="${session.currentUser.userName}">
+            <input type="hidden" class="form-control" id="emailContact" name="email"
+                   th:value="${session.currentUser.email}">
+            <div class="form-group">
+                <label for="name">内容</label>
+                <textarea class="form-control" rows="6" id="content" name="content" placeholder="请输入留言内容"
+                          required="required"></textarea>
+            </div>
+            <div style="text-align: center">
+                <button type="submit" class="btn btn-primary">提交</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

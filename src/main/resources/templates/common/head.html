@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!--suppress ALL-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="h">
+    <div class="row">
+        <div class="col-md-9">
+            <a href="/"><img th:src="@{/static/images/logo.png}" id="img1" loading="lazy" style="height: 70px"
+                                  alt=""></a>
+        </div>
+        <div class="col-md-3">
+            <p style="float: right;margin-top: 14%">
+                <a href="/toLoginPage"><span class="label label-success" th:if="${session.currentUser==null}">登录</span></a>
+                <a href="/toPersonInfo"><span class="label label-success"
+                                              th:if="${session.currentUser!=null}">个人中心</span></a>
+                <a href="/toContactPage"><span class="label label-info" th:if="${session.currentUser!=null}">联系我们</span></a>
+                <a href="javascript:logoutUser()"><span class="label label-danger"
+                                              th:if="${session.currentUser!=null}">注销</span></a>
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <div>
+                        <a href="/" class="navbar-text ahead status-icon  hint--top" aria-label="首页"
+                           style="text-decoration: none;font-size: 15px">首页</a>
+                        <a href="/" class="navbar-text ahead status-icon  hint--top" aria-label="首页"
+                           style="text-decoration: none;font-size: 15px">分类</a>
+                        <a href="/" class="navbar-text ahead status-icon  hint--top" aria-label="首页"
+                           style="text-decoration: none;font-size: 15px">最近发布</a>
+                        <a href="/" class="navbar-text ahead status-icon  hint--top" aria-label="首页"
+                           style="text-decoration: none;font-size: 15px">热门商品</a>
+                        <form class="navbar-form navbar-right" role="search" method="post" action="/blog/q">
+                            <div class="input-group">
+                                <input id="q" name="q" required="required" th:value="${q}" type="text"
+                                       class="form-control" placeholder="输入关键词...">
+                                <span class="input-group-btn">
+                                <button class="btn btn-primary btn11" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+</body>
+</html>

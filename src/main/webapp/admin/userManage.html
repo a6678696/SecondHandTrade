@@ -32,7 +32,7 @@
             $("#password").passwordbox('setValue', '');
             $("#password2").passwordbox('setValue', '');
             $("#nickName").val("");
-            $("#mail").val("");
+            $("#email").val("");
         }
 
         //关闭添加或修改框
@@ -47,7 +47,6 @@
                 url: url,
                 onSubmit: function () {
                     return $(this).form("validate");
-                    alert(11);
                 },
                 success: function (result) {
                     var result = eval('(' + result + ')');
@@ -172,7 +171,7 @@
     <th field="id" width="20" align="center" hidden="hidden">编号</th>
     <th field="userName" width="50" align="center">用户名</th>
     <th field="nickName" width="50" align="center">昵称</th>
-    <th field="mail" width="50" align="center">邮箱</th>
+    <th field="email" width="50" align="center">邮箱</th>
     <th field="status" width="50" align="center" formatter="formatStatus">账号状态</th>
     </thead>
 </table>
@@ -226,7 +225,7 @@
             <tr>
                 <td valign="top">邮箱:</td>
                 <td>
-                    <input id="mail" name="mail" class="easyui-validatebox" required="true"
+                    <input id="email" name="email" class="easyui-validatebox" required="true"
                            style="width: 200px;height: 30px">
                 </td>
             </tr>

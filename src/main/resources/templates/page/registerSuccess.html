@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<div id="b">
+    <h1 style="text-align: center;color: #0c9076">注册成功,<span id="second" style="color: red;">5</span>秒后跳转到登录界面...</h1>
+    <script type="text/javascript">
+        var time = 5;
+        var timer;
+        timer = setInterval(
+            function () {
+                var second = document.getElementById("second");
+                if (time >= 1) {
+                    second.innerHTML = time;
+                    time--;
+                } else {
+                    clearInterval(timer);
+                    window.location.href = "/toLoginPage";
+                }
+            },
+            1000
+        );
+    </script>
+</div>
+</body>
+</html>

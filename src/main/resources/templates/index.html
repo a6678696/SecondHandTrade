@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--suppress ALL-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+    <link rel="short icon" th:href="@{/static/images/favicon.ico}">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script th:src="@{/static/js/my.js}"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script th:inline="javascript">
+        window.onload = function () {
+            var loginSuccess = [[${loginSuccess}]];
+            if (loginSuccess == true) {
+                alert("登录成功，跳转到首页");
+            }
+            var successRegister = [[${successRegister}]];
+            if (successRegister == true) {
+                alert("注册成功!");
+            }
+            var successResetPassword = [[${successResetPassword}]];
+            if (successResetPassword == true) {
+                alert("密码修改成功!");
+            }
+        }
+    </script>
+</head>
+<body>
+<div style="width: 92%;margin-left: 4%">
+    <div th:include="common/head::#h"></div>
+    <div th:include="${mainPage}::${mainPageKey}"></div>
+    <div id="outerdiv"
+         style="position:fixed;top:0;left:0;background:rgba(0,0,0,0.7);z-index:2;width:100%;height:100%;display:none;">
+        <div id="innerdiv" style="position:absolute;">
+            <img id="bigimg" style="border:5px solid #fff;" src=""/>
+        </div>
+        <h1 style="color: yellow;text-align: center">点击图片外任何区域即可关闭图片</h1>
+    </div>
+</div>
+<a class="imgdiv" href="#gotop">
+    <img th:src="@{/static/images/top2.png}" id="gotop" alt="" class="imgsrc"
+         style="position: fixed;bottom: 10%;display: none;height: 40px;margin-left: 96.5%">
+</a>
+</body>
+</html>

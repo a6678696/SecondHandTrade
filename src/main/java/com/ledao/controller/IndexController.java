@@ -5,6 +5,7 @@ import com.ledao.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -25,7 +26,7 @@ public class IndexController {
     private UserService userService;
 
     /**
-     * 用户登录
+     * 管理员登录
      *
      * @param user
      * @param session
@@ -41,20 +42,25 @@ public class IndexController {
             User currentUser = userService.findByUserName(user.getUserName());
             //用户存在时
             if (currentUser != null) {
-                //用户没有被封禁
-                if (currentUser.getStatus() == 1) {
-                    //密码正确时
-                    if (currentUser.getPassword().equals(user.getPassword())) {
-                        resultMap.put("success", true);
-                        resultMap.put("currentUserType", currentUser.getType());
-                        session.setAttribute("currentUser", currentUser);
+                if (currentUser.getType() == 1) {
+                    //用户没有被封禁
+                    if (currentUser.getStatus() == 1) {
+                        //密码正确时
+                        if (currentUser.getPassword().equals(user.getPassword())) {
+                            resultMap.put("success", true);
+                            resultMap.put("currentUserType", currentUser.getType());
+                            session.setAttribute("currentUser", currentUser);
+                        } else {
+                            resultMap.put("success", false);
+                            resultMap.put("errorInfo", "用户名或密码错误,请重新输入!!");
+                        }
                     } else {
                         resultMap.put("success", false);
-                        resultMap.put("errorInfo", "用户名或密码错误,请重新输入!!");
+                        resultMap.put("errorInfo", "你的账号已被封禁，如要解禁联系管理员\n管理员邮箱为：1234567890@qq.com");
                     }
                 } else {
                     resultMap.put("success", false);
-                    resultMap.put("errorInfo", "你的账号已被封禁，如要解禁联系管理员\n管理员邮箱为：1234567890@qq.com");
+                    resultMap.put("errorInfo", "请使用管理员身份登录!!");
                 }
             } else {
                 resultMap.put("success", false);
@@ -97,5 +103,80 @@ public class IndexController {
             resultMap.put("success", false);
         }
         return resultMap;
+    }
+
+    /**
+     * 首页
+     *
+     * @return
+     */
+    @RequestMapping("/")
+    public ModelAndView root() {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("title", "首页--LeDao校园二手交易平台");
+        mav.addObject("mainPage", "page/indexFirst");
+        mav.addObject("mainPageKey", "#b");
+        mav.setViewName("index");
+        return mav;
+    }
+
+    /**
+     * 跳转到用户登录界面
+     *
+     * @return
+     */
+    @RequestMapping("/toLoginPage")
+    public ModelAndView toLoginPage() {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("title", "用户登录--LeDao校园二手交易平台");
+        mav.addObject("mainPage", "page/login");
+        mav.addObject("mainPageKey", "#b");
+        mav.setViewName("index");
+        return mav;
+    }
+
+    /**
+     * 跳转到用户注册界面
+     *
+     * @return
+     */
+    @RequestMapping("/toRegisterPage")
+    public ModelAndView toRegisterPage() {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("title", "用户注册--LeDao校园二手交易平台");
+        mav.addObject("mainPage", "page/register");
+        mav.addObject("mainPageKey", "#b");
+        mav.setViewName("index");
+        return mav;
+    }
+
+    /**
+     * 跳转到找回密码界面
+     *
+     * @return
+     */
+    @RequestMapping("/toResetPasswordPage")
+    public ModelAndView toResetPasswordPage() {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("title", "找回密码--LeDao校园二手交易平台");
+        mav.addObject("mainPage", "page/resetPassword");
+        mav.addObject("mainPageKey", "#b");
+        mav.setViewName("index");
+        return mav;
+    }
+
+    /**
+     * 跳转到联系我们界面
+     *
+     * @return
+     */
+    @RequestMapping("/toContactPage")
+    public ModelAndView toContactPage() {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("title", "联系我们--LeDao校园二手交易平台");
+        mav.addObject("mainPage", "page/contact");
+        mav.addObject("mainPageKey", "#b");
+        mav.setViewName("index");
+        return mav;
     }
 }

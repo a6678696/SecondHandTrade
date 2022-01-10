@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 80
   servlet:
     context-path: /
   tomcat:
@@ -24,6 +24,20 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
   thymeleaf:
     cache: false
+  mail:
+    host: smtp.qq.com
+    username: 3519577180@qq.com
+    password: nlpcwvlfmcdfcjjh
+    default-encoding: UTF-8
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+          ssl:
+            enable: true #一定要开启ssl,不然会503 验证失败的（开启加密验证）
 mybatis-plus:
   global-config:
     db-config:
@@ -31,3 +45,6 @@ mybatis-plus:
   # 如果是放在src/main/java目录下 classpath:/com/*/*/mapper/*Mapper.xml
   # 如果是放在resource目录 classpath:/mapper/**.xml
   mapper-locations: classpath:/mapper/**.xml
+
+#客户头像图片存储地址
+userImageFilePath: E://MyProject/IDEA/ActualCombat/SecondHandTrade/src/main/webapp/static/images/userImage/

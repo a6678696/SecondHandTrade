@@ -42,7 +42,7 @@ public class User {
     /**
      * 邮箱
      */
-    private String mail;
+    private String email;
     /**
      * 用户状态:1为正常,0为封禁
      */
@@ -52,4 +52,9 @@ public class User {
      */
     @TableField(exist = false)
     private String imageCode;
+    /**
+     * 头像名称
+     */
+    @TableField(value = "imageName")
+    private String imageName;
 }

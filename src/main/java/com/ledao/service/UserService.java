@@ -42,6 +42,14 @@ public interface UserService {
     User findByUserName(String userName);
 
     /**
+     * 根据邮箱查找用户
+     *
+     * @param email
+     * @return
+     */
+    User findByEmail(String email);
+
+    /**
      * 根据id查找用户
      *
      * @param id
