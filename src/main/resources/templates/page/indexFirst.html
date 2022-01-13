@@ -7,220 +7,211 @@
 </head>
 <body>
 <div id="b">
-    <div class="col-md-9">
-        <!--轮播图-->
-        <div id="myCarousel" class="carousel slide">
-            <!-- 轮播（Carousel）指标 -->
-            <ol class="carousel-indicators">
-                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                <li data-target="#myCarousel" data-slide-to="1"></li>
-                <li data-target="#myCarousel" data-slide-to="2"></li>
-            </ol>
-            <!-- 轮播（Carousel）项目 -->
-            <div class="carousel-inner">
-                <div class="item active">
-                    <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/1.jpg" style="width: 1920px;width: 1500px">
-                    <div class="carousel-caption">标题 1</div>
+    <div class="row" style="margin-top: 5px">
+        <div class="col-md-9">
+            <!-- Carousel -->
+            <div id="demo" class="carousel slide" data-ride="carousel">
+
+                <!-- 指示符 -->
+                <ul class="carousel-indicators">
+                    <li data-target="#demo" data-slide-to="0" class="active"></li>
+                    <li data-target="#demo" data-slide-to="1"></li>
+                    <li data-target="#demo" data-slide-to="2"></li>
+                </ul>
+
+                <!-- 轮播图片 -->
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/1.jpg">
+                        <div class="carousel-caption">
+                            <h3>第一张图片描述标题</h3>
+                            <p>描述文字!</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/2.jpg">
+                        <div class="carousel-caption">
+                            <h3>第二张图片描述标题</h3>
+                            <p>描述文字!</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/3.jpg">
+                        <div class="carousel-caption">
+                            <h3>第三张图片描述标题</h3>
+                            <p>描述文字!</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="item">
-                    <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/2.jpg" style="width: 1920px;width: 1500px">
-                    <div class="carousel-caption">标题 2</div>
-                </div>
-                <div class="item">
-                    <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/3.jpg" style="width: 1920px;width: 1500px">
-                    <div class="carousel-caption">标题 3</div>
-                </div>
+
+                <!-- 左右切换按钮 -->
+                <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </a>
+                <a class="carousel-control-next" href="#demo" data-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </a>
+
             </div>
-            <!-- 轮播（Carousel）导航 -->
-            <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
-        </div>
-        <!--最近发布-->
-        <div>
-            <hr>
-            <h2><span class="label label-warning">最近发布</span><button type="button" class="btn btn-info btn-sm" style="float: right">更多...</button></h2>
-            <hr>
+            <!--最近发布-->
             <div>
-                <div class="panel panel-default col-md-3" style="width: 30%">
-                    <div class="panel-body">
-                        <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/1.jpg" class="img-responsive"
-                             alt="" style="height: 200px">
-                        <p style="margin-top: 5px">商品名称商品名称商品名称</p>
-                        <strong style="margin-top: 5px;color: #b52b27">￥122</strong>
-                        <p>
-                            <button type="button" class="btn btn-primary btn-sm" style="float: right">查看详情</button>
-                        </p>
-                    </div>
-                </div>
-                <div class="panel panel-default col-md-3" style="width: 30%;margin-left: 3%">
-                    <div class="panel-body">
-                        <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/2.jpg" class="img-responsive"
-                             alt="" style="height: 200px">
-                        <p style="margin-top: 5px">商品名称商品名称商品名称</p>
-                        <strong style="margin-top: 5px;color: #b52b27">￥122</strong>
-                        <p>
-                            <button type="button" class="btn btn-primary btn-sm" style="float: right">查看详情</button>
-                        </p>
-                    </div>
-                </div>
-                <div class="panel panel-default col-md-3" style="width: 30%;margin-left: 3%">
-                    <div class="panel-body">
-                        <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/3.jpg" class="img-responsive"
-                             alt="" style="height: 200px">
-                        <p style="margin-top: 5px">商品名称商品名称商品名称</p>
-                        <strong style="margin-top: 5px;color: #b52b27">￥122</strong>
-                        <p>
-                            <button type="button" class="btn btn-primary btn-sm" style="float: right">查看详情</button>
-                        </p>
-                    </div>
-                </div>
-                <div class="panel panel-default col-md-3" style="width: 30%">
-                    <div class="panel-body">
-                        <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/3.jpg" class="img-responsive"
-                             alt="" style="height: 200px">
-                        <p style="margin-top: 5px">商品名称商品名称商品名称</p>
-                        <strong style="margin-top: 5px;color: #b52b27">￥122</strong>
-                        <p>
-                            <button type="button" class="btn btn-primary btn-sm" style="float: right">查看详情</button>
-                        </p>
-                    </div>
-                </div>
-                <div class="panel panel-default col-md-3" style="width: 30%;margin-left: 3%">
-                    <div class="panel-body">
-                        <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/3.jpg" class="img-responsive"
-                             alt="" style="height: 200px">
-                        <p style="margin-top: 5px">商品名称商品名称商品名称</p>
-                        <strong style="margin-top: 5px;color: #b52b27">￥122</strong>
-                        <p>
-                            <button type="button" class="btn btn-primary btn-sm" style="float: right">查看详情</button>
-                        </p>
-                    </div>
-                </div>
-                <div class="panel panel-default col-md-3" style="width: 30%;margin-left: 3%">
-                    <div class="panel-body">
-                        <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/3.jpg" class="img-responsive"
-                             alt="" style="height: 200px">
-                        <p style="margin-top: 5px">商品名称商品名称商品名称</p>
-                        <strong style="margin-top: 5px;color: #b52b27">￥122</strong>
-                        <p>
-                            <button type="button" class="btn btn-primary btn-sm" style="float: right">查看详情</button>
-                        </p>
+                <div class="card" style="margin-top: 5px">
+                    <div class="card-header bg-primary text-white">最近发布<a href="#" style="float: right;color: white">查看更多...</a></div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="card col-md-4" style="">
+                                <img class="card-img-top" src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/1.jpg" alt="Card image" style="width:100%">
+                                <div class="card-body">
+                                    <h4 class="card-title">热门商品</h4>
+                                    <p class="card-text">￥133</p>
+                                    <a href="#" class="btn btn-primary btn-sm">查看详情</a>
+                                </div>
+                            </div>
+                            <div class="card col-md-4" style="">
+                                <img class="card-img-top" src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/2.jpg" alt="Card image" style="width:100%">
+                                <div class="card-body">
+                                    <h4 class="card-title">热门商品</h4>
+                                    <p class="card-text">￥133</p>
+                                    <a href="#" class="btn btn-primary btn-sm">查看详情</a>
+                                </div>
+                            </div>
+                            <div class="card col-md-4" style="">
+                                <img class="card-img-top" src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/3.jpg" alt="Card image" style="width:100%">
+                                <div class="card-body">
+                                    <h4 class="card-title">热门商品</h4>
+                                    <p class="card-text">￥133</p>
+                                    <a href="#" class="btn btn-primary btn-sm">查看详情</a>
+                                </div>
+                            </div>
+                            <div class="card col-md-4" style="">
+                                <img class="card-img-top" src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/4.jpg" alt="Card image" style="width:100%">
+                                <div class="card-body">
+                                    <h4 class="card-title">热门商品</h4>
+                                    <p class="card-text">￥133</p>
+                                    <a href="#" class="btn btn-primary btn-sm">查看详情</a>
+                                </div>
+                            </div>
+                            <div class="card col-md-4" style="">
+                                <img class="card-img-top" src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/5.jpg" alt="Card image" style="width:100%">
+                                <div class="card-body">
+                                    <h4 class="card-title">热门商品</h4>
+                                    <p class="card-text">￥133</p>
+                                    <a href="#" class="btn btn-primary btn-sm">查看详情</a>
+                                </div>
+                            </div>
+                            <div class="card col-md-4" style="">
+                                <img class="card-img-top" src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/6.jpg" alt="Card image" style="width:100%">
+                                <div class="card-body">
+                                    <h4 class="card-title">热门商品</h4>
+                                    <p class="card-text">￥133</p>
+                                    <a href="#" class="btn btn-primary btn-sm">查看详情</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!--热门商品-->
-        <div>
-            <hr>
-            <h2><span class="label label-warning">热门商品</span><button type="button" class="btn btn-info btn-sm" style="float: right">更多...</button></h2>
-            <hr>
+            <!--热门商品-->
             <div>
-                <div class="panel panel-default col-md-3" style="width: 30%">
-                    <div class="panel-body">
-                        <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/1.jpg" class="img-responsive"
-                             alt="" style="height: 200px">
-                        <p style="margin-top: 5px">商品名称商品名称商品名称</p>
-                        <strong style="margin-top: 5px;color: #b52b27">￥122</strong>
-                        <p>
-                            <button type="button" class="btn btn-primary btn-sm" style="float: right">查看详情</button>
-                        </p>
-                    </div>
-                </div>
-                <div class="panel panel-default col-md-3" style="width: 30%;margin-left: 3%">
-                    <div class="panel-body">
-                        <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/2.jpg" class="img-responsive"
-                             alt="" style="height: 200px">
-                        <p style="margin-top: 5px">商品名称商品名称商品名称</p>
-                        <strong style="margin-top: 5px;color: #b52b27">￥122</strong>
-                        <p>
-                            <button type="button" class="btn btn-primary btn-sm" style="float: right">查看详情</button>
-                        </p>
-                    </div>
-                </div>
-                <div class="panel panel-default col-md-3" style="width: 30%;margin-left: 3%">
-                    <div class="panel-body">
-                        <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/3.jpg" class="img-responsive"
-                             alt="" style="height: 200px">
-                        <p style="margin-top: 5px">商品名称商品名称商品名称</p>
-                        <strong style="margin-top: 5px;color: #b52b27">￥122</strong>
-                        <p>
-                            <button type="button" class="btn btn-primary btn-sm" style="float: right">查看详情</button>
-                        </p>
-                    </div>
-                </div>
-                <div class="panel panel-default col-md-3" style="width: 30%">
-                    <div class="panel-body">
-                        <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/3.jpg" class="img-responsive"
-                             alt="" style="height: 200px">
-                        <p style="margin-top: 5px">商品名称商品名称商品名称</p>
-                        <strong style="margin-top: 5px;color: #b52b27">￥122</strong>
-                        <p>
-                            <button type="button" class="btn btn-primary btn-sm" style="float: right">查看详情</button>
-                        </p>
-                    </div>
-                </div>
-                <div class="panel panel-default col-md-3" style="width: 30%;margin-left: 3%">
-                    <div class="panel-body">
-                        <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/3.jpg" class="img-responsive"
-                             alt="" style="height: 200px">
-                        <p style="margin-top: 5px">商品名称商品名称商品名称</p>
-                        <strong style="margin-top: 5px;color: #b52b27">￥122</strong>
-                        <p>
-                            <button type="button" class="btn btn-primary btn-sm" style="float: right">查看详情</button>
-                        </p>
-                    </div>
-                </div>
-                <div class="panel panel-default col-md-3" style="width: 30%;margin-left: 3%">
-                    <div class="panel-body">
-                        <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/3.jpg" class="img-responsive"
-                             alt="" style="height: 200px">
-                        <p style="margin-top: 5px">商品名称商品名称商品名称</p>
-                        <strong style="margin-top: 5px;color: #b52b27">￥122</strong>
-                        <p>
-                            <button type="button" class="btn btn-primary btn-sm" style="float: right">查看详情</button>
-                        </p>
+                <div class="card" style="margin-top: 5px">
+                    <div class="card-header bg-primary text-white">热门商品<a href="#" style="float: right;color: white">查看更多...</a></div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="card col-md-4" style="">
+                                <img class="card-img-top" src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/1.jpg" alt="Card image" style="width:100%">
+                                <div class="card-body">
+                                    <h4 class="card-title">热门商品</h4>
+                                    <p class="card-text">￥133</p>
+                                    <a href="#" class="btn btn-primary btn-sm">查看详情</a>
+                                </div>
+                            </div>
+                            <div class="card col-md-4" style="">
+                                <img class="card-img-top" src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/2.jpg" alt="Card image" style="width:100%">
+                                <div class="card-body">
+                                    <h4 class="card-title">热门商品</h4>
+                                    <p class="card-text">￥133</p>
+                                    <a href="#" class="btn btn-primary btn-sm">查看详情</a>
+                                </div>
+                            </div>
+                            <div class="card col-md-4" style="">
+                                <img class="card-img-top" src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/3.jpg" alt="Card image" style="width:100%">
+                                <div class="card-body">
+                                    <h4 class="card-title">热门商品</h4>
+                                    <p class="card-text">￥133</p>
+                                    <a href="#" class="btn btn-primary btn-sm">查看详情</a>
+                                </div>
+                            </div>
+                            <div class="card col-md-4" style="">
+                                <img class="card-img-top" src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/4.jpg" alt="Card image" style="width:100%">
+                                <div class="card-body">
+                                    <h4 class="card-title">热门商品</h4>
+                                    <p class="card-text">￥133</p>
+                                    <a href="#" class="btn btn-primary btn-sm">查看详情</a>
+                                </div>
+                            </div>
+                            <div class="card col-md-4" style="">
+                                <img class="card-img-top" src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/5.jpg" alt="Card image" style="width:100%">
+                                <div class="card-body">
+                                    <h4 class="card-title">热门商品</h4>
+                                    <p class="card-text">￥133</p>
+                                    <a href="#" class="btn btn-primary btn-sm">查看详情</a>
+                                </div>
+                            </div>
+                            <div class="card col-md-4" style="">
+                                <img class="card-img-top" src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/6.jpg" alt="Card image" style="width:100%">
+                                <div class="card-body">
+                                    <h4 class="card-title">热门商品</h4>
+                                    <p class="card-text">￥133</p>
+                                    <a href="#" class="btn btn-primary btn-sm">查看详情</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!--公告和推荐商品-->
-    <div class="col-md-3">
-        <p><span class="label label-warning">公告</span></p>
-        <div>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="">公告1</a></p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="">公告2</a></p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="">公告3</a></p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="">公告4</a></p>
-        </div>
-        <p><span class="label label-warning">推荐商品</span></p>
-        <div>
-            <div class="col-md-4">
-                <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/72.jpg" alt=""
-                     style="width: 88px;height: 60px">
-            </div>
-            <div class="col-md-8">
-                <div>
-                    <a href=""><span>推荐商品推荐商品推荐商品推荐商品推荐商品</span></a>
-                    <p style="color: #b52b27">￥138</p>
+        <!--公告和推荐商品-->
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header bg-primary text-white">公告</div>
+                <div class="card-body">
+                    <div>
+                        <p><a href="">公告1</a></p>
+                        <p><a href="">公告2</a></p>
+                        <p><a href="">公告3</a></p>
+                        <p><a href="">公告4</a></p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div>
-            <div class="col-md-4">
-                <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/72.jpg" alt=""
-                     style="width: 88px;height: 60px">
-            </div>
-            <div class="col-md-8">
-                <div>
-                    <a href=""><span>推荐商品推荐商品推荐商品推荐商品推荐商品</span></a>
-                    <p style="color: #b52b27">￥138</p>
+            <div class="card" style="margin-top: 8px">
+                <div class="card-header bg-primary text-white">推荐商品</div>
+                <div class="card-body">
+                    <div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/72.jpg" alt=""
+                                     style="width: 88px;height: 60px">
+                            </div>
+                            <div class="col-md-8">
+                                <div>
+                                    <a href=""><span>推荐商品推荐商品推荐商品</span></a>
+                                    <p style="color: #b52b27">￥138</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/72.jpg" alt=""
+                                     style="width: 88px;height: 60px">
+                            </div>
+                            <div class="col-md-8">
+                                <div>
+                                    <a href=""><span>推荐商品推荐商品推荐商品</span></a>
+                                    <p style="color: #b52b27">￥138</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<!--suppress ALL-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="b">
+    <div class="row" style="margin-top: 5px">
+        <div class="col-md-3">
+            <div th:include="common/menuLeft::#m"></div>
+        </div>
+        <div class="col-md-9">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">首页</a></li>
+                <li class="breadcrumb-item"><a href="/toPersonalHubsPage">个人中心</a></li>
+                <li class="breadcrumb-item active">联系方式</li>
+            </ol>
+            <form action="/contactInformation/toMyContactInformationPage" method="post">
+                <div class="row" style="margin-left: 3px">
+                    <input type="text" class="form-control" id="name" name="name" style="width: 200px" th:value="${name}"
+                           placeholder="请输入联系方式名称...">
+                    <button type="submit" class="btn btn-primary" style="margin-left: 2px"><i class="fa fa-search"></i>
+                    </button>
+                    <button type="button" class="btn btn-primary" style="margin-left: 2px" data-toggle="modal"
+                            data-target="#myModalAdd">添加
+                    </button>
+                </div>
+            </form>
+            <div th:if="${contactInformationList.size()!=0}">
+                <table class="table table-bordered table-striped table-hover table-borderless" style="margin-top: 4px">
+                    <thead>
+                    <tr>
+                        <th style="text-align: center">名称</th>
+                        <th style="text-align: center">内容</th>
+                        <th style="text-align: center">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <div th:each="contactInformation:${contactInformationList}">
+                        <tr>
+                            <td style="text-align: center" th:text="${contactInformation.name}"></td>
+                            <td style="text-align: center" th:text="${contactInformation.content}"></td>
+                            <td style="text-align: center">
+                                <a th:href="'javascript:seeContactInformationDetails('+${contactInformation.id}+')'">
+                                    <button type="button" class="btn btn-primary btn-sm status-icon hint--top"
+                                            aria-label="查看详情" data-toggle="modal" data-target="#myModalSee"><i
+                                            class="fa fa-search"></i></button>
+                                </a>
+                                <a th:href="'javascript:modifyContactInformation('+${contactInformation.id}+')'">
+                                    <button type="button" class="btn btn-info btn-sm status-icon hint--top"
+                                            aria-label="修改" data-toggle="modal" data-target="#myModalModify"><i
+                                            class="fa fa-pencil"></i></button>
+                                </a>
+                                <a th:href="'javascript:deleteContactInformation('+${contactInformation.id}+')'">
+                                    <button type="button" class="btn btn-danger btn-sm status-icon hint--top"
+                                            style="margin-left: 2px" aria-label="删除"><i class="fa fa-trash-o"></i>
+                                    </button>
+                                </a>
+                            </td>
+                        </tr>
+                    </div>
+                    </tbody>
+                </table>
+            </div>
+            <div th:if="${contactInformationList.size()==0}">
+                <span style="color: red;margin-top: 4px">无数据</span><br>
+            </div>
+        </div>
+    </div>
+    <!-- 添加联系方式模态框 -->
+    <div class="modal fade" id="myModalAdd">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- 模态框头部 -->
+                <div class="modal-header">
+                    <h4 class="modal-title">添加联系方式</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- 模态框主体 -->
+                <div class="modal-body">
+                    <form role="form" method="post" action="/contactInformation/save" onsubmit="return checkSaveContactInformationName()">
+                        <input type="hidden" class="form-control" id="userIdAddContactInformationName" name="userId"
+                               th:value="${session.currentUser.id}">
+                        <div class="form-group">
+                            <label for="name">名称</label>
+                            <input type="text" class="form-control" id="nameAddContactInformationName" name="name" required="required">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">内容</label>
+                            <input type="text" class="form-control" id="content" name="content" required="required">
+                        </div>
+                        <div style="text-align: center">
+                            <button type="submit" class="btn btn-primary">提交</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">取消</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 修改联系方式模态框 -->
+    <div class="modal fade" id="myModalModify">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- 模态框头部 -->
+                <div class="modal-header">
+                    <h4 class="modal-title">修改联系方式</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- 模态框主体 -->
+                <div class="modal-body">
+                    <form role="form" method="post" action="/contactInformation/save" onsubmit="return checkSaveContactInformationName()">
+                        <input type="hidden" class="form-control" id="userIdModifyContactInformation" name="userId"
+                               th:value="${session.currentUser.id}">
+                        <input type="hidden" class="form-control" id="idModifyContactInformation" name="id">
+                        <div class="form-group">
+                            <label for="name">名称</label>
+                            <input type="text" class="form-control" id="nameModifyContactInformation" name="name" required="required">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">内容</label>
+                            <input type="text" class="form-control" id="contentModifyContactInformation" name="content" required="required">
+                        </div>
+                        <div style="text-align: center">
+                            <button type="submit" class="btn btn-primary">提交</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">取消</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 查看联系方式模态框 -->
+    <div class="modal fade" id="myModalSee">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- 模态框头部 -->
+                <div class="modal-header">
+                    <h4 class="modal-title">查看联系方式</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- 模态框主体 -->
+                <div class="modal-body">
+                    <form role="form" method="post" action="/contactInformation/save" onsubmit="return checkSaveContactInformationName()">
+                        <input type="hidden" class="form-control" id="userIdSeeContactInformation" name="userId"
+                               th:value="${session.currentUser.id}">
+                        <div class="form-group">
+                            <label for="name">名称</label>
+                            <input type="text" class="form-control" id="nameSeeContactInformation" name="name" disabled="disabled" required="required">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">内容</label>
+                            <input type="text" class="form-control" id="contentSeeContactInformation" name="content" disabled="disabled" required="required">
+                        </div>
+                        <div style="text-align: center">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

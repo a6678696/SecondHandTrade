@@ -5,11 +5,19 @@
     <meta charset="UTF-8">
     <title th:text="${title}"></title>
     <link rel="short icon" th:href="@{/static/images/favicon.ico}">
+    <link rel="stylesheet" th:href="@{/static/css/hint.css}">
     <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script th:src="@{/static/js/my.js}"></script>
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        .carousel-inner img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
     <script th:inline="javascript">
         window.onload = function () {
             var loginSuccess = [[${loginSuccess}]];
@@ -23,6 +31,42 @@
             var successResetPassword = [[${successResetPassword}]];
             if (successResetPassword == true) {
                 alert("密码修改成功!");
+            }
+            var contactAddSuccess = [[${contactAddSuccess}]];
+            if (contactAddSuccess == true) {
+                alert("留言成功!");
+            }
+            var contactModifySuccess = [[${contactModifySuccess}]];
+            if (contactModifySuccess == true) {
+                alert("修改留言成功!");
+            }
+            var modifyUserSuccess = [[${modifyUserSuccess}]];
+            if (modifyUserSuccess == true) {
+                alert("修改个人信息成功!");
+            }
+            var deleteContactSuccess = [[${deleteContactSuccess}]];
+            if (deleteContactSuccess == true) {
+                alert("删除留言成功!");
+            } else if (deleteContactSuccess == false) {
+                alert("删除留言失败!");
+            }
+            var addContactInformationSuccess = [[${addContactInformationSuccess}]];
+            if (addContactInformationSuccess == true) {
+                alert("添加联系方式成功!");
+            } else if (addContactInformationSuccess == false) {
+                alert("添加联系方式失败!");
+            }
+            var deleteContactInformation = [[${deleteContactInformation}]];
+            if (deleteContactInformation == true) {
+                alert("删除联系方式成功!");
+            } else if (deleteContactInformation == false) {
+                alert("删除联系方式失败!");
+            }
+            var updateContactInformationSuccess = [[${updateContactInformationSuccess}]];
+            if (updateContactInformationSuccess == true) {
+                alert("修改联系方式成功!");
+            } else if (updateContactInformationSuccess == false) {
+                alert("修改联系方式失败!");
             }
         }
     </script>

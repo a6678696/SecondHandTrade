@@ -30,6 +30,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> list(QueryWrapper<User> userQueryWrapper) {
+        return userMapper.selectList(userQueryWrapper);
+    }
+
+    @Override
     public Integer getCount(QueryWrapper<User> userQueryWrapper) {
         return userMapper.selectCount(userQueryWrapper);
     }

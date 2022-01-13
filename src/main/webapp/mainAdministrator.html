@@ -27,12 +27,11 @@
                 data: {},
                 success: function (result) {
                     if (result.success == true) {
-                        $("#currentUserNickName").html(result.currentUser.nickName);
-                        var type = result.currentUser.type;
+                        $("#currentUserNickName").html(result.currentUserAdmin.nickName);
+                        var type = result.currentUserAdmin.type;
                         if (type == 1) {
                             $("#currentUserType").html("管理员");
                         } else {
-                            $("#currentUserType").html("普通用户");
                             window.location.href = "/login.html";
                         }
                     } else {
@@ -171,6 +170,10 @@
     <div style="padding-top: 10px;padding-left: 10px;">
         <a href="javascript:openTab('用户管理','userManage.html','icon-userManage')" class="easyui-linkbutton"
            data-options="plain:true,iconCls:'icon-userManage'" style="width: 150px;">用户管理</a>
+        <a href="javascript:openTab('用户联系方式管理','contactInformationManage.html','icon-contactInformationManage')" class="easyui-linkbutton"
+           data-options="plain:true,iconCls:'icon-contactInformationManage'" style="width: 150px;">用户联系方式管理</a>
+        <a href="javascript:openTab('用户留言管理','contactManage.html','icon-contactManage')" class="easyui-linkbutton"
+           data-options="plain:true,iconCls:'icon-contactManage'" style="width: 150px;">用户留言管理</a>
         <a href="javascript:logout()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-exit'"
            style="width: 150px;float: left">安全退出</a>
     </div>

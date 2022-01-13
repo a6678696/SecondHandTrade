@@ -43,6 +43,12 @@
 
         //添加或修改用户
         function saveUser() {
+            let password = $("#password").passwordbox('getValue');
+            let password2 = $("#password2").passwordbox('getValue');
+            if (password !== password2) {
+                $.messager.alert("系统提示", "密码和确认密码不一致，请重新输入！！");
+                return false;
+            }
             $("#fm").form("submit", {
                 url: url,
                 onSubmit: function () {
@@ -76,6 +82,7 @@
             var row = selectedRows[0];
             $("#dlg").dialog("open").dialog("setTitle", "修改用户信息");
             $("#fm").form("load", row);
+            $("#password2").passwordbox('setValue', row.password);
             url = "/admin/user/save?id=" + row.id;
         }
 
@@ -147,6 +154,7 @@
                 onDblClickRow: function (index, row) {
                     $("#dlg").dialog("open").dialog("setTitle", "修改用户信息");
                     $("#fm").form("load", row);
+                    $("#password2").passwordbox('setValue', row.password);
                     url = "/admin/user/save?id=" + row.id;
                 }
             });

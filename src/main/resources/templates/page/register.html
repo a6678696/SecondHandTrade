@@ -10,7 +10,7 @@
         <form role="form" method="post" enctype="multipart/form-data" action="/user/save" onsubmit="return checkRegisterValue()">
             <h3 style="text-align: center">用户注册</h3>
             <div class="form-group">
-                <p class="help-block" style="float: right">已有账号?去<a href="/toLoginPage"><span class="label label-info">登录</span></a>
+                <p class="help-block" style="float: right">已有账号?去<a href="/toLoginPage"><span class="badge badge-pill badge-info" style="color: white">登录</span></a>
                 </p>
             </div>
             <div class="form-group">
@@ -31,7 +31,7 @@
                        placeholder="请输入确认密码" required="required">
             </div>
             <div class="form-group">
-                <p><strong>头像</strong></p>
+                <p>头像</p>
                 <label class="sr-only" for="inputfile">头像</label>
                 <input type="file" id="inputfile" name="userImage" required="required">
             </div>
@@ -51,7 +51,7 @@
                 <label for="name">验证码</label>
                 <input type="text" class="form-control" id="registerCode" name="imageCode"
                        placeholder="请输入验证码" required="required">
-                <input type="button" class="btn-warning btn btn-sm" style="margin-top: 12px;" value="获取验证码"
+                <input type="button" class="btn btn-warning btn-sm" style="margin-top: 12px;" value="获取验证码"
                        onclick="setTime(this,1);getVerificationCode(1)">
             </div>
             <div style="text-align: center">

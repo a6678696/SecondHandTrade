@@ -142,12 +142,19 @@ public class UserController {
             mav.setViewName("index");
             return mav;
         } else {
-            userService.update(user);
+            User trueUser = userService.findById(user.getId());
+            trueUser.setPassword(user.getPassword());
+            trueUser.setNickName(user.getNickName());
+            if (!file.isEmpty()) {
+                trueUser.setImageName(user.getImageName());
+            }
+            userService.update(trueUser);
             ModelAndView mav = new ModelAndView();
-            mav.addObject("title", "用户注册--LeDao校园二手交易平台");
-            mav.addObject("mainPage", "page/register");
-            mav.addObject("registerSuccess", false);
+            session.setAttribute("currentUser", trueUser);
+            mav.addObject("title", "个人中心--LeDao校园二手交易平台");
+            mav.addObject("mainPage", "page/personalInfo");
             mav.addObject("mainPageKey", "#b");
+            mav.addObject("modifyUserSuccess", true);
             mav.setViewName("index");
             return mav;
         }

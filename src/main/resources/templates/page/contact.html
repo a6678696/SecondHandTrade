@@ -5,23 +5,31 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<body>
 <div id="b">
-    <div class="col-md-6" style="margin-left: 25%">
-        <form role="form" method="post" action="/user/login">
-            <h3 style="text-align: center">联系我们&nbsp;&nbsp;</h3>
-            <input type="hidden" class="form-control" id="userName" name="userName"
-                   th:value="${session.currentUser.userName}">
-            <input type="hidden" class="form-control" id="emailContact" name="email"
-                   th:value="${session.currentUser.email}">
-            <div class="form-group">
-                <label for="name">内容</label>
-                <textarea class="form-control" rows="6" id="content" name="content" placeholder="请输入留言内容"
-                          required="required"></textarea>
-            </div>
-            <div style="text-align: center">
-                <button type="submit" class="btn btn-primary">提交</button>
-            </div>
-        </form>
+    <div class="row" style="margin-top: 5px">
+        <div class="col-md-3">
+            <div th:include="common/menuLeft::#m"></div>
+        </div>
+        <div class="col-md-9">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">首页</a></li>
+                <li class="breadcrumb-item"><a href="/toPersonalHubsPage">个人中心</a></li>
+                <li class="breadcrumb-item active">联系我们</li>
+            </ol>
+            <form role="form" method="post" action="/contact/save" onsubmit="return checkContactValue()">
+                <input type="hidden" class="form-control" id="userId" name="userId"
+                       th:value="${session.currentUser.id}">
+                <div class="form-group">
+                    <label for="name">内容</label>
+                    <textarea class="form-control" rows="6" id="content" name="content" placeholder="请输入留言内容"
+                              required="required"></textarea>
+                </div>
+                <div style="text-align: center">
+                    <button type="submit" class="btn btn-primary">提交</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 </body>

@@ -222,10 +222,143 @@ function checkResetPasswordValue() {
             }
         }
     });
-    alert(resetPasswordCode+","+imageCode)
+    alert(resetPasswordCode + "," + imageCode)
     if (resetPasswordCode !== imageCode) {
         alert("验证码不正确,请重新输入!");
         return false;
     }
     return true;
+}
+
+//修改个人信息时验证
+function checkModifyValue() {
+    let password = $("#passwordModify").val();
+    let password2 = $("#password2Modify").val();
+    if (password !== password2) {
+        alert("密码和确认密码不相同,请重新输入!");
+        return false;
+    }
+    return true;
+}
+
+//留言时验证
+function checkContactValue() {
+    let userId = $("#userId").val();
+    if (userId == null || userId === '') {
+        alert("你的登录状态已到期，请重新登录！！");
+        return false;
+    }
+    return true;
+}
+
+function deleteContact(id) {
+    if (confirm("您确定要删除这个留言吗?")) {
+        window.location.href = "/contact/delete?id=" + id;
+    }
+}
+
+function seeContactDetails(id) {
+    $.ajax({
+        url: "/contact/findById",
+        type: "get",
+        data: {id: id},
+        success: function (result) {
+            if (result.success) {
+                $("#contactId").html(result.contact.id);
+                $("#contactTime").html(result.contact.time);
+                $("#contactContent").html(result.contact.content);
+                if (result.contact.reply == null) {
+                    $("#contactReply").html("<span style='color: red'>未答复</span>");
+                } else {
+                    $("#contactReply").html(result.contact.reply);
+                }
+            } else {
+                alert("查看详情失败！！");
+            }
+        },
+    });
+}
+
+function modifyContact(id) {
+    $("#contactIdModify").val(id);
+    $.ajax({
+        url: "/contact/findById",
+        type: "get",
+        data: {id: id},
+        success: function (result) {
+            if (result.success) {
+                $("#contentContactModify").val(result.contact.content);
+            } else {
+                alert("查看详情失败！！");
+            }
+        },
+    });
+}
+
+//检验联系方式名称是否重复
+function checkSaveContactInformationName(type) {
+    let name;
+    let userId;
+    if (type === 1) {
+        name = $("#nameAddContactInformation").val();
+        userId = $("#userIdAddContactInformation").val();
+    }else if (type === 2) {
+        name = $("#nameModifyContactInformation").val();
+        userId = $("#userIdModifyContactInformation").val();
+    }
+    let nameIsExist;
+    $.ajax({
+        url: "/contactInformation/checkSaveContactInformationName",
+        type: "get",
+        async: false,
+        data: {name: name, userId: userId},
+        success: function (result) {
+            if (result.success) {
+                nameIsExist = true;
+                alert("请重新输入联系方式的名称，因为名称为" + name + "的联系方式已存在！！");
+            } else {
+                nameIsExist = false;
+            }
+        },
+    });
+    return nameIsExist !== true;
+}
+
+function seeContactInformationDetails(id) {
+    $.ajax({
+        url: "/contactInformation/findById",
+        type: "get",
+        data: {id: id},
+        success: function (result) {
+            if (result.success) {
+                $("#nameSeeContactInformation").val(result.contactInformation.name);
+                $("#contentSeeContactInformation").val(result.contactInformation.content);
+            } else {
+                alert("查看详情失败！！");
+            }
+        },
+    });
+}
+
+function modifyContactInformation(id) {
+    $("#idModifyContactInformation").val(id);
+    $.ajax({
+        url: "/contactInformation/findById",
+        type: "get",
+        data: {id: id},
+        success: function (result) {
+            if (result.success) {
+                $("#nameModifyContactInformation").val(result.contactInformation.name);
+                $("#contentModifyContactInformation").val(result.contactInformation.content);
+            } else {
+                alert("查看详情失败！！");
+            }
+        },
+    });
+}
+
+function deleteContactInformation(id) {
+    if (confirm("您确定要删除这个联系方式吗?")) {
+        window.location.href = "/contactInformation/delete?id=" + id;
+    }
 }

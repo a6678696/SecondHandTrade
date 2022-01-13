@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<!--suppress ALL-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="b">
+    <div class="row" style="margin-top: 5px">
+        <div class="col-md-3">
+            <div th:include="common/menuLeft::#m"></div>
+        </div>
+        <div class="col-md-9">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">首页</a></li>
+                <li class="breadcrumb-item"><a href="/toPersonalHubsPage">个人中心</a></li>
+                <li class="breadcrumb-item active">我的留言</li>
+            </ol>
+            <table class="table table-bordered table-striped table-hover table-borderless" th:if="${contactList.size()!=0}">
+                <thead>
+                <tr>
+                    <th style="text-align: center">留言时间</th>
+                    <th style="text-align: center">内容</th>
+                    <th style="text-align: center">回复</th>
+                    <th style="text-align: center">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <div th:each="contact:${contactList}">
+                    <tr>
+                        <td th:text="${#dates.format(contact.time,'yyyy-MM-dd HH:mm:ss')}"
+                            style="text-align: center"></td>
+                        <td th:text="${#strings.abbreviate(contact.content,15)}" style="text-align: center"
+                            th:title="${contact.content}"></td>
+                        <td th:if="${contact.reply==null}" style="color: red;text-align: center">未答复</td>
+                        <td th:if="${contact.reply!=null}" th:text="${#strings.abbreviate(contact.reply,15)}"
+                            th:title="${contact.reply}" style="color: #0c9076;text-align: center">未答复
+                        </td>
+                        <td style="text-align: center">
+                            <a th:href="'javascript:seeContactDetails('+${contact.id}+')'">
+                                <button type="button" class="btn btn-primary btn-sm status-icon hint--top"
+                                        aria-label="查看详情" data-toggle="modal" data-target="#myModal"><i
+                                        class="fa fa-search"></i></button>
+                            </a>
+                            <a th:href="'javascript:modifyContact('+${contact.id}+')'">
+                                <button type="button" class="btn btn-info btn-sm status-icon hint--top" aria-label="修改"
+                                        data-toggle="modal" data-target="#myModal2"><i class="fa fa-pencil"></i>
+                                </button>
+                            </a>
+                            <a th:href="'javascript:deleteContact('+${contact.id}+')'">
+                                <button type="button" class="btn btn-danger btn-sm status-icon hint--top"
+                                        style="margin-left: 2px" aria-label="删除"><i class="fa fa-trash-o"></i></button>
+                            </a>
+                        </td>
+                        <!-- 查看模态框 -->
+                        <div class="modal fade" id="myModal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+
+                                    <!-- 模态框头部 -->
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">查看留言详情</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+
+                                    <!-- 模态框主体 -->
+                                    <div class="modal-body">
+                                        <p>编号：<span id="contactId" style="color: #0000FF"></span></p>
+                                        <p>留言时间：<span id="contactTime" style="color: #0000FF"></span></p>
+                                        <p>留言内容：<span id="contactContent" style="color: #0000FF"></span></p>
+                                        <p>留言答复：<span id="contactReply" style="color: #0000FF"></span></p>
+                                    </div>
+
+                                    <!-- 模态框底部 -->
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 修改模态框 -->
+                        <div class="modal fade" id="myModal2">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+
+                                    <!-- 模态框头部 -->
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">修改留言</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+
+                                    <!-- 模态框主体 -->
+                                    <div class="modal-body">
+                                        <form role="form" method="post" action="/contact/save">
+                                            <input type="hidden" class="form-control" id="contactIdModify" name="id">
+                                            <div class="form-group">
+                                                <label for="name">内容</label>
+                                                <textarea class="form-control" rows="6" id="contentContactModify"
+                                                          name="content"
+                                                          placeholder="请输入留言内容"
+                                                          required="required"></textarea>
+                                            </div>
+                                            <div style="text-align: center">
+                                                <button type="submit" class="btn btn-primary">提交</button>
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">取消
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </tr>
+                </div>
+                </tbody>
+            </table>
+            <div th:if="${contactList.size()==0}">
+                <span style="color: red">无数据</span>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

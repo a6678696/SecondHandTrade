@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--suppress ALL-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="b">
+    <div class="row" style="margin-top: 5px">
+        <div class="col-md-3">
+            <div th:include="common/menuLeft::#m"></div>
+        </div>
+        <div class="col-md-9">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">首页</a></li>
+                <li class="breadcrumb-item"><a href="/toPersonalHubsPage">个人中心</a></li>
+                <li class="breadcrumb-item active">查看个人信息</li>
+            </ol>
+            <p>用户名：<span style="color: #0c9076" th:text="${session.currentUser.userName}"></span></p>
+            <p>昵称：<span style="color: #0c9076" th:text="${session.currentUser.nickName}"></span></p>
+            <p>用户类型：<span style="color: #0c9076" th:text="${session.currentUser.type==1?'管理员':'普通用户'}"></span></p>
+            <p>绑定的邮箱地址：<span style="color: #0c9076" th:text="${session.currentUser.email}"></span></p>
+            <p><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">修改</button></p>
+            <!-- 模态框 -->
+            <div class="modal fade" id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <!-- 模态框头部 -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">修改个人信息</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <!-- 模态框主体 -->
+                        <div class="modal-body">
+                            <form role="form" method="post" enctype="multipart/form-data" action="/user/save" onsubmit="return checkModifyValue()">
+                                <div class="form-group">
+                                    <label for="name">用户名</label>&nbsp;&nbsp;
+                                    <input type="text" class="form-control" id="id" name="id" th:value="${session.currentUser.id}"
+                                           placeholder="请输入用户名" required="required" hidden="hidden">
+                                    <span id="userNameSuccess" style="color: forestgreen"></span>
+                                    <input type="text" class="form-control" id="userName" name="userName" disabled="disabled" th:value="${session.currentUser.userName}"
+                                           placeholder="请输入用户名" required="required">
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">密码</label>
+                                    <input type="password" class="form-control" id="passwordModify" name="password" th:value="${session.currentUser.password}"
+                                           placeholder="请输入密码" required="required">
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">确认密码</label>
+                                    <input type="password" class="form-control" id="password2Modify" th:value="${session.currentUser.password}"
+                                           placeholder="请输入确认密码" required="required">
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">昵称</label>
+                                    <input type="text" class="form-control" id="nickName" name="nickName" th:value="${session.currentUser.nickName}"
+                                           placeholder="请输入昵称" required="required">
+                                </div>
+                                <div class="form-group">
+                                    <p>头像<span style="color: red">（不选择图片就不修改）</span></p>
+                                    <label class="sr-only" for="inputfile">头像</label>
+                                    <input type="file" id="inputfile" name="userImage">
+                                </div>
+                                <div style="text-align: center">
+                                    <button type="submit" class="btn btn-primary">提交</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">取消</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

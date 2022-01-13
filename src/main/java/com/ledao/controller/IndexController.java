@@ -49,7 +49,7 @@ public class IndexController {
                         if (currentUser.getPassword().equals(user.getPassword())) {
                             resultMap.put("success", true);
                             resultMap.put("currentUserType", currentUser.getType());
-                            session.setAttribute("currentUser", currentUser);
+                            session.setAttribute("currentUserAdmin", currentUser);
                         } else {
                             resultMap.put("success", false);
                             resultMap.put("errorInfo", "用户名或密码错误,请重新输入!!");
@@ -81,7 +81,7 @@ public class IndexController {
      */
     @RequestMapping("/logout")
     public String logout(HttpSession session) {
-        session.removeAttribute("currentUser");
+        session.removeAttribute("currentUserAdmin");
         return "redirect:/login.html";
     }
 
@@ -95,10 +95,10 @@ public class IndexController {
     @RequestMapping("/getUserInfo")
     public Map<String, Object> getUserInfo(HttpSession session) {
         Map<String, Object> resultMap = new HashMap<>(16);
-        User currentUser = (User) session.getAttribute("currentUser");
+        User currentUser = (User) session.getAttribute("currentUserAdmin");
         if (currentUser != null) {
             resultMap.put("success", true);
-            resultMap.put("currentUser", currentUser);
+            resultMap.put("currentUserAdmin", currentUser);
         } else {
             resultMap.put("success", false);
         }
@@ -175,6 +175,81 @@ public class IndexController {
         ModelAndView mav = new ModelAndView();
         mav.addObject("title", "联系我们--LeDao校园二手交易平台");
         mav.addObject("mainPage", "page/contact");
+        mav.addObject("mainPageKey", "#b");
+        mav.setViewName("index");
+        return mav;
+    }
+
+    /**
+     * 跳转到个人中心界面
+     *
+     * @return
+     */
+    @RequestMapping("/toPersonalHubsPage")
+    public ModelAndView toPersonalHubsPage() {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("title", "个人中心--LeDao校园二手交易平台");
+        mav.addObject("mainPage", "page/personalHubs");
+        mav.addObject("mainPageKey", "#b");
+        mav.setViewName("index");
+        return mav;
+    }
+
+    /**
+     * 跳转到查看个人信息界面
+     *
+     * @return
+     */
+    @RequestMapping("/toPersonalInfoPage")
+    public ModelAndView toPersonalInfoPage() {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("title", "个人中心--LeDao校园二手交易平台");
+        mav.addObject("mainPage", "page/personalInfo");
+        mav.addObject("mainPageKey", "#b");
+        mav.setViewName("index");
+        return mav;
+    }
+
+    /**
+     * 跳转到发布商品界面
+     *
+     * @return
+     */
+    @RequestMapping("/toAddGoodsPage")
+    public ModelAndView toAddGoodsPage() {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("title", "发布商品--LeDao校园二手交易平台");
+        mav.addObject("mainPage", "page/addGoods");
+        mav.addObject("mainPageKey", "#b");
+        mav.setViewName("index");
+        return mav;
+    }
+
+    /**
+     * 跳转到我的商品管理界面
+     *
+     * @return
+     */
+    @RequestMapping("/toGoodsManagePage")
+    public ModelAndView toGoodsManagePage() {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("title", "我的商品管理--LeDao校园二手交易平台");
+        mav.addObject("mainPage", "page/goodsManage");
+        mav.addObject("mainPageKey", "#b");
+        mav.setViewName("index");
+        return mav;
+    }
+
+    /**
+     * 跳转到我的消息界面
+     *
+     * @return
+     */
+    @RequestMapping("/toMyMessagePage")
+    public ModelAndView toMyMessagePage() {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("title", "我的消息--LeDao校园二手交易平台");
+        mav.addObject("mainPage", "page/myMessage");
         mav.addObject("mainPageKey", "#b");
         mav.setViewName("index");
         return mav;

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<!--suppress ALL-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>留言管理</title>
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.7.0/themes/metro-blue/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.7.0/themes/icon.css">
+    <script type="text/javascript" src="/static/jquery-easyui-1.7.0/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.7.0/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.7.0/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript">
+        var url;
+
+        function searchContact() {
+            $("#dg").datagrid('load', {
+                "userName": $("#s_userName").val()
+            });
+        }
+
+        function resetValue() {
+
+            $("#s_userName").val("");
+            $("#name").val("");
+            $("#sortNum").val("");
+        }
+
+        function closeContactDialog() {
+            $("#dlg").dialog("close");
+            resetValue();
+        }
+
+        function saveContact() {
+            $("#fm").form("submit", {
+                url: url,
+                onSubmit: function () {
+                    return $(this).form("validate");
+                },
+                success: function (result) {
+                    var result = eval('(' + result + ')');
+                    if (result.success) {
+                        $.messager.alert("系统提示", "保存成功！");
+                        resetValue();
+                        $("#dlg").dialog("close");
+                        $("#dg").datagrid("reload");
+                    } else {
+                        $.messager.alert("系统提示", "保存失败!");
+                    }
+                }
+            });
+        }
+
+        function openContactAddDialog() {
+            $("#dlg").dialog("open").dialog("setTitle", "添加留言信息");
+            url = "/admin/contact/save";
+        }
+
+        function openContactModifyDialog() {
+            var selectedRows = $("#dg").datagrid("getSelections");
+            if (selectedRows.length != 1) {
+                $.messager.alert("系统提示", "请选择一条要答复的留言！");
+                return;
+            }
+            var row = selectedRows[0];
+            $("#dlg").dialog("open").dialog("setTitle", "答复留言");
+            $("#fm").form("load", row);
+            url = "/admin/contact/save?id=" + row.id;
+        }
+
+        function deleteContact() {
+            var selectedRows = $("#dg").datagrid("getSelections");
+            if (selectedRows.length == 0) {
+                $.messager.alert("系统提示", "请选择要删除的数据！");
+                return;
+            }
+            var strIds = [];
+            for (var i = 0; i < selectedRows.length; i++) {
+                strIds.push(selectedRows[i].id);
+            }
+            var ids = strIds.join(",");
+            $.messager.confirm("系统提示", "您确定要删除这<span style='color: red'>" + selectedRows.length + "</span>条数据吗?", function (r) {
+                if (r) {
+                    $.post("/admin/contact/delete", {ids: ids}, function (result) {
+                        if (result.success) {
+                            $.messager.alert("系统提示", "数据已成功删除！");
+                            $("#dg").datagrid("reload");
+                        } else {
+                            $.messager.alert("系统提示", result.errorInfo);
+                        }
+                    }, "json");
+                }
+            });
+        }
+
+        $(document).ready(function () {
+
+            $("#dg").datagrid({
+                onDblClickRow: function (index, row) {
+                    $("#dlg").dialog("open").dialog("setTitle", "答复留言");
+                    $("#fm").form("load", row);
+                    url = "/admin/contact/save?id=" + row.id;
+                }
+            });
+        });
+
+        function formatContent(val, row) {
+            if (val.length > 15) {
+                return "<span title='" + val + "'>" + val.substring(0, 15) + "</span>...";
+            } else {
+                return val;
+            }
+        }
+
+        function formatReply(val, row) {
+            if (val == null) {
+                return "<span style='color: red'>未答复</span>";
+            } else {
+                if (val.length > 15) {
+                    return "<span title='" + val + "'>" + val.substring(0, 15) + "</span>...";
+                } else {
+                    return val;
+                }
+            }
+        }
+    </script>
+</head>
+<body style="margin: 1px">
+<table id="dg" title="留言管理" class="easyui-datagrid" striped="true"
+       fitColumns="true" pagination="true" rownumbers="true"
+       url="/admin/contact/list" fit="true" toolbar="#tb">
+    <thead>
+    <th field="cb" checkbox="true" align="center"></th>
+    <th field="id" width="20" align="center" hidden="hidden">编号</th>
+    <th field="time" width="20" align="center">留言时间</th>
+    <th field="userName" width="15" align="center">用户名</th>
+    <th field="content" width="50" align="center" formatter="formatContent">内容</th>
+    <th field="reply" width="50" align="center" formatter="formatReply">回复</th>
+    </thead>
+</table>
+
+<div id="tb">
+    <div>
+        <a href="javascript:openContactModifyDialog()" class="easyui-linkbutton" iconCls="icon-edit"
+           plain="true">答复</a>
+        <a href="javascript:deleteContact()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
+    </div>
+    <div>
+        &nbsp;用户名：&nbsp;<input type="text" id="s_userName" size="20" onkeydown="if(event.keyCode==13) searchContact()"/>
+        <a href="javascript:searchContact()" class="easyui-linkbutton" iconCls="icon-search" plain="true">搜索</a>
+        <a href="javascript:resetValue()" class="easyui-linkbutton" iconCls="icon-reset" plain="true">重置</a>
+    </div>
+</div>
+
+
+<div id="dlg" class="easyui-dialog" style="width: 880px;height: 335px;padding: 10px 20px"
+     closed="true" buttons="#dlg-buttons" data-options="onClose:function(){resetValue()}">
+    <form id="fm" method="post">
+        <table cellspacing="8px">
+            <tr>
+                <td valign="top">内容:</td>
+                <td>
+                    <input id="id" name="id" class="easyui-validatebox" required="true" style="width: 200px" hidden="hidden">
+                    <textarea rows="6" id="content" name="content" class="easyui-validatebox" required="true" style="width: 700px"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">答复:</td>
+                <td>
+                    <textarea rows="6" id="reply" name="reply" class="easyui-validatebox" required="true" style="width: 700px"></textarea>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<div id="dlg-buttons">
+    <a href="javascript:saveContact()" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
+    <a href="javascript:closeContactDialog()" class="easyui-linkbutton" iconCls="icon-cancel">关闭</a>
+</div>
+</body>
+</html>

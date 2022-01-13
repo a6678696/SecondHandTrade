@@ -26,6 +26,14 @@ public interface UserService {
     List<User> list(QueryWrapper<User> userQueryWrapper, Page<User> userPage);
 
     /**
+     * 不分页条件查询用户
+     *
+     * @param userQueryWrapper
+     * @return
+     */
+    List<User> list(QueryWrapper<User> userQueryWrapper);
+
+    /**
      * 获取记录数
      *
      * @param userQueryWrapper

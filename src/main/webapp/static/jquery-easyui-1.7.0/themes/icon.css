@@ -272,6 +272,14 @@
     background: url('usericons/banUser.gif') no-repeat center center;
 }
 
+.icon-contactInformationManage {
+    background: url('usericons/contactInformationManage.gif') no-repeat center center;
+}
+
+.icon-contactManage {
+    background: url('usericons/contactManage.gif') no-repeat center center;
+}
+
 
 
 
