@@ -8,38 +8,26 @@
 <body>
 <div id="b">
     <div class="row" style="margin-top: 5px">
+        <!--轮播图、最近发布和热门商品-->
         <div class="col-md-9">
             <!-- Carousel -->
             <div id="demo" class="carousel slide" data-ride="carousel">
 
                 <!-- 指示符 -->
                 <ul class="carousel-indicators">
-                    <li data-target="#demo" data-slide-to="0" class="active"></li>
-                    <li data-target="#demo" data-slide-to="1"></li>
-                    <li data-target="#demo" data-slide-to="2"></li>
+                    <li data-target="#demo" th:each="carousel:${carouselList}" th:data-slide-to="${carouselStat.index}"
+                        th:class="${carouselStat.index==0?'active':''}"></li>
                 </ul>
 
                 <!-- 轮播图片 -->
                 <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/1.jpg">
+                    <div th:each="carousel:${carouselList}"
+                         th:class="${carouselStat.index==0?'carousel-item active':'carousel-item'}">
+                        <a th:href="${carousel.url==null?'#':carousel.url}"><img
+                                th:src="${'/static/images/carouselImage/'+carousel.imageName}"></a>
                         <div class="carousel-caption">
-                            <h3>第一张图片描述标题</h3>
-                            <p>描述文字!</p>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/2.jpg">
-                        <div class="carousel-caption">
-                            <h3>第二张图片描述标题</h3>
-                            <p>描述文字!</p>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/3.jpg">
-                        <div class="carousel-caption">
-                            <h3>第三张图片描述标题</h3>
-                            <p>描述文字!</p>
+                            <h3 th:text="${carousel.title}"></h3>
+                            <p th:text="${carousel.content}"></p>
                         </div>
                     </div>
                 </div>
@@ -56,11 +44,14 @@
             <!--最近发布-->
             <div>
                 <div class="card" style="margin-top: 5px">
-                    <div class="card-header bg-primary text-white">最近发布<a href="#" style="float: right;color: white">查看更多...</a></div>
+                    <div class="card-header bg-primary text-white"><i class="fa fa-dropbox"></i>最近发布<a href="#" style="float: right;color: white">查看更多...</a>
+                    </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="card col-md-4" style="">
-                                <img class="card-img-top" src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/1.jpg" alt="Card image" style="width:100%">
+                                <img class="card-img-top"
+                                     src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/1.jpg" alt="Card image"
+                                     style="width:100%">
                                 <div class="card-body">
                                     <h4 class="card-title">热门商品</h4>
                                     <p class="card-text">￥133</p>
@@ -68,7 +59,9 @@
                                 </div>
                             </div>
                             <div class="card col-md-4" style="">
-                                <img class="card-img-top" src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/2.jpg" alt="Card image" style="width:100%">
+                                <img class="card-img-top"
+                                     src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/2.jpg" alt="Card image"
+                                     style="width:100%">
                                 <div class="card-body">
                                     <h4 class="card-title">热门商品</h4>
                                     <p class="card-text">￥133</p>
@@ -76,7 +69,9 @@
                                 </div>
                             </div>
                             <div class="card col-md-4" style="">
-                                <img class="card-img-top" src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/3.jpg" alt="Card image" style="width:100%">
+                                <img class="card-img-top"
+                                     src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/3.jpg" alt="Card image"
+                                     style="width:100%">
                                 <div class="card-body">
                                     <h4 class="card-title">热门商品</h4>
                                     <p class="card-text">￥133</p>
@@ -84,7 +79,9 @@
                                 </div>
                             </div>
                             <div class="card col-md-4" style="">
-                                <img class="card-img-top" src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/4.jpg" alt="Card image" style="width:100%">
+                                <img class="card-img-top"
+                                     src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/4.jpg" alt="Card image"
+                                     style="width:100%">
                                 <div class="card-body">
                                     <h4 class="card-title">热门商品</h4>
                                     <p class="card-text">￥133</p>
@@ -92,7 +89,9 @@
                                 </div>
                             </div>
                             <div class="card col-md-4" style="">
-                                <img class="card-img-top" src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/5.jpg" alt="Card image" style="width:100%">
+                                <img class="card-img-top"
+                                     src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/5.jpg" alt="Card image"
+                                     style="width:100%">
                                 <div class="card-body">
                                     <h4 class="card-title">热门商品</h4>
                                     <p class="card-text">￥133</p>
@@ -100,7 +99,9 @@
                                 </div>
                             </div>
                             <div class="card col-md-4" style="">
-                                <img class="card-img-top" src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/6.jpg" alt="Card image" style="width:100%">
+                                <img class="card-img-top"
+                                     src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/6.jpg" alt="Card image"
+                                     style="width:100%">
                                 <div class="card-body">
                                     <h4 class="card-title">热门商品</h4>
                                     <p class="card-text">￥133</p>
@@ -114,11 +115,14 @@
             <!--热门商品-->
             <div>
                 <div class="card" style="margin-top: 5px">
-                    <div class="card-header bg-primary text-white">热门商品<a href="#" style="float: right;color: white">查看更多...</a></div>
+                    <div class="card-header bg-primary text-white"><i class="fa fa-fire"></i>热门商品<a href="#" style="float: right;color: white">查看更多...</a>
+                    </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="card col-md-4" style="">
-                                <img class="card-img-top" src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/1.jpg" alt="Card image" style="width:100%">
+                                <img class="card-img-top"
+                                     src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/1.jpg" alt="Card image"
+                                     style="width:100%">
                                 <div class="card-body">
                                     <h4 class="card-title">热门商品</h4>
                                     <p class="card-text">￥133</p>
@@ -126,7 +130,9 @@
                                 </div>
                             </div>
                             <div class="card col-md-4" style="">
-                                <img class="card-img-top" src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/2.jpg" alt="Card image" style="width:100%">
+                                <img class="card-img-top"
+                                     src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/2.jpg" alt="Card image"
+                                     style="width:100%">
                                 <div class="card-body">
                                     <h4 class="card-title">热门商品</h4>
                                     <p class="card-text">￥133</p>
@@ -134,7 +140,9 @@
                                 </div>
                             </div>
                             <div class="card col-md-4" style="">
-                                <img class="card-img-top" src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/3.jpg" alt="Card image" style="width:100%">
+                                <img class="card-img-top"
+                                     src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/3.jpg" alt="Card image"
+                                     style="width:100%">
                                 <div class="card-body">
                                     <h4 class="card-title">热门商品</h4>
                                     <p class="card-text">￥133</p>
@@ -142,7 +150,9 @@
                                 </div>
                             </div>
                             <div class="card col-md-4" style="">
-                                <img class="card-img-top" src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/4.jpg" alt="Card image" style="width:100%">
+                                <img class="card-img-top"
+                                     src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/4.jpg" alt="Card image"
+                                     style="width:100%">
                                 <div class="card-body">
                                     <h4 class="card-title">热门商品</h4>
                                     <p class="card-text">￥133</p>
@@ -150,7 +160,9 @@
                                 </div>
                             </div>
                             <div class="card col-md-4" style="">
-                                <img class="card-img-top" src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/5.jpg" alt="Card image" style="width:100%">
+                                <img class="card-img-top"
+                                     src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/5.jpg" alt="Card image"
+                                     style="width:100%">
                                 <div class="card-body">
                                     <h4 class="card-title">热门商品</h4>
                                     <p class="card-text">￥133</p>
@@ -158,7 +170,9 @@
                                 </div>
                             </div>
                             <div class="card col-md-4" style="">
-                                <img class="card-img-top" src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/6.jpg" alt="Card image" style="width:100%">
+                                <img class="card-img-top"
+                                     src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/6.jpg" alt="Card image"
+                                     style="width:100%">
                                 <div class="card-body">
                                     <h4 class="card-title">热门商品</h4>
                                     <p class="card-text">￥133</p>
@@ -173,18 +187,16 @@
         <!--公告和推荐商品-->
         <div class="col-md-3">
             <div class="card">
-                <div class="card-header bg-primary text-white">公告</div>
+                <div class="card-header bg-primary text-white"><i class="fa fa-google-wallet"></i>公告</div>
                 <div class="card-body">
                     <div>
-                        <p><a href="">公告1</a></p>
-                        <p><a href="">公告2</a></p>
-                        <p><a href="">公告3</a></p>
-                        <p><a href="">公告4</a></p>
+                        <p th:each="announcement:${announcementList}"><a th:href="${'/announcement/'+announcement.id}"
+                                                                         th:text="${announcement.title}" class="status-icon hint--top" th:aria-label="${announcement.title}"></a></p>
                     </div>
                 </div>
             </div>
             <div class="card" style="margin-top: 8px">
-                <div class="card-header bg-primary text-white">推荐商品</div>
+                <div class="card-header bg-primary text-white"><i class="fa fa-houzz"></i>推荐商品</div>
                 <div class="card-body">
                     <div>
                         <div class="row">
@@ -194,7 +206,7 @@
                             </div>
                             <div class="col-md-8">
                                 <div>
-                                    <a href=""><span>推荐商品推荐商品推荐商品</span></a>
+                                    <a href="" class="status-icon hint--top" aria-label="推荐商品推荐商品推荐商品"><span>推荐商品推荐商品推荐商品</span></a>
                                     <p style="color: #b52b27">￥138</p>
                                 </div>
                             </div>
@@ -206,7 +218,7 @@
                             </div>
                             <div class="col-md-8">
                                 <div>
-                                    <a href=""><span>推荐商品推荐商品推荐商品</span></a>
+                                    <a href="" class="status-icon hint--top" aria-label="推荐商品推荐商品推荐商品"><span>推荐商品推荐商品推荐商品</span></a>
                                     <p style="color: #b52b27">￥138</p>
                                 </div>
                             </div>

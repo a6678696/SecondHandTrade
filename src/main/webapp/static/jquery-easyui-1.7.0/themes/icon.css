@@ -280,6 +280,14 @@
     background: url('usericons/contactManage.gif') no-repeat center center;
 }
 
+.icon-carouselManage {
+    background: url('usericons/carouselManage.gif') no-repeat center center;
+}
+
+.icon-announcementManage {
+    background: url('usericons/announcementManage.gif') no-repeat center center;
+}
+
 
 
 

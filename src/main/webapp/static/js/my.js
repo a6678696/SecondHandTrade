@@ -1,4 +1,7 @@
 $(document).ready(function () {
+
+    //全部图片
+    $("img").addClass("img-responsive");
     //鼠标悬停更换返回顶部图片
     $(".imgdiv").mouseover(function () {
         $(".imgsrc").attr("src", "/static/images/top4.png");

@@ -1,15 +1,28 @@
 package com.ledao.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.ledao.entity.Announcement;
+import com.ledao.entity.Carousel;
 import com.ledao.entity.User;
+import com.ledao.service.AnnouncementService;
+import com.ledao.service.CarouselService;
 import com.ledao.service.UserService;
+import com.ledao.util.DateUtil;
+import com.ledao.util.ImageUtil;
+import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,8 +35,17 @@ import java.util.Map;
 @Controller
 public class IndexController {
 
+    @Value("${articleImageFilePath}")
+    private String articleImageFilePath;
+
     @Resource
     private UserService userService;
+
+    @Resource
+    private CarouselService carouselService;
+
+    @Resource
+    private AnnouncementService announcementService;
 
     /**
      * 管理员登录
@@ -113,6 +135,16 @@ public class IndexController {
     @RequestMapping("/")
     public ModelAndView root() {
         ModelAndView mav = new ModelAndView();
+        //获取轮播图list
+        QueryWrapper<Carousel> carouselQueryWrapper = new QueryWrapper<>();
+        carouselQueryWrapper.orderByAsc("sortNum");
+        List<Carousel> carouselList = carouselService.list(carouselQueryWrapper);
+        mav.addObject("carouselList", carouselList);
+        //获取公告list
+        QueryWrapper<Announcement> announcementQueryWrapper = new QueryWrapper<>();
+        announcementQueryWrapper.orderByAsc("sortNum");
+        List<Announcement> announcementList = announcementService.list(announcementQueryWrapper);
+        mav.addObject("announcementList", announcementList);
         mav.addObject("title", "首页--LeDao校园二手交易平台");
         mav.addObject("mainPage", "page/indexFirst");
         mav.addObject("mainPageKey", "#b");
@@ -253,5 +285,34 @@ public class IndexController {
         mav.addObject("mainPageKey", "#b");
         mav.setViewName("index");
         return mav;
+    }
+
+    /**
+     * ckeditor上传图片
+     *
+     * @param file
+     * @param CKEditorFuncNum
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping("/ckeditorUpload")
+    public String ckeditorUpload(@RequestParam("upload") MultipartFile file, String CKEditorFuncNum) throws Exception {
+        // 获取文件名
+        String fileName = file.getOriginalFilename();
+        // 获取文件的后缀
+        String suffixName = fileName.substring(fileName.lastIndexOf("."));
+        //拼接新的文件名
+        String newFileName1 = DateUtil.getCurrentDateStr2() + System.currentTimeMillis() + ".jpg";
+        FileUtils.copyInputStreamToFile(file.getInputStream(), new File(articleImageFilePath + "/" + newFileName1));
+        //新文件名2
+        String newFileName2 = DateUtil.getCurrentDateStr2() + System.currentTimeMillis() + ".jpg";
+        //压缩图片
+        ImageUtil.compressImage(new File(articleImageFilePath + newFileName1), new File(articleImageFilePath + newFileName2));
+        StringBuffer sb = new StringBuffer();
+        sb.append("<script type=\"text/javascript\">");
+        sb.append("window.parent.CKEDITOR.tools.callFunction(" + CKEditorFuncNum + ",'" + "/static/images/articleImage/" + newFileName2 + "','')");
+        sb.append("</script>");
+        return sb.toString();
     }
 }

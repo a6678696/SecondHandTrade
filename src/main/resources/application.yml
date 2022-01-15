@@ -48,3 +48,7 @@ mybatis-plus:
 
 #客户头像图片存储地址
 userImageFilePath: E://MyProject/IDEA/ActualCombat/SecondHandTrade/src/main/webapp/static/images/userImage/
+#轮播图图片存储地址
+carouselImageFilePath: E://MyProject/IDEA/ActualCombat/SecondHandTrade/src/main/webapp/static/images/carouselImage/
+#公告或商品详情图片存储地址
+articleImageFilePath: E://MyProject/IDEA/ActualCombat/SecondHandTrade/src/main/webapp/static/images/articleImage/
