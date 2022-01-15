@@ -29,6 +29,11 @@ public class ContactInformationServiceImpl implements ContactInformationService 
     }
 
     @Override
+    public List<ContactInformation> list(QueryWrapper<ContactInformation> contactInformationQueryWrapper) {
+        return contactInformationMapper.selectList(contactInformationQueryWrapper);
+    }
+
+    @Override
     public Integer getCount(QueryWrapper<ContactInformation> contactInformationQueryWrapper) {
         return contactInformationMapper.selectCount(contactInformationQueryWrapper);
     }

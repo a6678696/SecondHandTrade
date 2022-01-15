@@ -52,3 +52,5 @@ userImageFilePath: E://MyProject/IDEA/ActualCombat/SecondHandTrade/src/main/weba
 carouselImageFilePath: E://MyProject/IDEA/ActualCombat/SecondHandTrade/src/main/webapp/static/images/carouselImage/
 #公告或商品详情图片存储地址
 articleImageFilePath: E://MyProject/IDEA/ActualCombat/SecondHandTrade/src/main/webapp/static/images/articleImage/
+#求购类别的id
+wantToBuyId: 8

@@ -1,15 +1,15 @@
 package com.ledao.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.ledao.entity.Announcement;
-import com.ledao.entity.Carousel;
-import com.ledao.entity.User;
-import com.ledao.service.AnnouncementService;
-import com.ledao.service.CarouselService;
-import com.ledao.service.UserService;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ledao.entity.*;
+import com.ledao.service.*;
 import com.ledao.util.DateUtil;
 import com.ledao.util.ImageUtil;
 import org.apache.commons.io.FileUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +38,9 @@ public class IndexController {
     @Value("${articleImageFilePath}")
     private String articleImageFilePath;
 
+    @Value("${wantToBuyId}")
+    private String wantToBuyId;
+
     @Resource
     private UserService userService;
 
@@ -46,6 +49,12 @@ public class IndexController {
 
     @Resource
     private AnnouncementService announcementService;
+
+    @Resource
+    private GoodsTypeService goodsTypeService;
+
+    @Resource
+    private GoodsService goodsService;
 
     /**
      * 管理员登录
@@ -145,11 +154,67 @@ public class IndexController {
         announcementQueryWrapper.orderByAsc("sortNum");
         List<Announcement> announcementList = announcementService.list(announcementQueryWrapper);
         mav.addObject("announcementList", announcementList);
+        //获取9个最近发布的商品
+        QueryWrapper<Goods> goodsQueryWrapper = new QueryWrapper<>();
+        goodsQueryWrapper.orderByDesc("addTime");
+        goodsQueryWrapper.ne("goodsTypeId", wantToBuyId);
+        goodsQueryWrapper.eq("state", 1);
+        Page<Goods> goodsPage = new Page<>(1, 9);
+        List<Goods> goodsNewList = goodsService.list(goodsPage, goodsQueryWrapper);
+        for (Goods goods : goodsNewList) {
+            getFirstImageInGoodsContent(goods);
+            goods.setGoodsTypeName(goodsTypeService.findById(goods.getGoodsTypeId()).getName());
+        }
+        mav.addObject("goodsNewList", goodsNewList);
+        //获取9个热门商品
+        QueryWrapper<Goods> goodsQueryWrapper2 = new QueryWrapper<>();
+        goodsQueryWrapper2.orderByDesc("click");
+        goodsQueryWrapper2.ne("goodsTypeId", wantToBuyId);
+        goodsQueryWrapper2.eq("state", 1);
+        Page<Goods> goodsPage2 = new Page<>(1, 9);
+        List<Goods> goodsHotList = goodsService.list(goodsPage2, goodsQueryWrapper2);
+        for (Goods goods : goodsHotList) {
+            getFirstImageInGoodsContent(goods);
+            goods.setGoodsTypeName(goodsTypeService.findById(goods.getGoodsTypeId()).getName());
+        }
+        mav.addObject("goodsHotList", goodsHotList);
+        //获取推荐商品列表
+        QueryWrapper<Goods> goodsQueryWrapper3 = new QueryWrapper<>();
+        goodsQueryWrapper3.eq("isRecommend", 1);
+        goodsQueryWrapper3.eq("state", 1);
+        goodsQueryWrapper3.ne("goodsTypeId", wantToBuyId);
+        Page<Goods> goodsPage3 = new Page<>(1, 9);
+        List<Goods> goodsRecommendList = goodsService.list(goodsPage3, goodsQueryWrapper3);
+        for (Goods goods : goodsRecommendList) {
+            getFirstImageInGoodsContent(goods);
+            goods.setGoodsTypeName(goodsTypeService.findById(goods.getGoodsTypeId()).getName());
+        }
+        mav.addObject("goodsRecommendList", goodsRecommendList);
+        mav.addObject("isHome", true);
         mav.addObject("title", "首页--LeDao校园二手交易平台");
         mav.addObject("mainPage", "page/indexFirst");
         mav.addObject("mainPageKey", "#b");
         mav.setViewName("index");
         return mav;
+    }
+
+    /**
+     * 从商品详情内取第一张图片
+     *
+     * @param goods
+     */
+    public static void getFirstImageInGoodsContent(Goods goods) {
+
+        //博客里的内容
+        String goodsInfo = goods.getContent();
+        //抓取出博客里的内容
+        Document document = Jsoup.parse(goodsInfo);
+        //提出.jpg图片
+        Elements jpgs = document.select("img[src$=.jpg]");
+        String imageName = String.valueOf(jpgs.get(0));
+        int begin = imageName.indexOf("/static/images/articleImage/");
+        int last = imageName.indexOf(".jpg");
+        goods.setImageName(imageName.substring(begin + "/static/images/articleImage/".length(), last));
     }
 
     /**
@@ -250,6 +315,10 @@ public class IndexController {
     @RequestMapping("/toAddGoodsPage")
     public ModelAndView toAddGoodsPage() {
         ModelAndView mav = new ModelAndView();
+        QueryWrapper<GoodsType> goodsTypeQueryWrapper = new QueryWrapper<>();
+        goodsTypeQueryWrapper.orderByAsc("sortNum");
+        List<GoodsType> goodsTypeList = goodsTypeService.list(goodsTypeQueryWrapper);
+        mav.addObject("goodsTypeList", goodsTypeList);
         mav.addObject("title", "发布商品--LeDao校园二手交易平台");
         mav.addObject("mainPage", "page/addGoods");
         mav.addObject("mainPageKey", "#b");
@@ -263,8 +332,38 @@ public class IndexController {
      * @return
      */
     @RequestMapping("/toGoodsManagePage")
-    public ModelAndView toGoodsManagePage() {
+    public ModelAndView toGoodsManagePage(HttpSession session,Goods searchGoods) {
         ModelAndView mav = new ModelAndView();
+        User currentUser = (User) session.getAttribute("currentUser");
+        QueryWrapper<Goods> goodsQueryWrapper = new QueryWrapper<>();
+        goodsQueryWrapper.eq("userId", currentUser.getId());
+        goodsQueryWrapper.orderByDesc("addTime");
+        if (searchGoods.getName() != null) {
+            goodsQueryWrapper.like("name", searchGoods.getName());
+            mav.addObject("name", searchGoods.getName());
+        }
+        if (searchGoods.getGoodsTypeId() != null) {
+            goodsQueryWrapper.eq("goodsTypeId", searchGoods.getGoodsTypeId());
+            mav.addObject("goodsTypeId", searchGoods.getGoodsTypeId());
+        }
+        if (searchGoods.getState() != null) {
+            goodsQueryWrapper.eq("state", searchGoods.getState());
+            mav.addObject("state", searchGoods.getState());
+        }
+        if (searchGoods.getIsRecommend() != null) {
+            goodsQueryWrapper.eq("isRecommend", searchGoods.getIsRecommend());
+            mav.addObject("recommend", searchGoods.getIsRecommend());
+        }
+        List<Goods> goodsList = goodsService.list(goodsQueryWrapper);
+        for (Goods goods : goodsList) {
+            goods.setGoodsTypeName(goodsTypeService.findById(goods.getGoodsTypeId()).getName());
+        }
+        //商品分类列表
+        QueryWrapper<GoodsType> goodsTypeQueryWrapper = new QueryWrapper<>();
+        goodsTypeQueryWrapper.orderByAsc("sortNum");
+        List<GoodsType> goodsTypeList = goodsTypeService.list(goodsTypeQueryWrapper);
+        mav.addObject("goodsTypeList", goodsTypeList);
+        mav.addObject("goodsList", goodsList);
         mav.addObject("title", "我的商品管理--LeDao校园二手交易平台");
         mav.addObject("mainPage", "page/goodsManage");
         mav.addObject("mainPageKey", "#b");
@@ -314,5 +413,96 @@ public class IndexController {
         sb.append("window.parent.CKEDITOR.tools.callFunction(" + CKEditorFuncNum + ",'" + "/static/images/articleImage/" + newFileName2 + "','')");
         sb.append("</script>");
         return sb.toString();
+    }
+
+    /**
+     * 跳转到求购页面
+     *
+     * @return
+     */
+    @RequestMapping("/toWantToBuyPage")
+    public ModelAndView toWantToBuyPage() {
+        ModelAndView mav = new ModelAndView();
+        //商品分类列表
+        QueryWrapper<GoodsType> goodsTypeQueryWrapper = new QueryWrapper<>();
+        goodsTypeQueryWrapper.orderByAsc("sortNum");
+        List<GoodsType> goodsTypeList = goodsTypeService.list(goodsTypeQueryWrapper);
+        for (int i = 0; i < goodsTypeList.size(); i++) {
+            if ("求购".equals(goodsTypeList.get(i).getName())) {
+                goodsTypeList.remove(goodsTypeList.get(i));
+                i--;
+            }
+        }
+        mav.addObject("goodsTypeList", goodsTypeList);
+        //获取推荐商品列表
+        QueryWrapper<Goods> goodsQueryWrapper3 = new QueryWrapper<>();
+        goodsQueryWrapper3.eq("isRecommend", 1);
+        Page<Goods> goodsPage3 = new Page<>(1, 9);
+        List<Goods> goodsRecommendList = goodsService.list(goodsPage3, goodsQueryWrapper3);
+        for (Goods goods2 : goodsRecommendList) {
+            getFirstImageInGoodsContent(goods2);
+            goods2.setGoodsTypeName(goodsTypeService.findById(goods2.getGoodsTypeId()).getName());
+        }
+        mav.addObject("goodsRecommendList", goodsRecommendList);
+        //获取求购列表
+        QueryWrapper<Goods> goodsQueryWrapper2 = new QueryWrapper<>();
+        goodsQueryWrapper2.eq("goodsTypeId", wantToBuyId);
+        goodsQueryWrapper2.orderByDesc("addTime");
+        List<Goods> goodsWantToBuyList = goodsService.list(goodsQueryWrapper2);
+        mav.addObject("isWantToBuy", true);
+        mav.addObject("goodsWantToBuyList", goodsWantToBuyList);
+        mav.addObject("title", "用户求购--LeDao校园二手交易平台");
+        mav.addObject("mainPage", "page/wantToBuy");
+        mav.addObject("mainPageKey", "#b");
+        mav.setViewName("index");
+        return mav;
+    }
+
+    /**
+     * 跳转到分类页面
+     *
+     * @return
+     */
+    @RequestMapping("/toSortPage")
+    public ModelAndView toSortPage(Integer goodsTypeId) {
+        ModelAndView mav = new ModelAndView();
+        //获取商品列表
+        QueryWrapper<Goods> goodsQueryWrapper = new QueryWrapper<>();
+        goodsQueryWrapper.eq("goodsTypeId", goodsTypeId);
+        goodsQueryWrapper.eq("state", 1);
+        Page<Goods> goodsPage = new Page<>(1,6);
+        List<Goods> goodsList = goodsService.list(goodsPage, goodsQueryWrapper);
+        for (Goods goods : goodsList) {
+            getFirstImageInGoodsContent(goods);
+        }
+        mav.addObject("goodsList", goodsList);
+        //商品分类列表
+        QueryWrapper<GoodsType> goodsTypeQueryWrapper = new QueryWrapper<>();
+        goodsTypeQueryWrapper.orderByAsc("sortNum");
+        List<GoodsType> goodsTypeList = goodsTypeService.list(goodsTypeQueryWrapper);
+        for (int i = 0; i < goodsTypeList.size(); i++) {
+            if ("求购".equals(goodsTypeList.get(i).getName())) {
+                goodsTypeList.remove(goodsTypeList.get(i));
+                i--;
+            }
+        }
+        mav.addObject("goodsTypeList", goodsTypeList);
+        //获取推荐商品列表
+        QueryWrapper<Goods> goodsQueryWrapper3 = new QueryWrapper<>();
+        goodsQueryWrapper3.eq("isRecommend", 1);
+        goodsQueryWrapper3.eq("state", 1);
+        Page<Goods> goodsPage3 = new Page<>(1, 9);
+        List<Goods> goodsRecommendList = goodsService.list(goodsPage3, goodsQueryWrapper3);
+        for (Goods goods2 : goodsRecommendList) {
+            getFirstImageInGoodsContent(goods2);
+            goods2.setGoodsTypeName(goodsTypeService.findById(goods2.getGoodsTypeId()).getName());
+        }
+        mav.addObject("isSort", true);
+        mav.addObject("goodsRecommendList", goodsRecommendList);
+        mav.addObject("title", "分类--LeDao校园二手交易平台");
+        mav.addObject("mainPage", "page/sortPage");
+        mav.addObject("mainPageKey", "#b");
+        mav.setViewName("index");
+        return mav;
     }
 }

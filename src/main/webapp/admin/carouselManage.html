@@ -108,7 +108,23 @@
         });
 
         function formatImage(val, row) {
-            return "<img width=192 height=108 src='/static/images/carouselImage/"+val+"'/>";
+            return "<img width=138 height=81 src='/static/images/carouselImage/"+val+"'/>";
+        }
+
+        function formatTitle(val, row) {
+            if (val.length > 15) {
+                return "<span title='" + val + "'>" + val.substring(0, 15) + "</span>...";
+            } else {
+                return val;
+            }
+        }
+
+        function formatContent(val, row) {
+            if (val.length > 15) {
+                return "<span title='" + val + "'>" + val.substring(0, 15) + "</span>...";
+            } else {
+                return val;
+            }
         }
     </script>
 </head>
@@ -119,10 +135,10 @@
     <thead>
     <th field="cb" checkbox="true" align="center"></th>
     <th field="id" width="20" align="center" hidden="hidden">编号</th>
-    <th field="imageName" width="50" align="center" formatter="formatImage">图片</th>
-    <th field="title" width="50" align="center">标题</th>
-    <th field="content" width="50" align="center">内容</th>
-    <th field="sortNum" width="20" align="center">排列顺序</th>
+    <th field="imageName" width="30" align="center" formatter="formatImage">图片</th>
+    <th field="title" width="50" align="center" formatter="formatTitle">标题</th>
+    <th field="content" width="50" align="center" formatter="formatContent">内容</th>
+    <th field="sortNum" width="13" align="center">排列顺序</th>
     <th field="url" width="50" align="center">链接</th>
     </thead>
 </table>

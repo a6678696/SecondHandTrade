@@ -28,6 +28,7 @@
                     </button>
                 </div>
             </form>
+            <span th:if="${contactInformationList.size()!=0}" style="float: right">当前有&nbsp;<span style="margin-top: 10px;color: red" th:text="${contactInformationList.size()}"></span>&nbsp;条数据</span>
             <div th:if="${contactInformationList.size()!=0}">
                 <table class="table table-bordered table-striped table-hover table-borderless" style="margin-top: 4px">
                     <thead>

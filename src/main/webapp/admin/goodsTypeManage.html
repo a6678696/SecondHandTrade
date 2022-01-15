@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<!--suppress ALL-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品类别管理</title>
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.7.0/themes/metro-blue/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.7.0/themes/icon.css">
+    <script type="text/javascript" src="/static/jquery-easyui-1.7.0/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.7.0/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.7.0/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript">
+        var url;
+
+        function searchGoodsType() {
+            $("#dg").datagrid('load', {
+                "name": $("#s_name").val()
+            });
+        }
+
+        function resetValue() {
+
+            $("#s_name").val("")
+            $("#name").val("");
+            $("#sortNum").numberbox('setValue', "")
+        }
+
+        function closeGoodsTypeDialog() {
+            $("#dlg").dialog("close");
+            resetValue();
+        }
+
+        function saveGoodsType() {
+            $("#fm").form("submit", {
+                url: url,
+                onSubmit: function () {
+                    return $(this).form("validate");
+                },
+                success: function (result) {
+                    var result = eval('(' + result + ')');
+                    if (result.success) {
+                        $.messager.alert("系统提示", "保存成功！");
+                        resetValue();
+                        $("#dlg").dialog("close");
+                        $("#dg").datagrid("reload");
+                    } else {
+                        $.messager.alert("系统提示", "保存失败!");
+                    }
+                }
+            });
+        }
+
+        function openGoodsTypeAddDialog() {
+            $("#dlg").dialog("open").dialog("setTitle", "添加商品类别信息");
+            url = "/admin/goodsType/save";
+        }
+
+        function openGoodsTypeModifyDialog() {
+            var selectedRows = $("#dg").datagrid("getSelections");
+            if (selectedRows.length != 1) {
+                $.messager.alert("系统提示", "请选择一条要修改的数据！");
+                return;
+            }
+            var row = selectedRows[0];
+            $("#dlg").dialog("open").dialog("setTitle", "修改商品类别信息");
+            $("#fm").form("load", row);
+            url = "/admin/goodsType/save?id=" + row.id;
+        }
+
+        function deleteGoodsType() {
+            var selectedRows = $("#dg").datagrid("getSelections");
+            if (selectedRows.length == 0) {
+                $.messager.alert("系统提示", "请选择要删除的数据！");
+                return;
+            }
+            var strIds = [];
+            for (var i = 0; i < selectedRows.length; i++) {
+                strIds.push(selectedRows[i].id);
+            }
+            var ids = strIds.join(",");
+            $.messager.confirm("系统提示", "您确定要删除这<span style='color: red'>" + selectedRows.length + "</span>条数据吗?", function (r) {
+                if (r) {
+                    $.post("/admin/goodsType/delete", {ids: ids}, function (result) {
+                        if (result.success) {
+                            $.messager.alert("系统提示", "数据已成功删除！");
+                            $("#dg").datagrid("reload");
+                        } else {
+                            $.messager.alert("系统提示", result.errorInfo);
+                        }
+                    }, "json");
+                }
+            });
+        }
+
+        $(document).ready(function () {
+
+            $("#dg").datagrid({
+                onDblClickRow: function (index, row) {
+                    $("#dlg").dialog("open").dialog("setTitle", "修改商品类别信息");
+                    $("#fm").form("load", row);
+                    url = "/admin/goodsType/save?id=" + row.id;
+                }
+            });
+
+        });
+    </script>
+</head>
+<body style="margin: 1px">
+<table id="dg" title="商品类别管理" class="easyui-datagrid" striped="true"
+       fitColumns="true" pagination="true" rownumbers="true"
+       url="/admin/goodsType/list" fit="true" toolbar="#tb">
+    <thead>
+    <th field="cb" checkbox="true" align="center"></th>
+    <th field="id" width="10" align="center">编号</th>
+    <th field="name" width="50" align="center">名称</th>
+    <th field="sortNum" width="20" align="center">排序</th>
+    </thead>
+</table>
+
+<div id="tb">
+    <div>
+        <a href="javascript:openGoodsTypeAddDialog()" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加</a>
+        <a href="javascript:openGoodsTypeModifyDialog()" class="easyui-linkbutton" iconCls="icon-edit"
+           plain="true">修改</a>
+        <a href="javascript:deleteGoodsType()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
+    </div>
+    <div>
+        &nbsp;名称：&nbsp;<input type="text" id="s_name" size="20" onkeydown="if(event.keyCode==13) searchGoodsType()"/>
+        <a href="javascript:searchGoodsType()" class="easyui-linkbutton" iconCls="icon-search" plain="true">搜索</a>
+        <a href="javascript:resetValue()" class="easyui-linkbutton" iconCls="icon-reset" plain="true">重置</a>
+    </div>
+</div>
+
+
+<div id="dlg" class="easyui-dialog" style="width: 340px;height: 175px;padding: 10px 20px"
+     closed="true" buttons="#dlg-buttons" data-options="onClose:function(){resetValue()}">
+    <form id="fm" method="post">
+        <table cellspacing="8px">
+            <tr>
+                <td valign="top">名称:</td>
+                <td>
+                    <input id="name" name="name" class="easyui-validatebox" required="true" style="width: 200px">
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">排序:</td>
+                <td>
+                    <input id="sortNum" name="sortNum" type="text" class="easyui-numberbox" required="true"
+                           data-options="min:0" style="width: 200px;height: 23px">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<div id="dlg-buttons">
+    <a href="javascript:saveGoodsType()" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
+    <a href="javascript:closeGoodsTypeDialog()" class="easyui-linkbutton" iconCls="icon-cancel">关闭</a>
+</div>
+</body>
+</html>

@@ -17,7 +17,162 @@
                 <li class="breadcrumb-item"><a href="/toPersonalHubsPage">个人中心</a></li>
                 <li class="breadcrumb-item active">我的商品</li>
             </ol>
-            我的商品
+            <form action="/toGoodsManagePage" method="post">
+                <div class="row" style="margin-left: 3px">
+                    <input type="text" class="form-control" id="nameSearchGoods" name="name" style="width: 200px"
+                           th:value="${name}"
+                           placeholder="请输入商品名称...">
+                    <select id="goodsTypeIdSearchGoods" name="goodsTypeId" th:value="${goodsTypeId}"
+                            style="width: 200px;margin-left: 2px" class="form-control">
+                        <option value="">选择商品类别...</option>
+                        <div th:each="goodsType:${goodsTypeList}">
+                            <option th:text="${goodsType.name}" th:value="${goodsType.id}" th:selected="${goodsTypeId==goodsType.id}"></option>
+                        </div>
+                    </select>
+                    <select id="stateSearchGoods" name="state" th:value="${state}" style="width: 200px;margin-left: 2px"
+                            class="form-control">
+                        <option value="">选择商品状态...</option>
+                        <div>
+                            <option value="0" th:selected="${state==0}">未审核</option>
+                            <option value="1" th:selected="${state==1}">上架中</option>
+                            <option value="2" th:selected="${state==2}">审核不通过</option>
+                            <option value="3" th:selected="${state==3}">已下架</option>
+                            <option value="4" th:selected="${state==4}">交易完成</option>
+                        </div>
+                    </select>
+                    <select id="isRecommendSearchGoods" name="isRecommend" th:value="${recommend}" style="width: 200px;margin-left: 2px"
+                            class="form-control">
+                        <option value="">商品是否被推荐...</option>
+                        <div>
+                            <option value="0" th:selected="${recommend==0}">不推荐</option>
+                            <option value="1" th:selected="${recommend==1}">被推荐</option>
+                        </div>
+                    </select>
+                    <button type="submit" class="btn btn-primary status-icon hint--top" style="margin-left: 2px" aria-label="搜索"><i class="fa fa-search"></i>
+                    </button>
+                    <a href="javascript:resetSearchGoodsValue()"><button type="button" class="btn btn-info status-icon hint--top" aria-label="重置" style="margin-left: 2px"><i class="fa fa-rotate-right"></i></button></a>
+                </div>
+            </form>
+            <span th:if="${goodsList.size()!=0}" style="float: right">当前有&nbsp;<span style="margin-top: 10px;color: red" th:text="${goodsList.size()}"></span>&nbsp;条数据</span>
+            <table class="table table-bordered table-striped table-hover table-borderless"
+                   th:if="${goodsList.size()!=0}">
+                <thead>
+                <tr>
+                    <th style="text-align: center">发布时间</th>
+                    <th style="text-align: center">名称</th>
+                    <th style="text-align: center">类别</th>
+                    <th style="text-align: center">状态</th>
+                    <th style="text-align: center">是否推荐</th>
+                    <th style="text-align: center">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <div th:each="goods:${goodsList}">
+                    <tr>
+                        <td th:text="${#dates.format(goods.addTime,'yyyy-MM-dd HH:mm:ss')}"
+                            style="text-align: center"></td>
+                        <td style="text-align: center"
+                            th:title="${goods.name}"><a th:href="${'/goods/'+goods.id}" th:text="${#strings.abbreviate(goods.name,15)}" class="status-icon hint--top" th:aria-label="${goods.name}"></a></td>
+                        <td th:text="${goods.goodsTypeName}" style="text-align: center"
+                        ></td>
+                        <td th:text="${goods.state==0?'未审核':(goods.state==1?'上架中':(goods.state==2?'审核不通过':'已下架'))}"
+                            th:style="${goods.state==0?'color:blue;text-align: center':(goods.state==1?'color:green;text-align: center':(goods.state==2?'color:red;text-align: center':'color:pink;text-align: center'))}"></td>
+                        <td th:text="${goods.isRecommend==0?'不推荐':'推荐'}" th:style="${goods.isRecommend==0?'color:pink;text-align: center':'color:blue;text-align: center'}"
+                        ></td>
+                        <td style="text-align: center">
+                            <a th:href="'javascript:seeContactDetails('+${goods.id}+')'">
+                                <button type="button" class="btn btn-primary btn-sm status-icon hint--top"
+                                        aria-label="查看详情" data-toggle="modal" data-target="#myModal"><i
+                                        class="fa fa-search"></i></button>
+                            </a>
+                            <a th:href="'javascript:modifyContact('+${goods.id}+')'">
+                                <button type="button" class="btn btn-info btn-sm status-icon hint--top" aria-label="修改"
+                                        data-toggle="modal" data-target="#myModal2"><i class="fa fa-pencil"></i>
+                                </button>
+                            </a>
+                            <a th:href="'javascript:deleteContact('+${goods.id}+')'">
+                                <button type="button" class="btn btn-danger btn-sm status-icon hint--top"
+                                        style="margin-left: 2px" aria-label="删除"><i class="fa fa-trash-o"></i></button>
+                            </a>
+                            <a th:href="'javascript:deleteContact('+${goods.id}+')'" th:if="${goods.state==1}">
+                                <button type="button" class="btn btn-secondary btn-sm status-icon hint--top"
+                                        style="margin-left: 2px" aria-label="下架"><i class="fa fa-angle-double-down"></i></button>
+                            </a>
+                            <a th:href="'javascript:deleteContact('+${goods.id}+')'" th:if="${goods.state==3}">
+                                <button type="button" class="btn btn-warning btn-sm status-icon hint--top"
+                                        style="margin-left: 2px" aria-label="上架"><i class="fa fa-angle-double-up"></i></button>
+                            </a>
+                            <a th:href="'javascript:deleteContact('+${goods.id}+')'" th:if="${goods.state==1}">
+                                <button type="button" class="btn-dark btn-sm status-icon hint--top"
+                                        style="margin-left: 2px" aria-label="完成交易"><i class="fa fa-hand-peace-o"></i></button>
+                            </a>
+                        </td>
+                        <!-- 查看模态框 -->
+                        <div class="modal fade" id="myModal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+
+                                    <!-- 模态框头部 -->
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">查看留言详情</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+
+                                    <!-- 模态框主体 -->
+                                    <div class="modal-body">
+                                        <p>编号：<span id="contactId" style="color: #0000FF"></span></p>
+                                        <p>留言时间：<span id="contactTime" style="color: #0000FF"></span></p>
+                                        <p>留言内容：<span id="contactContent" style="color: #0000FF"></span></p>
+                                        <p>留言答复：<span id="contactReply" style="color: #0000FF"></span></p>
+                                    </div>
+
+                                    <!-- 模态框底部 -->
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 修改模态框 -->
+                        <div class="modal fade" id="myModal2">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+
+                                    <!-- 模态框头部 -->
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">修改留言</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+
+                                    <!-- 模态框主体 -->
+                                    <div class="modal-body">
+                                        <form role="form" method="post" action="/contact/save">
+                                            <input type="hidden" class="form-control" id="contactIdModify" name="id">
+                                            <div class="form-group">
+                                                <label for="name">内容</label>
+                                                <textarea class="form-control" rows="6" id="contentContactModify"
+                                                          name="content"
+                                                          placeholder="请输入留言内容"
+                                                          required="required"></textarea>
+                                            </div>
+                                            <div style="text-align: center">
+                                                <button type="submit" class="btn btn-primary">提交</button>
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">取消
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </tr>
+                </div>
+                </tbody>
+            </table>
+            <div th:if="${goodsList.size()==0}">
+                <span style="color: red">无数据</span>
+            </div>
         </div>
     </div>
 </div>

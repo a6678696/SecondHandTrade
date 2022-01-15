@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<!--suppress ALL-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品管理</title>
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.7.0/themes/metro-blue/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.7.0/themes/icon.css">
+    <script type="text/javascript" src="/static/jquery-easyui-1.7.0/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.7.0/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.7.0/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/static/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript">
+
+        function searchGoods() {
+            $("#dg").datagrid('load', {
+                "name": $("#s_name").val()
+            });
+        }
+
+        function resetValue() {
+            $("#s_name").val("");
+            $("#name").val("");
+            $("#sortNum").val("");
+            CKEDITOR.instances.content.setData("");
+        }
+
+        function deleteGoods() {
+            var selectedRows = $("#dg").datagrid("getSelections");
+            if (selectedRows.length == 0) {
+                $.messager.alert("系统提示", "请选择要删除的商品!");
+                return;
+            }
+            var strIds = [];
+            for (var i = 0; i < selectedRows.length; i++) {
+                strIds.push(selectedRows[i].id);
+            }
+            var ids = strIds.join(",");
+            $.messager.confirm("系统提示", "你确定要删除这<span style='color: red'>" + selectedRows.length + "</span>条数据吗?", function (r) {
+                if (r) {
+                    $.post("/admin/goods/delete", {ids: ids}, function (result) {
+                        if (result.success) {
+                            $.messager.alert("系统提示", "数据已成功删除！");
+                            $("#dg").datagrid("reload");
+                        } else {
+                            $.messager.alert("系统提示", "数据删除失败！");
+                        }
+                    }, "json");
+                }
+            });
+        }
+
+        function openGoodslAddDialog() {
+            $("#dlg").dialog("open").dialog("setTitle", "添加商品信息");
+            url = "/admin/goods/save";
+        }
+
+        function openGoodsModifyTab() {
+            var selectedRows = $("#dg").datagrid("getSelections");
+            if (selectedRows.length != 1) {
+                $.messager.alert("系统提示", "请选择一个要修改的商品!");
+                return;
+            }
+            var row = selectedRows[0];
+            $("#dlg").dialog("open").dialog("setTitle", "修改商品");
+            $("#fm").form("load", row);
+            CKEDITOR.instances.content.setData(row.content);
+            url = "/admin/goods/save?id=" + row.id;
+        }
+
+        function submitData() {
+            $("#fm").form("submit", {
+                url: url,
+                onSubmit: function () {
+                    var content = CKEDITOR.instances.content.getData();
+                    if (content == "") {
+                        $.messager.alert("系统提示", "内容不能为空!");
+                        return false;
+                    }
+                    return $(this).form("validate");
+                },
+                success: function (result) {
+                    var result = eval('(' + result + ')');
+                    if (result.success) {
+                        $.messager.alert("系统提示", "保存成功!");
+                        $("#dg").datagrid("reload");
+                        $("#dlg").dialog("close");
+                        resetValue();
+                    } else {
+                        $.messager.alert("系统提示", "保存失败！");
+                    }
+                }
+            })
+        }
+
+        function formatType(val, row) {
+            return val.name;
+        }
+
+        function closeGoodsDialog() {
+            $("#dlg").dialog("close");
+            $("#dg").datagrid("reload");
+            resetValue();
+        }
+
+        $(document).ready(function () {
+
+            $("#dg").datagrid({
+                onDblClickRow: function (index, row) {
+                    $("#dlg").dialog("open").dialog("setTitle", "修改商品信息");
+                    $("#fm").form("load", row);
+                    CKEDITOR.instances.content.setData(row.content);
+                    url = "/admin/goods/save?id=" + row.id;
+                }
+            });
+        });
+    </script>
+</head>
+<body style="margin: 1px">
+<table id="dg" title="商品管理" class="easyui-datagrid" striped="true"
+       fitColumns="true" pagination="true" rownumbers="true"
+       url="/admin/goods/list" fit="true" toolbar="#tb">
+    <thead>
+    <tr>
+        <th field="cb" checkbox="true" align="center"></th>
+        <th field="id" width="20" align="center">编号</th>
+        <th field="name" width="200" align="center">标题</th>
+        <th field="time" width="50" align="center">发布时间</th>
+        <th field="sortNum" width="50" align="center">排序</th>
+    </tr>
+    </thead>
+</table>
+<div id="tb">
+    <div>
+        <a href="javascript:openGoodslAddDialog()" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加</a>
+        <a href="javascript:openGoodsModifyTab()" class="easyui-linkbutton" iconCls="icon-edit" plain="true">修改</a>
+        <a href="javascript:deleteGoods()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
+    </div>
+    <div>
+        &nbsp;标题:&nbsp;<input type="text" id="s_name" size="20"
+                              onkeydown="if(window.event.keyCode===13) searchGoods()"/>
+        <a href="javascript:searchGoods()" class="easyui-linkbutton" iconCls="icon-search" plain="true">搜索</a>
+        <a href="javascript:resetValue()" class="easyui-linkbutton" iconCls="icon-reset" plain="true">重置</a>
+    </div>
+</div>
+<div id="dlg" class="easyui-dialog" style="width: 1200px;height: 580px;padding: 10px 20px"
+     closed="true" buttons="#dlg-buttons" data-options="onClose:function(){resetValue()}">
+    <form action="" id="fm" method="post" enctype="multipart/form-data">
+        <table cellspacing="20px">
+            <tr>
+                <td width="80px">标题：</td>
+                <td>
+                    <input type="text" id="name" name="name" style="width: 400px" required="true"
+                           class="easyui-validatebox"/>
+                </td>
+            </tr>
+            <tr>
+                <td width="80px">排序：</td>
+                <td>
+                    <input type="text" id="sortNum" name="sortNum" style="width: 400px" required="true"
+                           class="easyui-validatebox"/>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">内容：</td>
+                <td>
+                    <textarea id="content" name="content" rows="30" cols="80"></textarea>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:submitData()" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
+    <a href="javascript:closeGoodsDialog()" class="easyui-linkbutton" iconCls="icon-cancel">关闭</a>
+</div>
+<script type="text/javascript">
+    CKEDITOR.replace("content");
+</script>
+</body>
+</html>

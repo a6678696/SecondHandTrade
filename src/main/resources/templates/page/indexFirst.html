@@ -44,68 +44,30 @@
             <!--最近发布-->
             <div>
                 <div class="card" style="margin-top: 5px">
-                    <div class="card-header bg-primary text-white"><i class="fa fa-dropbox"></i>最近发布<a href="#" style="float: right;color: white">查看更多...</a>
+                    <div class="card-header bg-primary text-white"><i class="fa fa-dropbox"></i>最近发布<a href="#"
+                                                                                                       style="float: right;color: white">查看更多...</a>
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="card col-md-4" style="">
-                                <img class="card-img-top"
-                                     src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/1.jpg" alt="Card image"
-                                     style="width:100%">
+                            <div class="card col-md-4" th:each="goodsNew:${goodsNewList}">
+                                <a th:href="${'/goods/'+goodsNew.id}"><img class="card-img-top"
+                                     th:src="@{'/static/images/articleImage/'+${goodsNew.imageName}+'.jpg'}"
+                                     alt="Card image"
+                                     style="width:100%"></a>
                                 <div class="card-body">
-                                    <h4 class="card-title">热门商品</h4>
-                                    <p class="card-text">￥133</p>
-                                    <a href="#" class="btn btn-primary btn-sm">查看详情</a>
-                                </div>
-                            </div>
-                            <div class="card col-md-4" style="">
-                                <img class="card-img-top"
-                                     src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/2.jpg" alt="Card image"
-                                     style="width:100%">
-                                <div class="card-body">
-                                    <h4 class="card-title">热门商品</h4>
-                                    <p class="card-text">￥133</p>
-                                    <a href="#" class="btn btn-primary btn-sm">查看详情</a>
-                                </div>
-                            </div>
-                            <div class="card col-md-4" style="">
-                                <img class="card-img-top"
-                                     src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/3.jpg" alt="Card image"
-                                     style="width:100%">
-                                <div class="card-body">
-                                    <h4 class="card-title">热门商品</h4>
-                                    <p class="card-text">￥133</p>
-                                    <a href="#" class="btn btn-primary btn-sm">查看详情</a>
-                                </div>
-                            </div>
-                            <div class="card col-md-4" style="">
-                                <img class="card-img-top"
-                                     src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/4.jpg" alt="Card image"
-                                     style="width:100%">
-                                <div class="card-body">
-                                    <h4 class="card-title">热门商品</h4>
-                                    <p class="card-text">￥133</p>
-                                    <a href="#" class="btn btn-primary btn-sm">查看详情</a>
-                                </div>
-                            </div>
-                            <div class="card col-md-4" style="">
-                                <img class="card-img-top"
-                                     src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/5.jpg" alt="Card image"
-                                     style="width:100%">
-                                <div class="card-body">
-                                    <h4 class="card-title">热门商品</h4>
-                                    <p class="card-text">￥133</p>
-                                    <a href="#" class="btn btn-primary btn-sm">查看详情</a>
-                                </div>
-                            </div>
-                            <div class="card col-md-4" style="">
-                                <img class="card-img-top"
-                                     src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/6.jpg" alt="Card image"
-                                     style="width:100%">
-                                <div class="card-body">
-                                    <h4 class="card-title">热门商品</h4>
-                                    <p class="card-text">￥133</p>
-                                    <a href="#" class="btn btn-primary btn-sm">查看详情</a>
+                                    <a th:href="${'/goods/'+goodsNew.id}" class="status-icon hint--top" th:aria-label="${goodsNew.name}"><h6
+                                            class="card-title" th:text="${#strings.abbreviate(goodsNew.name,15)}"></h6>
+                                    </a>
+                                    <p class="card-text">￥<span th:text="${goodsNew.priceNow}"></span>&nbsp;&nbsp;&nbsp;&nbsp;<del
+                                            th:if="${goodsNew.priceLast!=0&&goodsNew.priceLast>goodsNew.priceNow}"
+                                            style="color: darkred">￥
+                                    </del>
+                                        <del
+                                                th:text="${goodsNew.priceLast}"
+                                                th:if="${goodsNew.priceLast!=0&&goodsNew.priceLast>goodsNew.priceNow}"
+                                                style="color: darkred"></del>
+                                    </p>
+                                    <a th:href="${'/goods/'+goodsNew.id}" class="btn btn-primary btn-sm">查看详情</a>
                                 </div>
                             </div>
                         </div>
@@ -115,68 +77,29 @@
             <!--热门商品-->
             <div>
                 <div class="card" style="margin-top: 5px">
-                    <div class="card-header bg-primary text-white"><i class="fa fa-fire"></i>热门商品<a href="#" style="float: right;color: white">查看更多...</a>
+                    <div class="card-header bg-primary text-white"><i class="fa fa-fire"></i>热门商品<a href="#"
+                                                                                                    style="float: right;color: white">查看更多...</a>
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="card col-md-4" style="">
-                                <img class="card-img-top"
-                                     src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/1.jpg" alt="Card image"
-                                     style="width:100%">
+                            <div class="card col-md-4" th:each="goodsHot:${goodsHotList}">
+                                <a  th:href="${'/goods/'+goodsHot.id}"><img class="card-img-top"
+                                     th:src="@{'/static/images/articleImage/'+${goodsHot.imageName}+'.jpg'}"
+                                     alt="Card image"
+                                     style="width:100%"></a>
                                 <div class="card-body">
-                                    <h4 class="card-title">热门商品</h4>
-                                    <p class="card-text">￥133</p>
-                                    <a href="#" class="btn btn-primary btn-sm">查看详情</a>
-                                </div>
-                            </div>
-                            <div class="card col-md-4" style="">
-                                <img class="card-img-top"
-                                     src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/2.jpg" alt="Card image"
-                                     style="width:100%">
-                                <div class="card-body">
-                                    <h4 class="card-title">热门商品</h4>
-                                    <p class="card-text">￥133</p>
-                                    <a href="#" class="btn btn-primary btn-sm">查看详情</a>
-                                </div>
-                            </div>
-                            <div class="card col-md-4" style="">
-                                <img class="card-img-top"
-                                     src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/3.jpg" alt="Card image"
-                                     style="width:100%">
-                                <div class="card-body">
-                                    <h4 class="card-title">热门商品</h4>
-                                    <p class="card-text">￥133</p>
-                                    <a href="#" class="btn btn-primary btn-sm">查看详情</a>
-                                </div>
-                            </div>
-                            <div class="card col-md-4" style="">
-                                <img class="card-img-top"
-                                     src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/4.jpg" alt="Card image"
-                                     style="width:100%">
-                                <div class="card-body">
-                                    <h4 class="card-title">热门商品</h4>
-                                    <p class="card-text">￥133</p>
-                                    <a href="#" class="btn btn-primary btn-sm">查看详情</a>
-                                </div>
-                            </div>
-                            <div class="card col-md-4" style="">
-                                <img class="card-img-top"
-                                     src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/5.jpg" alt="Card image"
-                                     style="width:100%">
-                                <div class="card-body">
-                                    <h4 class="card-title">热门商品</h4>
-                                    <p class="card-text">￥133</p>
-                                    <a href="#" class="btn btn-primary btn-sm">查看详情</a>
-                                </div>
-                            </div>
-                            <div class="card col-md-4" style="">
-                                <img class="card-img-top"
-                                     src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/6.jpg" alt="Card image"
-                                     style="width:100%">
-                                <div class="card-body">
-                                    <h4 class="card-title">热门商品</h4>
-                                    <p class="card-text">￥133</p>
-                                    <a href="#" class="btn btn-primary btn-sm">查看详情</a>
+                                    <a th:href="${'/goods/'+goodsHot.id}" class="status-icon hint--top" th:aria-label="${goodsHot.name}"><h6
+                                            class="card-title" th:text="${#strings.abbreviate(goodsHot.name,15)}"></h6>
+                                    </a>
+                                    <p class="card-text">￥<span th:text="${goodsHot.priceNow}"></span>&nbsp;&nbsp;&nbsp;&nbsp;<del
+                                            th:if="${goodsHot.priceLast!=0&&goodsHot.priceLast>goodsHot.priceNow}"
+                                            style="color: darkred">￥
+                                    </del>
+                                        <del style="color: darkred"
+                                             th:text="${goodsHot.priceLast}"
+                                             th:if="${goodsHot.priceLast!=0&&goodsHot.priceLast>goodsHot.priceNow}"></del>
+                                    </p>
+                                    <a th:href="${'/goods/'+goodsHot.id}" class="btn btn-primary btn-sm">查看详情</a>
                                 </div>
                             </div>
                         </div>
@@ -191,7 +114,9 @@
                 <div class="card-body">
                     <div>
                         <p th:each="announcement:${announcementList}"><a th:href="${'/announcement/'+announcement.id}"
-                                                                         th:text="${announcement.title}" class="status-icon hint--top" th:aria-label="${announcement.title}"></a></p>
+                                                                         th:text="${announcement.title}"
+                                                                         class="status-icon hint--top"
+                                                                         th:aria-label="${announcement.title}"></a></p>
                     </div>
                 </div>
             </div>
@@ -199,27 +124,16 @@
                 <div class="card-header bg-primary text-white"><i class="fa fa-houzz"></i>推荐商品</div>
                 <div class="card-body">
                     <div>
-                        <div class="row">
+                        <div class="row" th:each="goodsRecommend:${goodsRecommendList}">
                             <div class="col-md-4">
-                                <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/72.jpg" alt=""
-                                     style="width: 88px;height: 60px">
+                                <a th:href="${'/goods/'+goodsRecommend.id}"><img th:src="@{'/static/images/articleImage/'+${goodsRecommend.imageName}+'.jpg'}"
+                                     alt=""
+                                     style="width: 88px;height: 60px"></a>
                             </div>
                             <div class="col-md-8">
                                 <div>
-                                    <a href="" class="status-icon hint--top" aria-label="推荐商品推荐商品推荐商品"><span>推荐商品推荐商品推荐商品</span></a>
-                                    <p style="color: #b52b27">￥138</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <img src="https://image.zoutl.cn/hexo-blog/images/homeBlogImage/72.jpg" alt=""
-                                     style="width: 88px;height: 60px">
-                            </div>
-                            <div class="col-md-8">
-                                <div>
-                                    <a href="" class="status-icon hint--top" aria-label="推荐商品推荐商品推荐商品"><span>推荐商品推荐商品推荐商品</span></a>
-                                    <p style="color: #b52b27">￥138</p>
+                                    <a th:href="${'/goods/'+goodsRecommend.id}" class="status-icon hint--top" th:aria-label="${goodsRecommend.name}"><span th:text="${#strings.abbreviate(goodsRecommend.name,20)}"></span></a>
+                                    <p style="color: #b52b27">￥<span th:text="${goodsRecommend.priceNow}"></span></p>
                                 </div>
                             </div>
                         </div>

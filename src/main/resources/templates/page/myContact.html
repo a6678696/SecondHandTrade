@@ -17,6 +17,7 @@
                 <li class="breadcrumb-item"><a href="/toPersonalHubsPage">个人中心</a></li>
                 <li class="breadcrumb-item active">我的留言</li>
             </ol>
+            <span th:if="${contactList.size()!=0}" style="float: right">当前有&nbsp;<span style="margin-top: 10px;color: red" th:text="${contactList.size()}"></span>&nbsp;条数据</span>
             <table class="table table-bordered table-striped table-hover table-borderless" th:if="${contactList.size()!=0}">
                 <thead>
                 <tr>

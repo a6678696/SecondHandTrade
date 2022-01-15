@@ -12,6 +12,7 @@
     <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script th:src="@{/static/js/my.js}"></script>
+    <script type="text/javascript" th:src="@{/static/ckeditor/ckeditor.js}"></script>
     <style type="text/css">
         .carousel-inner img {
             width: 100%;
@@ -84,8 +85,11 @@
     </div>
 </div>
 <a class="imgdiv" href="#gotop">
-    <img th:src="@{/static/images/top2.png}" id="gotop" alt="" class="imgsrc"
+    <img th:src="@{/static/images/top2.png}" id="gotop" alt="" class="imgsrc img-thumbnail"
          style="position: fixed;bottom: 10%;display: none;height: 40px;margin-left: 96.5%">
 </a>
+<script type="text/javascript">
+    CKEDITOR.replace("contentAddGoods");
+</script>
 </body>
 </html>

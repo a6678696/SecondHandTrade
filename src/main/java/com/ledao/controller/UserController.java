@@ -1,7 +1,12 @@
 package com.ledao.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ledao.entity.Announcement;
+import com.ledao.entity.Carousel;
+import com.ledao.entity.Goods;
 import com.ledao.entity.User;
-import com.ledao.service.UserService;
+import com.ledao.service.*;
 import com.ledao.util.DateUtil;
 import com.ledao.util.ImageUtil;
 import com.ledao.util.StringUtil;
@@ -22,7 +27,10 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import static com.ledao.controller.IndexController.getFirstImageInGoodsContent;
 
 /**
  * 前台用户Controller层
@@ -38,11 +46,26 @@ public class UserController {
     @Value("${userImageFilePath}")
     private String userImageFilePath;
 
+    @Value("${wantToBuyId}")
+    private String wantToBuyId;
+
     @Resource
     private JavaMailSender javaMailSender;
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private CarouselService carouselService;
+
+    @Resource
+    private AnnouncementService announcementService;
+
+    @Resource
+    private GoodsTypeService goodsTypeService;
+
+    @Resource
+    private GoodsService goodsService;
 
     /**
      * 前台用户登录
@@ -60,6 +83,52 @@ public class UserController {
             //密码正确时
             if (user.getPassword().equals(currentUser.getPassword())) {
                 session.setAttribute("currentUser", currentUser);
+                //获取轮播图list
+                QueryWrapper<Carousel> carouselQueryWrapper = new QueryWrapper<>();
+                carouselQueryWrapper.orderByAsc("sortNum");
+                List<Carousel> carouselList = carouselService.list(carouselQueryWrapper);
+                mav.addObject("carouselList", carouselList);
+                //获取公告list
+                QueryWrapper<Announcement> announcementQueryWrapper = new QueryWrapper<>();
+                announcementQueryWrapper.orderByAsc("sortNum");
+                List<Announcement> announcementList = announcementService.list(announcementQueryWrapper);
+                mav.addObject("announcementList", announcementList);
+                //获取9个最近发布的商品
+                QueryWrapper<Goods> goodsQueryWrapper = new QueryWrapper<>();
+                goodsQueryWrapper.orderByDesc("addTime");
+                goodsQueryWrapper.eq("state", 1);
+                goodsQueryWrapper.ne("goodsTypeId", wantToBuyId);
+                Page<Goods> goodsPage = new Page<>(1, 9);
+                List<Goods> goodsNewList = goodsService.list(goodsPage, goodsQueryWrapper);
+                for (Goods goods : goodsNewList) {
+                    getFirstImageInGoodsContent(goods);
+                    goods.setGoodsTypeName(goodsTypeService.findById(goods.getGoodsTypeId()).getName());
+                }
+                mav.addObject("goodsNewList", goodsNewList);
+                //获取9个热门商品
+                QueryWrapper<Goods> goodsQueryWrapper2 = new QueryWrapper<>();
+                goodsQueryWrapper2.orderByDesc("click");
+                goodsQueryWrapper2.eq("state", 1);
+                goodsQueryWrapper2.ne("goodsTypeId", wantToBuyId);
+                Page<Goods> goodsPage2 = new Page<>(1, 9);
+                List<Goods> goodsHotList = goodsService.list(goodsPage2, goodsQueryWrapper2);
+                for (Goods goods : goodsHotList) {
+                    getFirstImageInGoodsContent(goods);
+                    goods.setGoodsTypeName(goodsTypeService.findById(goods.getGoodsTypeId()).getName());
+                }
+                mav.addObject("goodsHotList", goodsHotList);
+                //获取推荐商品列表
+                QueryWrapper<Goods> goodsQueryWrapper3 = new QueryWrapper<>();
+                goodsQueryWrapper3.eq("isRecommend", 1);
+                goodsQueryWrapper3.ne("goodsTypeId", wantToBuyId);
+                goodsQueryWrapper3.eq("state", 1);
+                Page<Goods> goodsPage3 = new Page<>(1, 9);
+                List<Goods> goodsRecommendList = goodsService.list(goodsPage3, goodsQueryWrapper3);
+                for (Goods goods : goodsRecommendList) {
+                    getFirstImageInGoodsContent(goods);
+                    goods.setGoodsTypeName(goodsTypeService.findById(goods.getGoodsTypeId()).getName());
+                }
+                mav.addObject("goodsRecommendList", goodsRecommendList);
                 mav.addObject("title", "首页--LeDao校园二手交易平台");
                 mav.addObject("mainPage", "page/indexFirst");
                 mav.addObject("loginSuccess", true);

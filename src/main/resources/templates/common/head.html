@@ -17,7 +17,7 @@
                 <a href="/toLoginPage"><span class="badge badge-pill badge-success"
                                              th:if="${session.currentUser==null}">登录</span></a>
                 <a href="/toPersonalHubsPage"><span class="badge badge-pill badge-success"
-                                              th:if="${session.currentUser!=null}">个人中心</span></a>
+                                                    th:if="${session.currentUser!=null}">个人中心</span></a>
                 <a href="/toContactPage"><span class="badge badge-pill badge-info" th:if="${session.currentUser!=null}">联系我们</span></a>
                 <a href="javascript:logoutUser()"><span class="badge badge-pill badge-danger"
                                                         th:if="${session.currentUser!=null}">注销</span></a>
@@ -28,17 +28,23 @@
         <div class="col-md-12">
             <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
                 <ul class="navbar-nav">
-                    <li class="nav-item active">
+                    <li class="nav-item active" th:if="${isHome!=null}">
                         <a class="nav-link" href="/">首页</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">分类</a>
+                    <li class="nav-item" th:if="${isHome==null}">
+                        <a class="nav-link" href="/">首页</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">最近发布</a>
+                    <li class="nav-item active" th:if="${isSort!=null}">
+                        <a class="nav-link" href="/toSortPage?goodsTypeId=1">分类</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">热门商品</a>
+                    <li class="nav-item" th:if="${isSort==null}">
+                        <a class="nav-link" href="/toSortPage?goodsTypeId=1">分类</a>
+                    </li>
+                    <li class="nav-item active" th:if="${isWantToBuy!=null}">
+                        <a class="nav-link" href="/toWantToBuyPage">用户求购</a>
+                    </li>
+                    <li class="nav-item" th:if="${isWantToBuy==null}">
+                        <a class="nav-link" href="/toWantToBuyPage">用户求购</a>
                     </li>
                 </ul>
                 <div style="margin-left: 50%">

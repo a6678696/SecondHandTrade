@@ -305,7 +305,7 @@ function checkSaveContactInformationName(type) {
     if (type === 1) {
         name = $("#nameAddContactInformation").val();
         userId = $("#userIdAddContactInformation").val();
-    }else if (type === 2) {
+    } else if (type === 2) {
         name = $("#nameModifyContactInformation").val();
         userId = $("#userIdModifyContactInformation").val();
     }
@@ -364,4 +364,20 @@ function deleteContactInformation(id) {
     if (confirm("您确定要删除这个联系方式吗?")) {
         window.location.href = "/contactInformation/delete?id=" + id;
     }
+}
+
+function checkAddGoodsValue() {
+    let content = CKEDITOR.instances.contentAddGoods.getData();
+    if (content === "" || content === null) {
+        alert("商品详情不能为空!");
+        return false;
+    }
+    return true;
+}
+
+function resetSearchGoodsValue() {
+    $("#nameSearchGoods").val("");
+    $("#goodsTypeIdSearchGoods").val("");
+    $("#stateSearchGoods").val("");
+    $("#isRecommendSearchGoods").val("");
 }

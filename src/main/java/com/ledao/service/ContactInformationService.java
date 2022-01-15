@@ -26,6 +26,14 @@ public interface ContactInformationService {
     List<ContactInformation> list(QueryWrapper<ContactInformation> contactInformationQueryWrapper, Page<ContactInformation> contactInformationPage);
 
     /**
+     * 不分页条件查询联系方式
+     *
+     * @param contactInformationQueryWrapper
+     * @return
+     */
+    List<ContactInformation> list(QueryWrapper<ContactInformation> contactInformationQueryWrapper);
+
+    /**
      * 获取记录数
      *
      * @param contactInformationQueryWrapper

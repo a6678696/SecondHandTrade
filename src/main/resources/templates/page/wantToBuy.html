@@ -8,24 +8,22 @@
 <body>
 <div id="b">
     <div class="row" style="margin-top: 5px">
-        <!--公告详情-->
+        <!--求购列表-->
         <div class="col-md-9">
             <div class="card">
-                <div class="card-header bg-primary text-white"><i class="fa fa-eye"></i>公告详情</div>
+                <div class="card-header bg-primary text-white"><i class="fa fa-list-ol"></i>用户求购</div>
                 <div class="card-body">
-                    <h4 th:text="${announcement.title}" style="text-align: center"></h4>
-                    <p style="color: grey;text-align: center">发布时间: <span th:text="${#dates.format(announcement.time,'yyyy-MM-dd HH:mm:ss')}"></span> | 阅读次数: <span th:text="${announcement.click}"></span></p>
-                    <p th:utext="${announcement.content}"></p>
+                    <p th:each="goodsWantToBuy:${goodsWantToBuyList}"><span th:text="${#dates.format(goodsWantToBuy.addTime,'yyyy-MM-dd HH:mm:ss')}"></span>&nbsp;&nbsp;&nbsp;&nbsp;<a th:href="${'/goods/'+goodsWantToBuy.id}" th:text="${goodsWantToBuy.name}"></a></p>
                 </div>
             </div>
         </div>
-        <!--公告列表和推荐商品-->
+        <!--商品分类列表和推荐商品-->
         <div class="col-md-3">
             <div class="card">
-                <div class="card-header bg-primary text-white"><i class="fa fa-google-wallet"></i>公告</div>
+                <div class="card-header bg-primary text-white"><i class="fa fa-connectdevelop"></i>商品分类</div>
                 <div class="card-body">
                     <div>
-                        <p th:each="announcement:${announcementList}"><a th:href="${'/announcement/'+announcement.id}" th:text="${announcement.title}" class=" status-icon hint--top" th:aria-label="${announcement.title}"></a></p>
+                        <p th:each="goodsType:${goodsTypeList}"><a th:href="${'/goods/'+goodsType.id}" th:text="${goodsType.name}" class=" status-icon hint--top" th:aria-label="${goodsType.name}"></a></p>
                     </div>
                 </div>
             </div>

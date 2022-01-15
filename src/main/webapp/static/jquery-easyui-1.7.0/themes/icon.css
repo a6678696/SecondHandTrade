@@ -288,6 +288,14 @@
     background: url('usericons/announcementManage.gif') no-repeat center center;
 }
 
+.icon-goodsTypeManage {
+    background: url('usericons/goodsTypeManage.gif') no-repeat center center;
+}
+
+.icon-goodsManage {
+    background: url('usericons/goodsManage.gif') no-repeat center center;
+}
+
 
 
 
