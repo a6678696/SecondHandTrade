@@ -409,8 +409,38 @@ function deleteGoodsInShoppingCart(goodsId) {
             success: function (result) {
                 if (result.success) {
                     alert("删除成功！！");
+                    window.location.href = "/toMyShoppingCart";
                 } else {
                     alert(result.errorInfo);
+                }
+            },
+        });
+    }
+}
+
+function pay(goodsId) {
+    if (confirm("您确定要支付吗?")) {
+        $.ajax({
+            url: "/payRecord/pay",
+            type: "post",
+            data: {goodsId: goodsId},
+            success: function (result) {
+                if (result.success) {
+                    alert("支付成功！！");
+                    $.ajax({
+                        url: "/goods/deleteGoodsInShoppingCart",
+                        type: "post",
+                        data: {goodsId: goodsId},
+                        success: function (result) {
+                            if (result.success) {
+                                window.location.href = "/toMyShoppingCart";
+                            } else {
+                                alert(result.errorInfo);
+                            }
+                        },
+                    });
+                } else {
+                    alert("支付失败！！");
                 }
             },
         });

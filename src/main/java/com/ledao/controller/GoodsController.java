@@ -204,7 +204,7 @@ public class GoodsController {
             resultMap.put("errorInfo", "你的登录状态已经过期，请重新登录！！");
             return resultMap;
         }
-        String shoppingCartName = currentUser.getUserName() + "_shoppingCart";
+        String shoppingCartName = currentUser.getId() + "_shoppingCart";
         List<String> shoppingCartGoodsStr = RedisUtil.listRange(shoppingCartName, 0L, -1L);
         for (int i = 0; i < shoppingCartGoodsStr.size(); i++) {
             Goods goods1 = gson.fromJson(shoppingCartGoodsStr.get(i), Goods.class);
@@ -241,18 +241,25 @@ public class GoodsController {
             resultMap.put("errorInfo", "你的登录状态已经过期，请重新登录！！");
             return resultMap;
         }
-        String shoppingCartName = currentUser.getUserName() + "_shoppingCart";
+        String shoppingCartName = currentUser.getId() + "_shoppingCart";
         List<String> shoppingCartGoodsStr = RedisUtil.listRange(shoppingCartName, 0L, -1L);
+        boolean deleteKey = false;
         for (int i = 0; i < shoppingCartGoodsStr.size(); i++) {
             Goods goods1 = gson.fromJson(shoppingCartGoodsStr.get(i), Goods.class);
             if (goods.getId().equals(goods1.getId())) {
-                resultMap.put("success", false);
-                resultMap.put("errorInfo", "你的购物车没有这个商品！！");
-                return resultMap;
+                shoppingCartGoodsStr.remove(shoppingCartGoodsStr.get(i));
+                i--;
+                deleteKey = true;
+                RedisUtil.delKey(shoppingCartName);
+                break;
             }
         }
-        boolean key = RedisUtil.listRightPush(shoppingCartName, gson.toJson(goods));
-        if (key) {
+        if (shoppingCartGoodsStr.size() > 0) {
+            for (String s : shoppingCartGoodsStr) {
+                RedisUtil.listRightPush(shoppingCartName, s);
+            }
+        }
+        if (deleteKey) {
             resultMap.put("success", true);
         } else {
             resultMap.put("success", false);

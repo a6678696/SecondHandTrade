@@ -273,8 +273,13 @@ public class IndexController {
      * @return
      */
     @RequestMapping("/toContactPage")
-    public ModelAndView toContactPage() {
+    public ModelAndView toContactPage(HttpSession session) {
         ModelAndView mav = new ModelAndView();
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser == null) {
+            ModelAndView mav2 = new ModelAndView("redirect:/toLoginPage");
+            return mav2;
+        }
         mav.addObject("title", "联系我们--LeDao校园二手交易平台");
         mav.addObject("mainPage", "page/contact");
         mav.addObject("mainPageKey", "#b");
@@ -525,7 +530,11 @@ public class IndexController {
         ModelAndView mav = new ModelAndView();
         Gson gson = new Gson();
         User currentUser = (User) session.getAttribute("currentUser");
-        String shoppingCartName = currentUser.getUserName() + "_shoppingCart";
+        if (currentUser == null) {
+            ModelAndView mav2 = new ModelAndView("redirect:/toLoginPage");
+            return mav2;
+        }
+        String shoppingCartName = currentUser.getId() + "_shoppingCart";
         List<String> shoppingCartGoodsStr = RedisUtil.listRange(shoppingCartName, 0L, -1L);
         List<Goods> shoppingCartGoodsList = new ArrayList<>();
         for (String s : shoppingCartGoodsStr) {

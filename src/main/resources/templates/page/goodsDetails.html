@@ -78,8 +78,8 @@
                                 马上登录
                             </button>
                         </a>
-                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal" th:if="${goods.goodsTypeId!=8&&session.currentUser!=null&&session.currentUser.id!=goods.userId}">
-                            获取卖家联系方式
+                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal" th:if="${session.currentUser!=null&&session.currentUser.id!=goods.userId}">
+                            <span th:text="${goods.goodsTypeId!=8?'获取卖家联系方式':'获取求购者联系方式'}"></span>
                         </button>
                         <span style="color: red"
                               th:if="${goods.goodsTypeId!=8&&session.currentUser==null}">登录后才可以购物</span>

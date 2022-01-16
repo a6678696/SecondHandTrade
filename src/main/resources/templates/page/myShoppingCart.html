@@ -61,17 +61,22 @@
                 <tbody>
                 <div th:each="goods:${shoppingCartGoodsList}">
                     <tr>
-                        <td style="text-align: center"><img th:src="@{'/static/images/articleImage/'+${goods.imageName}+'.jpg'}" style="height: 44px" alt=""></td>
-                        <td style="text-align: center"><a th:href="${'/goods/'+goods.id}" class="status-icon hint--top" th:aria-label="${goods.name}" th:text="${#strings.abbreviate(goods.name,22)}"></a></td>
+                        <td style="text-align: center"><img
+                                th:src="@{'/static/images/articleImage/'+${goods.imageName}+'.jpg'}"
+                                style="height: 44px" alt=""></td>
+                        <td style="text-align: center"><a th:href="${'/goods/'+goods.id}" class="status-icon hint--top"
+                                                          th:aria-label="${goods.name}"
+                                                          th:text="${#strings.abbreviate(goods.name,22)}"></a></td>
                         <td style="text-align: center" th:text="${goods.priceNow}"></td>
                         <td style="text-align: center">
                             <a th:href="'javascript:deleteGoodsInShoppingCart('+${goods.id}+')'">
                                 <button type="button" class="btn btn-danger btn-sm status-icon hint--top"
                                         style="margin-left: 2px" aria-label="删除"><i class="fa fa-trash-o"></i></button>
                             </a>
-                            <a th:href="'javascript:deleteContact('+${goods.id}+')'">
+                            <a th:href="'javascript:pay('+${goods.id}+')'">
                                 <button type="button" class="btn btn-info btn-sm status-icon hint--top"
-                                        style="margin-left: 2px" aria-label="支付"><i class="fa fa-check-square-o"></i></button>
+                                        style="margin-left: 2px" aria-label="支付"><i class="fa fa-check-square-o"></i>
+                                </button>
                             </a>
                         </td>
                     </tr>
