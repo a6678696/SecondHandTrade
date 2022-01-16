@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -128,6 +129,7 @@ public class UserController {
                     getFirstImageInGoodsContent(goods);
                     goods.setGoodsTypeName(goodsTypeService.findById(goods.getGoodsTypeId()).getName());
                 }
+                Collections.shuffle(goodsRecommendList);
                 mav.addObject("goodsRecommendList", goodsRecommendList);
                 mav.addObject("title", "首页--LeDao校园二手交易平台");
                 mav.addObject("mainPage", "page/indexFirst");

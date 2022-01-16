@@ -8,30 +8,16 @@
 <body>
 <div id="b">
     <div class="row" style="margin-top: 5px">
-        <!--商品详情-->
-        <div class="col-md-9">
-            <div class="card">
-                <div class="card-header bg-primary text-white"><i class="fa fa-eye"></i>商品详情</div>
-                <div class="card-body">
-                    <h4 th:text="${goods.name}" style="text-align: center"></h4>
-                    <p style="color: grey;text-align: center">发布时间: <span th:text="${#dates.format(goods.addTime,'yyyy-MM-dd HH:mm:ss')}"></span> | 查看次数: <span th:text="${goods.click}"></span> | 所属类别: <span th:text="${goods.goodsTypeName}"></span></p>
-                    <p th:utext="${goods.content}"></p>
-                    <hr>
-                    <p>发布人：<span th:text="${goods.user.nickName}" style="color: #0c9076"></span></p>
-                    <p th:if="${session.currentUser!=null}">
-                        联系方式：<span th:each="contactInformation:${goods.contactInformationList}"><span class="badge badge-info" th:text="${contactInformation.name}"></span><span th:text="${contactInformation.content}"></span>&nbsp;&nbsp;&nbsp;</span>
-                    </p>
-                    <p th:if="${session.currentUser==null}" style="color: red">登录后才会显示发布者的联系方式，<a href="/toLoginPage"><button type="button" class="btn btn-primary btn-sm">去登录</button></a></p>
-                </div>
-            </div>
-        </div>
         <!--商品分类列表和推荐商品-->
         <div class="col-md-3">
             <div class="card">
                 <div class="card-header bg-primary text-white"><i class="fa fa-connectdevelop"></i>商品分类</div>
                 <div class="card-body">
                     <div>
-                        <p th:each="goodsType:${goodsTypeList}"><a th:href="${'/toSortPage?goodsTypeId='+goodsType.id}" th:text="${goodsType.name}" class=" status-icon hint--top" th:aria-label="${goodsType.name}"></a></p>
+                        <p th:each="goodsType:${goodsTypeList}"><a th:href="${'/toSortPage?goodsTypeId='+goodsType.id}"
+                                                                   th:text="${goodsType.name}"
+                                                                   class=" status-icon hint--top"
+                                                                   th:aria-label="${goodsType.name}"></a></p>
                     </div>
                 </div>
             </div>
@@ -41,18 +27,110 @@
                     <div>
                         <div class="row" th:each="goodsRecommend:${goodsRecommendList}">
                             <div class="col-md-4">
-                                <a th:href="${'/goods/'+goodsRecommend.id}"><img th:src="@{'/static/images/articleImage/'+${goodsRecommend.imageName}+'.jpg'}"
-                                     alt=""
-                                     style="width: 88px;height: 60px"></a>
+                                <a th:href="${'/goods/'+goodsRecommend.id}"><img
+                                        th:src="@{'/static/images/articleImage/'+${goodsRecommend.imageName}+'.jpg'}"
+                                        alt=""
+                                        style="width: 88px;height: 60px"></a>
                             </div>
                             <div class="col-md-8">
                                 <div>
-                                    <a th:href="${'/goods/'+goodsRecommend.id}" class="status-icon hint--top" th:aria-label="${goodsRecommend.name}"><span th:text="${#strings.abbreviate(goodsRecommend.name,20)}"></span></a>
+                                    <a th:href="${'/goods/'+goodsRecommend.id}" class="status-icon hint--top"
+                                       th:aria-label="${goodsRecommend.name}"><span
+                                            th:text="${#strings.abbreviate(goodsRecommend.name,20)}"></span></a>
                                     <p style="color: #b52b27">￥<span th:text="${goodsRecommend.priceNow}"></span></p>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <!--商品详情-->
+        <div class="col-md-9 card">
+            <hr>
+            <div class="row inline">
+                <div class="col-md-5  card-body">
+                    <div>
+                        <img th:src="@{'/static/images/articleImage/'+${goods.imageName}+'.jpg'}" class="img-thumbnail"
+                             alt="" style="width: 100%">
+                    </div>
+                </div>
+                <div class="col-md-7 card-body">
+                    <h4 th:text="${goods.name}" style="color: #b52b27"></h4>
+                    <p>发布时间：<span th:text="${#dates.format(goods.addTime,'yyyy-MM-dd HH:mm:ss')}"></span></p>
+                    <p class="card-text">价格：￥<span th:text="${goods.priceNow}"></span>&nbsp;&nbsp;&nbsp;&nbsp;<del
+                            th:if="${goods.priceLast!=0&&goods.priceLast>goods.priceNow}"
+                            style="color: darkred">￥
+                    </del>
+                        <del style="color: darkred"
+                             th:text="${goods.priceLast}"
+                             th:if="${goods.priceLast!=0&&goods.priceLast>goods.priceNow}"></del>
+                    </p>
+                    <p>所属类别：<span th:text="${goods.goodsTypeName}"></span></p>
+                    <p>
+                        <a th:href="'javascript:addGoodsToShoppingCart('+${goods.id}+')'"
+                           th:if="${goods.goodsTypeId!=8&&session.currentUser!=null&&session.currentUser.id!=goods.userId}">
+                            <button type="button" class="btn btn-sm btn-primary">加入购物车</button>
+                        </a>
+                        <strong style="color: red" th:if="${session.currentUser!=null&&session.currentUser.id==goods.userId}">这是你自己的商品，无法购买哦</strong>
+                        <a href="/toLoginPage" th:if="${goods.goodsTypeId!=8&&session.currentUser==null}">
+                            <button type="button" class="btn btn-primary btn-sm">
+                                马上登录
+                            </button>
+                        </a>
+                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal" th:if="${goods.goodsTypeId!=8&&session.currentUser!=null&&session.currentUser.id!=goods.userId}">
+                            获取卖家联系方式
+                        </button>
+                        <span style="color: red"
+                              th:if="${goods.goodsTypeId!=8&&session.currentUser==null}">登录后才可以购物</span>
+                    </p>
+                </div>
+            </div>
+            <hr>
+            <h3><span class="badge badge-info">详情</span></h3>
+            <p th:utext="${goods.content}"></p>
+        </div>
+        <!-- 模态框 -->
+        <div class="modal fade" id="myModal">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <!-- 模态框头部 -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">卖家联系方式</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- 模态框主体 -->
+                    <div class="modal-body">
+                        <span th:if="${session.currentUser==null}">登录后才能获取卖家的联系方式哦，去<a href="/toLoginPage"><button
+                                type="button"
+                                class="btn btn-primary">登录</button></a></span>
+                        <table class="table table-bordered table-striped table-hover table-borderless"
+                               style="margin-top: 4px"
+                               th:if="${goods.contactInformationList.size()>0&&session.currentUser!=null}">
+                            <thead>
+                            <tr>
+                                <th style="text-align: center">名称</th>
+                                <th style="text-align: center">内容</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <div th:each="contactInformation:${goods.contactInformationList}">
+                                <tr>
+                                    <td style="text-align: center" th:text="${contactInformation.name}"></td>
+                                    <td style="text-align: center" th:text="${contactInformation.content}"></td>
+                                </tr>
+                            </div>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 模态框底部 -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                    </div>
+
                 </div>
             </div>
         </div>

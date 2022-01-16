@@ -8,17 +8,6 @@
 <body>
 <div id="b">
     <div class="row" style="margin-top: 5px">
-        <!--公告详情-->
-        <div class="col-md-9">
-            <div class="card">
-                <div class="card-header bg-primary text-white"><i class="fa fa-eye"></i>公告详情</div>
-                <div class="card-body">
-                    <h4 th:text="${announcement.title}" style="text-align: center"></h4>
-                    <p style="color: grey;text-align: center">发布时间: <span th:text="${#dates.format(announcement.time,'yyyy-MM-dd HH:mm:ss')}"></span> | 阅读次数: <span th:text="${announcement.click}"></span></p>
-                    <p th:utext="${announcement.content}"></p>
-                </div>
-            </div>
-        </div>
         <!--公告列表和推荐商品-->
         <div class="col-md-3">
             <div class="card">
@@ -47,6 +36,17 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <!--公告详情-->
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header bg-primary text-white"><i class="fa fa-eye"></i>公告详情</div>
+                <div class="card-body">
+                    <h4 th:text="${announcement.title}" style="text-align: center"></h4>
+                    <p style="color: grey;text-align: center">发布时间: <span th:text="${#dates.format(announcement.time,'yyyy-MM-dd HH:mm:ss')}"></span> | 阅读次数: <span th:text="${announcement.click}"></span></p>
+                    <p th:utext="${announcement.content}"></p>
                 </div>
             </div>
         </div>

@@ -8,22 +8,13 @@
 <body>
 <div id="b">
     <div class="row" style="margin-top: 5px">
-        <!--求购列表-->
-        <div class="col-md-9">
-            <div class="card">
-                <div class="card-header bg-primary text-white"><i class="fa fa-list-ol"></i>用户求购</div>
-                <div class="card-body">
-                    <p th:each="goodsWantToBuy:${goodsWantToBuyList}"><span th:text="${#dates.format(goodsWantToBuy.addTime,'yyyy-MM-dd HH:mm:ss')}"></span>&nbsp;&nbsp;&nbsp;&nbsp;<a th:href="${'/goods/'+goodsWantToBuy.id}" th:text="${goodsWantToBuy.name}"></a></p>
-                </div>
-            </div>
-        </div>
         <!--商品分类列表和推荐商品-->
         <div class="col-md-3">
             <div class="card">
                 <div class="card-header bg-primary text-white"><i class="fa fa-connectdevelop"></i>商品分类</div>
                 <div class="card-body">
                     <div>
-                        <p th:each="goodsType:${goodsTypeList}"><a th:href="${'/goods/'+goodsType.id}" th:text="${goodsType.name}" class=" status-icon hint--top" th:aria-label="${goodsType.name}"></a></p>
+                        <p th:each="goodsType:${goodsTypeList}"><a th:href="${'/toSortPage?goodsTypeId='+goodsType.id}" th:text="${goodsType.name}" class=" status-icon hint--top" th:aria-label="${goodsType.name}"></a></p>
                     </div>
                 </div>
             </div>
@@ -33,9 +24,9 @@
                     <div>
                         <div class="row" th:each="goodsRecommend:${goodsRecommendList}">
                             <div class="col-md-4">
-                                <img th:src="@{'/static/images/articleImage/'+${goodsRecommend.imageName}+'.jpg'}"
-                                     alt=""
-                                     style="width: 88px;height: 60px">
+                                <a th:href="${'/goods/'+goodsRecommend.id}"><img th:src="@{'/static/images/articleImage/'+${goodsRecommend.imageName}+'.jpg'}"
+                                                                                 alt=""
+                                                                                 style="width: 88px;height: 60px"></a>
                             </div>
                             <div class="col-md-8">
                                 <div>
@@ -45,6 +36,15 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <!--求购列表-->
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header bg-primary text-white"><i class="fa fa-list-ol"></i>用户求购</div>
+                <div class="card-body">
+                    <p th:each="goodsWantToBuy:${goodsWantToBuyList}"><span th:text="${#dates.format(goodsWantToBuy.addTime,'yyyy-MM-dd HH:mm:ss')}"></span>&nbsp;&nbsp;&nbsp;&nbsp;<a th:href="${'/goods/'+goodsWantToBuy.id}" th:text="${goodsWantToBuy.name}"></a></p>
                 </div>
             </div>
         </div>

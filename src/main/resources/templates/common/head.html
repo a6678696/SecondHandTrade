@@ -21,6 +21,8 @@
                 <a href="/toContactPage"><span class="badge badge-pill badge-info" th:if="${session.currentUser!=null}">联系我们</span></a>
                 <a href="javascript:logoutUser()"><span class="badge badge-pill badge-danger"
                                                         th:if="${session.currentUser!=null}">注销</span></a>
+                <a href="/toMyShoppingCart"><span class="badge badge-pill badge-warning"
+                                                        th:if="${session.currentUser!=null}">我的购物车</span></a>
             </p>
         </div>
     </div>
@@ -48,9 +50,13 @@
                     </li>
                 </ul>
                 <div style="margin-left: 50%">
-                    <form class="d-flex">
-                        <input class="form-control me-2" type="text" placeholder="输入搜索关键词...">
-                        <button class="btn btn-primary bg-light" type="button" style="margin-left: 3px"><i
+                    <form class="d-flex" action="/goods/search" method="post">
+                        <input class="form-control me-2" type="text" id="name" name="name" required="required" th:value="${name}" placeholder="输入搜索关键词...">
+                        <select class="form-control" id="goodsType" name="goodsType" th:value="${goodsType}" style="margin-left: 3px;width: 88px">
+                            <option value="1" th:selected="${goodsType==1}">商品</option>
+                            <option value="2" th:selected="${goodsType==2}">求购</option>
+                        </select>
+                        <button class="btn btn-primary bg-light" type="submit" style="margin-left: 3px"><i
                                 class="fa fa-search" style="color:
 #007bff"></i></button>
                     </form>

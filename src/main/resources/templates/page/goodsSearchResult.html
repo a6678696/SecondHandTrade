@@ -14,7 +14,10 @@
                 <div class="card-header bg-primary text-white"><i class="fa fa-connectdevelop"></i>商品分类</div>
                 <div class="card-body">
                     <div>
-                        <p th:each="goodsType:${goodsTypeList}"><a th:href="${'/toSortPage?goodsTypeId='+goodsType.id}" th:text="${goodsType.name}" class=" status-icon hint--top" th:aria-label="${goodsType.name}"></a></p>
+                        <p th:each="goodsType:${goodsTypeList}"><a th:href="${'/toSortPage?goodsTypeId='+goodsType.id}"
+                                                                   th:text="${goodsType.name}"
+                                                                   class=" status-icon hint--top"
+                                                                   th:aria-label="${goodsType.name}"></a></p>
                     </div>
                 </div>
             </div>
@@ -24,13 +27,16 @@
                     <div>
                         <div class="row" th:each="goodsRecommend:${goodsRecommendList}">
                             <div class="col-md-4">
-                                <a th:href="${'/goods/'+goodsRecommend.id}"><img th:src="@{'/static/images/articleImage/'+${goodsRecommend.imageName}+'.jpg'}"
-                                                                                 alt=""
-                                                                                 style="width: 88px;height: 60px"></a>
+                                <a th:href="${'/goods/'+goodsRecommend.id}"><img
+                                        th:src="@{'/static/images/articleImage/'+${goodsRecommend.imageName}+'.jpg'}"
+                                        alt=""
+                                        style="width: 88px;height: 60px"></a>
                             </div>
                             <div class="col-md-8">
                                 <div>
-                                    <a th:href="${'/goods/'+goodsRecommend.id}" class="status-icon hint--top" th:aria-label="${goodsRecommend.name}"><span th:text="${#strings.abbreviate(goodsRecommend.name,20)}"></span></a>
+                                    <a th:href="${'/goods/'+goodsRecommend.id}" class="status-icon hint--top"
+                                       th:aria-label="${goodsRecommend.name}"><span
+                                            th:text="${#strings.abbreviate(goodsRecommend.name,20)}"></span></a>
                                     <p style="color: #b52b27">￥<span th:text="${goodsRecommend.priceNow}"></span></p>
                                 </div>
                             </div>
@@ -39,19 +45,22 @@
                 </div>
             </div>
         </div>
-        <!--商品详情-->
+        <!--商品列表-->
         <div class="col-md-9">
             <div class="card">
-                <div class="card-header bg-primary text-white"><i class="fa fa-eercast"></i>商品分类</div>
+                <div class="card-header bg-primary text-white"><i class="fa fa-eercast"></i>搜索"<span
+                        th:text="${name}"></span>"的结果有&nbsp;&nbsp;<span th:text="${goodsList.size()}"></span>&nbsp;&nbsp;个
+                </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="card col-md-4" th:each="goods:${goodsList}">
+                        <div class="card col-md-4" th:each="goods:${goodsList}" th:if="${goods.goodsTypeId!=8}">
                             <a th:href="${'/goods/'+goods.id}"><img class="card-img-top"
-                                                                       th:src="@{'/static/images/articleImage/'+${goods.imageName}+'.jpg'}"
-                                                                       alt="Card image"
-                                                                       style="width:100%"></a>
+                                                                    th:src="@{'/static/images/articleImage/'+${goods.imageName}+'.jpg'}"
+                                                                    alt="Card image"
+                                                                    style="width:100%"></a>
                             <div class="card-body">
-                                <a th:href="${'/goods/'+goods.id}" class="status-icon hint--top" th:aria-label="${goods.name}"><h6
+                                <a th:href="${'/goods/'+goods.id}" class="status-icon hint--top"
+                                   th:aria-label="${goods.name}"><h6
                                         class="card-title" th:text="${#strings.abbreviate(goods.name,15)}"></h6>
                                 </a>
                                 <p class="card-text">￥<span th:text="${goods.priceNow}"></span>&nbsp;&nbsp;&nbsp;&nbsp;<del
@@ -62,11 +71,16 @@
                                             th:text="${goods.priceLast}"
                                             th:if="${goods.priceLast!=0&&goods.priceLast>goods.priceNow}"
                                             style="color: darkred"></del>
+                                    <span class="badge badge-info" th:text="${goods.goodsTypeName}"
+                                          style="float: right"></span>
                                 </p>
                                 <a th:href="${'/goods/'+goods.id}" class="btn btn-primary btn-sm">查看详情</a>
                             </div>
                         </div>
                     </div>
+                    <p th:each="goodsWantToBuy:${goodsList}" th:if="${goodsWantToBuy.goodsTypeId==8}"><span
+                            th:text="${#dates.format(goodsWantToBuy.addTime,'yyyy-MM-dd HH:mm:ss')}"></span>&nbsp;&nbsp;&nbsp;&nbsp;<a
+                            th:href="${'/goods/'+goodsWantToBuy.id}" th:text="${goodsWantToBuy.name}"></a></p>
                 </div>
             </div>
         </div>

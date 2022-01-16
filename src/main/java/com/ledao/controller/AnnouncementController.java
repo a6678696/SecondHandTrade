@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 
 import static com.ledao.controller.IndexController.getFirstImageInGoodsContent;
@@ -72,6 +73,7 @@ public class AnnouncementController {
             getFirstImageInGoodsContent(goods2);
             goods2.setGoodsTypeName(goodsTypeService.findById(goods2.getGoodsTypeId()).getName());
         }
+        Collections.shuffle(goodsRecommendList);
         mav.addObject("goodsRecommendList", goodsRecommendList);
         mav.addObject("title", announcement.getTitle() + "--LeDao校园二手交易平台");
         mav.addObject("mainPage", "page/announcementDetails");

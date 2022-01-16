@@ -381,3 +381,38 @@ function resetSearchGoodsValue() {
     $("#stateSearchGoods").val("");
     $("#isRecommendSearchGoods").val("");
 }
+
+// 添加商品到购物车
+function addGoodsToShoppingCart(goodsId) {
+    if (confirm("您确定要将这个商品加入购物车吗?")) {
+        $.ajax({
+            url: "/goods/addGoodsToShoppingCart",
+            type: "post",
+            data: {goodsId: goodsId},
+            success: function (result) {
+                if (result.success) {
+                    alert("加入购物车成功！！");
+                } else {
+                    alert(result.errorInfo);
+                }
+            },
+        });
+    }
+}
+
+function deleteGoodsInShoppingCart(goodsId) {
+    if (confirm("您确定要将这个商品从购物车中删除吗?")) {
+        $.ajax({
+            url: "/goods/deleteGoodsInShoppingCart",
+            type: "post",
+            data: {goodsId: goodsId},
+            success: function (result) {
+                if (result.success) {
+                    alert("删除成功！！");
+                } else {
+                    alert(result.errorInfo);
+                }
+            },
+        });
+    }
+}
