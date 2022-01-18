@@ -56,6 +56,9 @@ public class IndexController {
     @Resource
     private GoodsService goodsService;
 
+    @Resource
+    private MessageService messageService;
+
     /**
      * 管理员登录
      *
@@ -293,8 +296,13 @@ public class IndexController {
      * @return
      */
     @RequestMapping("/toPersonalHubsPage")
-    public ModelAndView toPersonalHubsPage() {
+    public ModelAndView toPersonalHubsPage(HttpSession session) {
         ModelAndView mav = new ModelAndView();
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser == null) {
+            ModelAndView mav2 = new ModelAndView("redirect:/toLoginPage");
+            return mav2;
+        }
         mav.addObject("title", "个人中心--LeDao校园二手交易平台");
         mav.addObject("mainPage", "page/personalHubs");
         mav.addObject("mainPageKey", "#b");
@@ -308,8 +316,13 @@ public class IndexController {
      * @return
      */
     @RequestMapping("/toPersonalInfoPage")
-    public ModelAndView toPersonalInfoPage() {
+    public ModelAndView toPersonalInfoPage(HttpSession session) {
         ModelAndView mav = new ModelAndView();
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser == null) {
+            ModelAndView mav2 = new ModelAndView("redirect:/toLoginPage");
+            return mav2;
+        }
         mav.addObject("title", "个人中心--LeDao校园二手交易平台");
         mav.addObject("mainPage", "page/personalInfo");
         mav.addObject("mainPageKey", "#b");
@@ -323,8 +336,13 @@ public class IndexController {
      * @return
      */
     @RequestMapping("/toAddGoodsPage")
-    public ModelAndView toAddGoodsPage() {
+    public ModelAndView toAddGoodsPage(HttpSession session) {
         ModelAndView mav = new ModelAndView();
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser == null) {
+            ModelAndView mav2 = new ModelAndView("redirect:/toLoginPage");
+            return mav2;
+        }
         QueryWrapper<GoodsType> goodsTypeQueryWrapper = new QueryWrapper<>();
         goodsTypeQueryWrapper.orderByAsc("sortNum");
         List<GoodsType> goodsTypeList = goodsTypeService.list(goodsTypeQueryWrapper);
@@ -345,6 +363,10 @@ public class IndexController {
     public ModelAndView toGoodsManagePage(HttpSession session, Goods searchGoods) {
         ModelAndView mav = new ModelAndView();
         User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser == null) {
+            ModelAndView mav2 = new ModelAndView("redirect:/toLoginPage");
+            return mav2;
+        }
         QueryWrapper<Goods> goodsQueryWrapper = new QueryWrapper<>();
         goodsQueryWrapper.eq("userId", currentUser.getId());
         goodsQueryWrapper.orderByDesc("addTime");
@@ -387,8 +409,18 @@ public class IndexController {
      * @return
      */
     @RequestMapping("/toMyMessagePage")
-    public ModelAndView toMyMessagePage() {
+    public ModelAndView toMyMessagePage(HttpSession session) {
         ModelAndView mav = new ModelAndView();
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser == null) {
+            ModelAndView mav2 = new ModelAndView("redirect:/toLoginPage");
+            return mav2;
+        }
+        QueryWrapper<Message> messageQueryWrapper = new QueryWrapper<>();
+        messageQueryWrapper.eq("userId", currentUser.getId());
+        messageQueryWrapper.orderByDesc("time");
+        List<Message> messageList = messageService.list(messageQueryWrapper);
+        mav.addObject("messageList", messageList);
         mav.addObject("title", "我的消息--LeDao校园二手交易平台");
         mav.addObject("mainPage", "page/myMessage");
         mav.addObject("mainPageKey", "#b");

@@ -14,15 +14,20 @@
 
         function searchGoods() {
             $("#dg").datagrid('load', {
-                "name": $("#s_name").val()
+                "name": $("#s_name").val(),
+                "userName": $("#s_userName").val(),
+                "state": $("#s_state").val(),
+                "isRecommend": $("#s_isRecommend").val(),
+                "goodsTypeId": $("#s_goodsTypeId").val()
             });
         }
 
         function resetValue() {
             $("#s_name").val("");
-            $("#name").val("");
-            $("#sortNum").val("");
-            CKEDITOR.instances.content.setData("");
+            $("#s_userName").val("");
+            $("#s_state").combobox("setValue", "");
+            $("#s_isRecommend").combobox("setValue", "");
+            $("#s_goodsTypeId").combobox("setValue", "");
         }
 
         function deleteGoods() {
@@ -50,6 +55,89 @@
             });
         }
 
+        function recommendGoodsOrNot() {
+            var selectedRows = $("#dg").datagrid("getSelections");
+            if (selectedRows.length != 1) {
+                $.messager.alert("系统提示", "请选择一个商品!");
+                return;
+            }
+            var id = selectedRows[0].id;
+            var isRecommend = selectedRows[0].isRecommend;
+            if (isRecommend == 0) {
+                $.messager.confirm("系统提示", "你确定要<span style='color: red'>推荐</span>这个商品吗?", function (r) {
+                    if (r) {
+                        $.post("/admin/goods/recommendGoodsOrNot", {id: id, isRecommend: 1}, function (result) {
+                            if (result.success) {
+                                $.messager.alert("系统提示", "推荐成功！");
+                                $("#dg").datagrid("reload");
+                            } else {
+                                $.messager.alert("系统提示", "推荐失败！");
+                            }
+                        }, "json");
+                    }
+                });
+            } else {
+                $.messager.confirm("系统提示", "你确定要<span style='color: red'>不推荐</span>这个商品吗?", function (r) {
+                    if (r) {
+                        $.post("/admin/goods/recommendGoodsOrNot", {id: id, isRecommend: 0}, function (result) {
+                            if (result.success) {
+                                $.messager.alert("系统提示", "不推荐成功！");
+                                $("#dg").datagrid("reload");
+                            } else {
+                                $.messager.alert("系统提示", "不推荐失败！");
+                            }
+                        }, "json");
+                    }
+                });
+            }
+        }
+
+        function auditGoodsSuccess() {
+            var selectedRows = $("#dg").datagrid("getSelections");
+            if (selectedRows.length != 1) {
+                $.messager.alert("系统提示", "请选择一个商品!");
+                return;
+            }
+            var id = selectedRows[0].id;
+            if (selectedRows[0].state != 0) {
+                $.messager.alert("系统提示", "只能处理未审核的商品哦！");
+                return;
+            }
+            $.messager.confirm("系统提示", "你确定要<span style='color: red'>审核通过</span>这个商品吗?", function (r) {
+                if (r) {
+                    $.post("/goods/updateGoodsState", {goodsId: id, state: 1}, function (result) {
+                        if (result.success) {
+                            $.messager.alert("系统提示", "审核通过成功！");
+                            $("#dg").datagrid("reload");
+                        } else {
+                            $.messager.alert("系统提示", "审核通过失败！");
+                        }
+                    }, "json");
+                }
+            });
+        }
+
+        function auditGoodsFail() {
+            var selectedRows = $("#dg").datagrid("getSelections");
+            if (selectedRows.length != 1) {
+                $.messager.alert("系统提示", "请选择一个商品!");
+                return;
+            }
+            var id = selectedRows[0].id;
+            $.messager.confirm("系统提示", "你确定要<span style='color: red'>审核不通过</span>这个商品吗?", function (r) {
+                if (r) {
+                    $.post("/goods/updateGoodsState", {goodsId: id, state: 2}, function (result) {
+                        if (result.success) {
+                            $.messager.alert("系统提示", "审核不通过成功！");
+                            $("#dg").datagrid("reload");
+                        } else {
+                            $.messager.alert("系统提示", "审核不通过失败！");
+                        }
+                    }, "json");
+                }
+            });
+        }
+
         function openGoodslAddDialog() {
             $("#dlg").dialog("open").dialog("setTitle", "添加商品信息");
             url = "/admin/goods/save";
@@ -58,11 +146,11 @@
         function openGoodsModifyTab() {
             var selectedRows = $("#dg").datagrid("getSelections");
             if (selectedRows.length != 1) {
-                $.messager.alert("系统提示", "请选择一个要修改的商品!");
+                $.messager.alert("系统提示", "请选择一个要查看的商品!");
                 return;
             }
             var row = selectedRows[0];
-            $("#dlg").dialog("open").dialog("setTitle", "修改商品");
+            $("#dlg").dialog("open").dialog("setTitle", "查看商品");
             $("#fm").form("load", row);
             CKEDITOR.instances.content.setData(row.content);
             url = "/admin/goods/save?id=" + row.id;
@@ -107,13 +195,49 @@
 
             $("#dg").datagrid({
                 onDblClickRow: function (index, row) {
-                    $("#dlg").dialog("open").dialog("setTitle", "修改商品信息");
+                    $("#dlg").dialog("open").dialog("setTitle", "查看商品信息");
                     $("#fm").form("load", row);
                     CKEDITOR.instances.content.setData(row.content);
                     url = "/admin/goods/save?id=" + row.id;
                 }
             });
         });
+
+        function formatName(val, row) {
+            if (val.length > 20) {
+                return "<span title='" + val + "'>" + val.substring(0, 20) + "...</span>";
+            } else {
+                return val;
+            }
+        }
+
+        function formatPriceNow(val, rows) {
+            return "<span style='color: #0c9076'>" + val + "</span>";
+        }
+
+        function formatState(val, row) {
+            if (val == 0) {
+                return "<span style='color: #0000FF'>未审核</span>";
+            } else if (val == 1) {
+                return "<span style='color: #0c9076'>上架中</span>";
+            } else if (val == 2) {
+                return "审核不通过";
+            } else if (val == 3) {
+                return "已下架";
+            } else if (val == 4) {
+                return "被预定";
+            } else if (val == 4) {
+                return "交易成功";
+            }
+        }
+
+        function formatIsRecommend(val, row) {
+            if (val == 0) {
+                return "不推荐";
+            } else if (val == 1) {
+                return "<span style='color: #0000FF'>被推荐</span>";
+            }
+        }
     </script>
 </head>
 <body style="margin: 1px">
@@ -124,21 +248,48 @@
     <tr>
         <th field="cb" checkbox="true" align="center"></th>
         <th field="id" width="20" align="center">编号</th>
-        <th field="name" width="200" align="center">标题</th>
-        <th field="time" width="50" align="center">发布时间</th>
-        <th field="sortNum" width="50" align="center">排序</th>
+        <th field="userName" width="20" align="center">用户名</th>
+        <th field="name" width="100" align="center" formatter="formatName">名称</th>
+        <th field="state" width="20" align="center" formatter="formatState">状态</th>
+        <th field="isRecommend" width="20" align="center" formatter="formatIsRecommend">是否推荐</th>
+        <th field="priceNow" width="20" align="center" formatter="formatPriceNow">现在价格</th>
+        <th field="priceLast" width="20" align="center">上次价格</th>
+        <th field="goodsTypeName" width="30" align="center">分类名称</th>
     </tr>
     </thead>
 </table>
 <div id="tb">
     <div>
-        <a href="javascript:openGoodslAddDialog()" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加</a>
-        <a href="javascript:openGoodsModifyTab()" class="easyui-linkbutton" iconCls="icon-edit" plain="true">修改</a>
+        <a href="javascript:openGoodsModifyTab()" class="easyui-linkbutton" iconCls="icon-search" plain="true">查看</a>
         <a href="javascript:deleteGoods()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
+        <a href="javascript:recommendGoodsOrNot()" class="easyui-linkbutton" iconCls="icon-recommendGoods" plain="true">推荐与否</a>
+        <a href="javascript:auditGoodsSuccess()" class="easyui-linkbutton" iconCls="icon-ok" plain="true">审核通过</a>
+        <a href="javascript:auditGoodsFail()" class="easyui-linkbutton" iconCls="icon-no" plain="true">审核不通过</a>
     </div>
     <div>
         &nbsp;标题:&nbsp;<input type="text" id="s_name" size="20"
                               onkeydown="if(window.event.keyCode===13) searchGoods()"/>
+        &nbsp;用户名:&nbsp;<input type="text" id="s_userName" size="20"
+                               onkeydown="if(window.event.keyCode===13) searchGoods()"/>
+        &nbsp;商品类型:&nbsp;<input class="easyui-combobox" id="s_goodsTypeId" style="width: 140px"
+                                editable="true"
+                                data-options="panelHeight:'auto',valueField:'id',textField:'name',url:'/admin/goodsType/comboList'"/>
+        &nbsp;状态:&nbsp;
+        <select id="s_state" class="easyui-combobox" style="width:115px;" data-options="panelHeight:'auto'">
+            <option value="">请选择...</option>
+            <option value="0">未审核</option>
+            <option value="1">上架中</option>
+            <option value="2">审核不通过</option>
+            <option value="3">已下架</option>
+            <option value="4">被预定</option>
+            <option value="5">交易成功</option>
+        </select>
+        &nbsp;是否推荐:&nbsp;
+        <select id="s_isRecommend" class="easyui-combobox" style="width:100px;" data-options="panelHeight:'auto'">
+            <option value="">请选择...</option>
+            <option value="0">不推荐</option>
+            <option value="1">被推荐</option>
+        </select>
         <a href="javascript:searchGoods()" class="easyui-linkbutton" iconCls="icon-search" plain="true">搜索</a>
         <a href="javascript:resetValue()" class="easyui-linkbutton" iconCls="icon-reset" plain="true">重置</a>
     </div>
@@ -148,21 +299,35 @@
     <form action="" id="fm" method="post" enctype="multipart/form-data">
         <table cellspacing="20px">
             <tr>
-                <td width="80px">标题：</td>
+                <td width="80px">名称：</td>
                 <td>
                     <input type="text" id="name" name="name" style="width: 400px" required="true"
                            class="easyui-validatebox"/>
                 </td>
             </tr>
             <tr>
-                <td width="80px">排序：</td>
+                <td width="80px">类型：</td>
                 <td>
-                    <input type="text" id="sortNum" name="sortNum" style="width: 400px" required="true"
+                    <input type="text" id="goodsTypeName" name="goodsTypeName" style="width: 400px" required="true"
                            class="easyui-validatebox"/>
                 </td>
             </tr>
             <tr>
-                <td valign="top">内容：</td>
+                <td width="80px">现在价格：</td>
+                <td>
+                    <input type="text" id="priceNow" name="priceNow" style="width: 400px" required="true"
+                           class="easyui-validatebox"/>
+                </td>
+            </tr>
+            <tr>
+                <td width="80px">上次价格：</td>
+                <td>
+                    <input type="text" id="priceLast" name="priceLast" style="width: 400px" required="true"
+                           class="easyui-validatebox"/>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">详情：</td>
                 <td>
                     <textarea id="content" name="content" rows="30" cols="80"></textarea>
                 </td>

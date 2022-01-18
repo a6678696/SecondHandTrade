@@ -1,14 +1,14 @@
 package com.ledao.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ledao.entity.PayRecord;
+import com.ledao.entity.ReserveRecord;
 
 /**
- * 支付记录Mapper接口
+ * 预定记录Mapper接口
  *
  * @author LeDao
  * @company
  * @create 2022-01-17 3:32
  */
-public interface PayRecordMapper extends BaseMapper<PayRecord> {
+public interface ReserveRecordMapper extends BaseMapper<ReserveRecord> {
 }

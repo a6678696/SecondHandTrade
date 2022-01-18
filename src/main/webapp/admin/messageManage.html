@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>商品类别管理</title>
+    <title>消息管理</title>
     <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.7.0/themes/metro-blue/easyui.css">
     <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.7.0/themes/icon.css">
     <script type="text/javascript" src="/static/jquery-easyui-1.7.0/jquery.min.js"></script>
@@ -12,25 +12,23 @@
     <script type="text/javascript">
         var url;
 
-        function searchGoodsType() {
+        function searchMessage() {
             $("#dg").datagrid('load', {
-                "name": $("#s_name").val()
+                "userName": $("#s_userName").val()
             });
         }
 
         function resetValue() {
 
-            $("#s_name").val("")
-            $("#name").val("");
-            $("#sortNum").numberbox('setValue', "")
+            $("#s_userName").val("")
         }
 
-        function closeGoodsTypeDialog() {
+        function closeMessageDialog() {
             $("#dlg").dialog("close");
             resetValue();
         }
 
-        function saveGoodsType() {
+        function saveMessage() {
             $("#fm").form("submit", {
                 url: url,
                 onSubmit: function () {
@@ -50,24 +48,24 @@
             });
         }
 
-        function openGoodsTypeAddDialog() {
-            $("#dlg").dialog("open").dialog("setTitle", "添加商品类别信息");
-            url = "/admin/goodsType/save";
+        function openMessageAddDialog() {
+            $("#dlg").dialog("open").dialog("setTitle", "添加消息信息");
+            url = "/admin/message/save";
         }
 
-        function openGoodsTypeModifyDialog() {
+        function openMessageModifyDialog() {
             var selectedRows = $("#dg").datagrid("getSelections");
             if (selectedRows.length != 1) {
-                $.messager.alert("系统提示", "请选择一条要修改的数据！");
+                $.messager.alert("系统提示", "请选择一条要查看的数据！");
                 return;
             }
             var row = selectedRows[0];
-            $("#dlg").dialog("open").dialog("setTitle", "修改商品类别信息");
+            $("#dlg").dialog("open").dialog("setTitle", "修改消息信息");
             $("#fm").form("load", row);
-            url = "/admin/goodsType/save?id=" + row.id;
+            url = "/admin/message/save?id=" + row.id;
         }
 
-        function deleteGoodsType() {
+        function deleteMessage() {
             var selectedRows = $("#dg").datagrid("getSelections");
             if (selectedRows.length == 0) {
                 $.messager.alert("系统提示", "请选择要删除的数据！");
@@ -80,7 +78,7 @@
             var ids = strIds.join(",");
             $.messager.confirm("系统提示", "您确定要删除这<span style='color: red'>" + selectedRows.length + "</span>条数据吗?", function (r) {
                 if (r) {
-                    $.post("/admin/goodsType/delete", {ids: ids}, function (result) {
+                    $.post("/admin/message/delete", {ids: ids}, function (result) {
                         if (result.success) {
                             $.messager.alert("系统提示", "数据已成功删除！");
                             $("#dg").datagrid("reload");
@@ -96,58 +94,58 @@
 
             $("#dg").datagrid({
                 onDblClickRow: function (index, row) {
-                    $("#dlg").dialog("open").dialog("setTitle", "修改商品类别信息");
+                    $("#dlg").dialog("open").dialog("setTitle", "修改消息信息");
                     $("#fm").form("load", row);
-                    url = "/admin/goodsType/save?id=" + row.id;
+                    url = "/admin/message/save?id=" + row.id;
                 }
             });
 
         });
+
+        function formatContent(val, row) {
+            if (val.length > 30) {
+                return "<span title='" + val + "'>" + val.substring(0, 30) + "...</span>";
+            }else {
+                return val;
+            }
+        }
     </script>
 </head>
 <body style="margin: 1px">
-<table id="dg" title="商品类别管理" class="easyui-datagrid" striped="true"
+<table id="dg" title="消息管理" class="easyui-datagrid" striped="true"
        fitColumns="true" pagination="true" rownumbers="true"
-       url="/admin/goodsType/list" fit="true" toolbar="#tb">
+       url="/admin/message/list" fit="true" toolbar="#tb">
     <thead>
     <th field="cb" checkbox="true" align="center"></th>
     <th field="id" width="10" align="center">编号</th>
-    <th field="name" width="50" align="center">名称</th>
-    <th field="sortNum" width="20" align="center">排序</th>
-    <th field="goodsNum" width="20" align="center">商品数量</th>
+    <th field="userName" width="20" align="center">接收人用户名</th>
+    <th field="content" width="90" align="center" formatter="formatContent">内容</th>
+    <th field="time" width="20" align="center">时间</th>
     </thead>
 </table>
 
 <div id="tb">
     <div>
-        <a href="javascript:openGoodsTypeAddDialog()" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加</a>
-        <a href="javascript:openGoodsTypeModifyDialog()" class="easyui-linkbutton" iconCls="icon-edit"
-           plain="true">修改</a>
-        <a href="javascript:deleteGoodsType()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
+        <a href="javascript:openMessageModifyDialog()" class="easyui-linkbutton" iconCls="icon-search"
+           plain="true">查看</a>
+        <a href="javascript:deleteMessage()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
     </div>
     <div>
-        &nbsp;名称：&nbsp;<input type="text" id="s_name" size="20" onkeydown="if(event.keyCode==13) searchGoodsType()"/>
-        <a href="javascript:searchGoodsType()" class="easyui-linkbutton" iconCls="icon-search" plain="true">搜索</a>
+        &nbsp;用户名：&nbsp;<input type="text" id="s_userName" size="20" onkeydown="if(event.keyCode==13) searchMessage()"/>
+        <a href="javascript:searchMessage()" class="easyui-linkbutton" iconCls="icon-search" plain="true">搜索</a>
         <a href="javascript:resetValue()" class="easyui-linkbutton" iconCls="icon-reset" plain="true">重置</a>
     </div>
 </div>
 
 
-<div id="dlg" class="easyui-dialog" style="width: 340px;height: 175px;padding: 10px 20px"
+<div id="dlg" class="easyui-dialog" style="width: 480px;height: 230px;padding: 10px 20px"
      closed="true" buttons="#dlg-buttons" data-options="onClose:function(){resetValue()}">
     <form id="fm" method="post">
         <table cellspacing="8px">
             <tr>
-                <td valign="top">名称:</td>
+                <td valign="top">内容:</td>
                 <td>
-                    <input id="name" name="name" class="easyui-validatebox" required="true" style="width: 200px">
-                </td>
-            </tr>
-            <tr>
-                <td valign="top">排序:</td>
-                <td>
-                    <input id="sortNum" name="sortNum" type="text" class="easyui-numberbox" required="true"
-                           data-options="min:0" style="width: 200px;height: 23px">
+                    <textarea id="content" name="content" rows="6" cols="50"></textarea>
                 </td>
             </tr>
         </table>
@@ -155,8 +153,7 @@
 </div>
 
 <div id="dlg-buttons">
-    <a href="javascript:saveGoodsType()" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
-    <a href="javascript:closeGoodsTypeDialog()" class="easyui-linkbutton" iconCls="icon-cancel">关闭</a>
+    <a href="javascript:closeMessageDialog()" class="easyui-linkbutton" iconCls="icon-cancel">关闭</a>
 </div>
 </body>
 </html>

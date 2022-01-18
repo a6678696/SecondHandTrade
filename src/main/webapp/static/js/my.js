@@ -1,3 +1,4 @@
+//一加载页面就进行的操作
 $(document).ready(function () {
 
     //全部图片
@@ -254,12 +255,14 @@ function checkContactValue() {
     return true;
 }
 
+//删除留言
 function deleteContact(id) {
     if (confirm("您确定要删除这个留言吗?")) {
         window.location.href = "/contact/delete?id=" + id;
     }
 }
 
+//查看留言详情
 function seeContactDetails(id) {
     $.ajax({
         url: "/contact/findById",
@@ -282,6 +285,7 @@ function seeContactDetails(id) {
     });
 }
 
+//修改留言
 function modifyContact(id) {
     $("#contactIdModify").val(id);
     $.ajax({
@@ -327,6 +331,7 @@ function checkSaveContactInformationName(type) {
     return nameIsExist !== true;
 }
 
+//查看联系方式详情
 function seeContactInformationDetails(id) {
     $.ajax({
         url: "/contactInformation/findById",
@@ -343,6 +348,7 @@ function seeContactInformationDetails(id) {
     });
 }
 
+//修改联系方式
 function modifyContactInformation(id) {
     $("#idModifyContactInformation").val(id);
     $.ajax({
@@ -360,14 +366,16 @@ function modifyContactInformation(id) {
     });
 }
 
+//删除联系方式
 function deleteContactInformation(id) {
     if (confirm("您确定要删除这个联系方式吗?")) {
         window.location.href = "/contactInformation/delete?id=" + id;
     }
 }
 
+//验证商品详情是否为空
 function checkAddGoodsValue() {
-    let content = CKEDITOR.instances.contentAddGoods.getData();
+    let content = CKEDITOR.instances.contentGoods.getData();
     if (content === "" || content === null) {
         alert("商品详情不能为空!");
         return false;
@@ -375,6 +383,7 @@ function checkAddGoodsValue() {
     return true;
 }
 
+//重置搜索商品的条件(用户商品管理)
 function resetSearchGoodsValue() {
     $("#nameSearchGoods").val("");
     $("#goodsTypeIdSearchGoods").val("");
@@ -400,6 +409,7 @@ function addGoodsToShoppingCart(goodsId) {
     }
 }
 
+//删除购物车的商品
 function deleteGoodsInShoppingCart(goodsId) {
     if (confirm("您确定要将这个商品从购物车中删除吗?")) {
         $.ajax({
@@ -418,15 +428,16 @@ function deleteGoodsInShoppingCart(goodsId) {
     }
 }
 
-function pay(goodsId) {
-    if (confirm("您确定要支付吗?")) {
+// 预定商品
+function reserve(goodsId) {
+    if (confirm("您确定要预定吗?")) {
         $.ajax({
-            url: "/payRecord/pay",
+            url: "/reserveRecord/reserve",
             type: "post",
             data: {goodsId: goodsId},
             success: function (result) {
                 if (result.success) {
-                    alert("支付成功！！");
+                    alert("成功预定，请联系卖家当面交易哦");
                     $.ajax({
                         url: "/goods/deleteGoodsInShoppingCart",
                         type: "post",
@@ -440,9 +451,100 @@ function pay(goodsId) {
                         },
                     });
                 } else {
-                    alert("支付失败！！");
+                    alert("预定失败！！");
                 }
             },
         });
     }
+}
+
+//修改商品状态
+function updateGoodsState(goodsId, state) {
+    let stateName;
+    if (state === 1) {
+        stateName = "上架";
+    } else if (state === 3) {
+        stateName = "下架";
+    } else if (state === 5) {
+        stateName = "完成交易";
+    }
+    if (confirm("您确定要将商品状态设置为" + stateName + "吗?")) {
+        $.ajax({
+            url: "/goods/updateGoodsState",
+            type: "post",
+            data: {goodsId: goodsId, state: state},
+            success: function (result) {
+                if (result.success) {
+                    alert("设置成功！！");
+                    window.location.href = "/toGoodsManagePage";
+                } else {
+                    alert("设置失败！！");
+                }
+            },
+        });
+    }
+}
+
+//删除商品
+function deleteGoods(goodsId) {
+    if (confirm("您确定要删除这个商品吗?")) {
+        $.ajax({
+            url: "/goods/delete",
+            type: "post",
+            data: {goodsId: goodsId},
+            success: function (result) {
+                if (result.success) {
+                    alert("删除成功！！");
+                    window.location.href = "/toGoodsManagePage";
+                } else {
+                    alert("删除失败！！");
+                }
+            },
+        });
+    }
+}
+
+//查看商品详情
+function seeOrModifyGoodsDetails(goodsId,type) {
+
+    if (type === 1) {
+        $("#modalHeadName").html("查看");
+        $("#modifyButton").css("display", "none");
+    }else if (type === 2) {
+        $("#modalHeadName").html("修改");
+        $("#modifyButton").css("display", "block");
+    }
+    $.ajax({
+        url: "/goods/findById",
+        type: "post",
+        data: {goodsId: goodsId},
+        success: function (result) {
+            if (result.success) {
+                $("#id").val(result.goods.id);
+                $("#goodsName").val(result.goods.name);
+                $("#priceNow").val(result.goods.priceNow);
+                $("#goodsTypeId").val(result.goods.goodsTypeId);
+                CKEDITOR.instances.contentGoods.setData(result.goods.content);
+            } else {
+                alert("删除失败！！");
+            }
+        },
+    });
+}
+
+//获取卖家联系方式
+function getContactInformation(goodsId) {
+
+    $.ajax({
+        url: "/contactInformation/getListByGoodsId",
+        type: "post",
+        data: {goodsId: goodsId},
+        success: function (result) {
+            if (result.success) {
+                $("#contactInformationStr").html(result.contactInformationStr);
+            } else {
+                alert("删除失败！！");
+            }
+        },
+    });
 }

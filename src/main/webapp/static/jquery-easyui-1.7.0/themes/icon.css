@@ -295,6 +295,15 @@
 .icon-goodsManage {
     background: url('usericons/goodsManage.gif') no-repeat center center;
 }
+
 .icon-payRecordManage {
     background: url('usericons/payRecordManage.gif') no-repeat center center;
+}
+
+.icon-messageManage {
+    background: url('usericons/messageManage.gif') no-repeat center center;
+}
+
+.icon-recommendGoods {
+    background: url('usericons/recommendGoods.gif') no-repeat center center;
 }

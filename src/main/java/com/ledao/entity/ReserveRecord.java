@@ -7,15 +7,15 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 支付记录实体类
+ * 预定记录实体类
  *
  * @author LeDao
  * @company
  * @create 2022-01-17 3:30
  */
 @Data
-@TableName(value = "t_pay_record")
-public class PayRecord {
+@TableName(value = "t_reserve_record")
+public class ReserveRecord {
 
     /**
      * 编号
@@ -32,7 +32,7 @@ public class PayRecord {
     @TableField(exist = false)
     private String goodsName;
     /**
-     * 支付人id
+     * 预定人id
      */
     @TableField(value = "userId")
     private Integer userId;
@@ -42,8 +42,13 @@ public class PayRecord {
     @TableField(exist = false)
     private String userName;
     /**
-     * 支付时间
+     * 预定时间
      */
-    @TableField(value = "payTime")
-    private Date payTime;
+    @TableField(value = "reserveTime")
+    private Date reserveTime;
+    /**
+     * 是否取消,0代表未取消,1代表已取消
+     */
+    @TableField(value = "isCancel")
+    private Integer isCancel;
 }

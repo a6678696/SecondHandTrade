@@ -30,4 +30,9 @@ public class GoodsType {
      */
     @TableField(value = "sortNum")
     private Integer sortNum;
+    /**
+     * 分类下商品数量
+     */
+    @TableField(exist = false)
+    private Integer goodsNum;
 }

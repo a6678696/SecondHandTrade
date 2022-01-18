@@ -5,10 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.gson.Gson;
 import com.ledao.entity.*;
 import com.ledao.entity.Goods;
-import com.ledao.service.ContactInformationService;
-import com.ledao.service.GoodsService;
-import com.ledao.service.GoodsTypeService;
-import com.ledao.service.UserService;
+import com.ledao.service.*;
 import com.ledao.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -48,6 +45,9 @@ public class GoodsController {
 
     @Resource
     private ContactInformationService contactInformationService;
+
+    @Resource
+    private ReserveRecordService reserveRecordService;
 
     /**
      * 查看商品详情
@@ -98,6 +98,9 @@ public class GoodsController {
         }
         Collections.shuffle(goodsRecommendList);
         mav.addObject("goodsRecommendList", goodsRecommendList);
+        //获取卖家邮箱
+        String emailStr = userService.findById(goods.getUserId()).getEmail();
+        mav.addObject("emailStr", emailStr);
         mav.addObject("title", goods.getName() + "--LeDao校园二手交易平台");
         mav.addObject("mainPage", "page/goodsDetails");
         mav.addObject("mainPageKey", "#b");
@@ -113,7 +116,7 @@ public class GoodsController {
      */
     @RequestMapping("/save")
     public ModelAndView save(Goods goods) {
-        ModelAndView mav = new ModelAndView();
+        ModelAndView mav = new ModelAndView("redirect:/toGoodsManagePage");
         if (goods.getId() == null) {
             goods.setAddTime(new Date());
             goods.setState(0);
@@ -121,13 +124,9 @@ public class GoodsController {
             goods.setClick(0);
             goodsService.add(goods);
         } else {
-            goods.setClick(goods.getClick() + 1);
+            goods.setState(0);
             goodsService.update(goods);
         }
-        mav.addObject("title", "发布商品--LeDao校园二手交易平台");
-        mav.addObject("mainPage", "page/addGoods");
-        mav.addObject("mainPageKey", "#b");
-        mav.setViewName("index");
         return mav;
     }
 
@@ -262,6 +261,70 @@ public class GoodsController {
         }
         if (deleteKey) {
             resultMap.put("success", true);
+        } else {
+            resultMap.put("success", false);
+        }
+        return resultMap;
+    }
+
+    /**
+     * 修改商品状态
+     *
+     * @param goodsId
+     * @param state
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/updateGoodsState")
+    public Map<String, Object> updateGoodsState(Integer goodsId, Integer state) {
+        Map<String, Object> resultMap = new HashMap<>(16);
+        Goods goods = goodsService.findById(goodsId);
+        if (goods.getState() == 4) {
+            ReserveRecord reserveRecord = reserveRecordService.findByGoodsIdAndIsCancel(goodsId, 0);
+            reserveRecord.setIsCancel(1);
+            reserveRecordService.update(reserveRecord);
+        }
+        goods.setState(state);
+        int key = goodsService.update(goods);
+        if (key > 0) {
+            resultMap.put("success", true);
+        } else {
+            resultMap.put("success", false);
+        }
+        return resultMap;
+    }
+
+    /**
+     * 删除商品
+     *
+     * @param goodsId
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/delete")
+    public Map<String, Object> delete(Integer goodsId) {
+        Map<String, Object> resultMap = new HashMap<>(16);
+        int key = goodsService.deleteById(goodsId);
+        if (key > 0) {
+            resultMap.put("success", true);
+        } else {
+            resultMap.put("success", false);
+        }
+        return resultMap;
+    }
+
+    @ResponseBody
+    @RequestMapping("/findById")
+    public Map<String, Object> findById(Integer goodsId) {
+        Map<String, Object> resultMap = new HashMap<>(16);
+        Goods goods = goodsService.findById(goodsId);
+        int key = 0;
+        if (goods != null) {
+            key = 1;
+        }
+        if (key > 0) {
+            resultMap.put("success", true);
+            resultMap.put("goods", goods);
         } else {
             resultMap.put("success", false);
         }

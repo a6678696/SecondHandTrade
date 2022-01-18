@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ledao.entity.ContactInformation;
 import com.ledao.entity.User;
 import com.ledao.service.ContactInformationService;
+import com.ledao.service.GoodsService;
+import com.ledao.service.ReserveRecordService;
 import com.ledao.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +33,15 @@ public class ContactInformationController {
 
     @Resource
     private ContactInformationService contactInformationService;
+
+    @Resource
+    private GoodsService goodsService;
+
+    @Resource
+    private UserService userService;
+
+    @Resource
+    private ReserveRecordService reserveRecordService;
 
     /**
      * 添加或修改联系方式
@@ -75,7 +86,7 @@ public class ContactInformationController {
      * @return
      */
     @RequestMapping("/toMyContactInformationPage")
-    public ModelAndView toMyContactInformation(ContactInformation contactInformation,HttpSession session) {
+    public ModelAndView toMyContactInformation(ContactInformation contactInformation, HttpSession session) {
         ModelAndView mav = new ModelAndView();
         User currentUser = (User) session.getAttribute("currentUser");
         QueryWrapper<ContactInformation> contactInformationQueryWrapper = new QueryWrapper<>();
@@ -95,7 +106,7 @@ public class ContactInformationController {
     }
 
     @RequestMapping("/delete")
-    public ModelAndView delete(Integer id,HttpSession session) {
+    public ModelAndView delete(Integer id, HttpSession session) {
         ModelAndView mav = new ModelAndView();
         User currentUser = (User) session.getAttribute("currentUser");
         int key = contactInformationService.deleteById(id);
@@ -152,6 +163,32 @@ public class ContactInformationController {
             resultMap.put("success", true);
             resultMap.put("contactInformation", contactInformation);
         }
+        return resultMap;
+    }
+
+    /**
+     * 根据商品id获取联系方式
+     *
+     * @param goodsId
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/getListByGoodsId")
+    public Map<String, Object> getListByGoodsId(Integer goodsId) {
+        Map<String, Object> resultMap = new HashMap<>(16);
+        QueryWrapper<ContactInformation> contactInformationQueryWrapper = new QueryWrapper<>();
+        contactInformationQueryWrapper.eq("userId", reserveRecordService.findByGoodsId(goodsId).getUserId());
+        List<ContactInformation> contactInformationList = contactInformationService.list(contactInformationQueryWrapper);
+        StringBuilder contactInformationStr = new StringBuilder();
+        if (contactInformationList.size() > 0) {
+            for (ContactInformation contactInformation : contactInformationList) {
+                contactInformationStr.append(contactInformation.getName()).append("：").append(contactInformation.getContent()).append("；");
+            }
+        } else {
+            contactInformationStr.append("买家邮箱：").append(userService.findById(reserveRecordService.findByGoodsId(goodsId).getUserId()).getEmail());
+        }
+        resultMap.put("success", true);
+        resultMap.put("contactInformationStr", contactInformationStr);
         return resultMap;
     }
 }

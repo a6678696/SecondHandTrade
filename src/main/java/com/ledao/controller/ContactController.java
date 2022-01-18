@@ -3,6 +3,7 @@ package com.ledao.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ledao.entity.Contact;
+import com.ledao.entity.ContactInformation;
 import com.ledao.entity.User;
 import com.ledao.service.ContactService;
 import org.springframework.stereotype.Controller;

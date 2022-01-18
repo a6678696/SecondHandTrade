@@ -73,6 +73,7 @@
                         <span th:if="${session.currentUser==null}">登录后才能<span th:text="${goods.goodsTypeId!=8?'获取卖家联系方式':'获取求购者联系方式'}"></span>哦，去<a href="/toLoginPage"><button
                                 type="button"
                                 class="btn btn-primary">登录</button></a></span>
+                        <span>邮箱：<span th:text="${emailStr}" th:if="${goods.contactInformationList.size()==0}"></span></span>
                         <table class="table table-bordered table-striped table-hover table-borderless"
                                style="margin-top: 4px"
                                th:if="${goods.contactInformationList.size()>0&&session.currentUser!=null}">

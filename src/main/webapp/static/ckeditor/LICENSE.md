@@ -1154,7 +1154,7 @@ Version 1.1
      Participant to You under Sections 2.1 and/or 2.2 of this License
      shall, upon 60 days notice from Participant terminate prospectively,
      unless if within 60 days after receipt of notice You either: (i)
-     agree in writing to pay Participant a mutually agreeable reasonable
+     agree in writing to reserve Participant a mutually agreeable reasonable
      royalty for Your past and future use of Modifications made by such
      Participant, or (ii) withdraw Your litigation claim with respect to
      the Contributor Version against such Participant.  If within 60 days

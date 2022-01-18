@@ -17,7 +17,29 @@
                 <li class="breadcrumb-item"><a href="/toPersonalHubsPage">个人中心</a></li>
                 <li class="breadcrumb-item active">我的消息</li>
             </ol>
-            我的消息
+            <span style="color: red;margin-top: 4px" th:if="${messageList.size()==0}">无数据</span>
+            <span th:if="${messageList.size()!=0}" style="float: right">当前有&nbsp;<span style="margin-top: 10px;color: red" th:text="${messageList.size()}"></span>&nbsp;条数据</span>
+            <div th:if="${messageList.size()!=0}">
+                <span style="color: red">鼠标悬停在内容上将显示完整的信息</span>
+                <table class="table table-bordered table-striped table-hover table-borderless" style="margin-top: 4px">
+                    <thead>
+                    <tr>
+                        <th style="text-align: center">时间</th>
+                        <th style="text-align: center">内容</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <div th:each="message:${messageList}">
+                        <tr>
+                            <td style="text-align: center" th:text="${#dates.format(message.time,'yyyy-MM-dd HH:mm:ss')}"></td>
+                            <td style="text-align: center">
+                                <span th:text="${#strings.abbreviate(message.content,38)}" th:aria-label="${message.content}" class="status-icon hint--top" style="color: #0000FF"></span>
+                            </td>
+                        </tr>
+                    </div>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

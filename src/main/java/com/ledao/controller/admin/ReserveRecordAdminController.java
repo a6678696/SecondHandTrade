@@ -3,10 +3,10 @@ package com.ledao.controller.admin;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ledao.entity.Goods;
-import com.ledao.entity.PayRecord;
+import com.ledao.entity.ReserveRecord;
 import com.ledao.entity.User;
 import com.ledao.service.GoodsService;
-import com.ledao.service.PayRecordService;
+import com.ledao.service.ReserveRecordService;
 import com.ledao.service.UserService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,18 +19,18 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 后台支付记录Controller层
+ * 后台预定记录Controller层
  *
  * @author LeDao
  * @company
  * @create 2022-01-18 1:11
  */
 @RestController
-@RequestMapping("/admin/payRecord")
-public class PayRecordAdminController {
+@RequestMapping("/admin/reserveRecord")
+public class ReserveRecordAdminController {
 
     @Resource
-    private PayRecordService payRecordService;
+    private ReserveRecordService reserveRecordService;
 
     @Resource
     private UserService userService;
@@ -39,21 +39,21 @@ public class PayRecordAdminController {
     private GoodsService goodsService;
 
     /**
-     * 分页条件查询支付记录
+     * 分页条件查询预定记录
      *
-     * @param payRecord
+     * @param reserveRecord
      * @param page
      * @param rows
      * @return
      */
     @RequestMapping("/list")
-    public Map<String, Object> list(PayRecord payRecord, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "rows", required = false) Integer rows) {
+    public Map<String, Object> list(ReserveRecord reserveRecord, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "rows", required = false) Integer rows) {
         Map<String, Object> resultMap = new HashMap<>(16);
-        QueryWrapper<PayRecord> payRecordQueryWrapper = new QueryWrapper<>();
-        Page<PayRecord> payRecordPage = new Page<>(page, rows);
-        if (payRecord.getUserName() != null) {
+        QueryWrapper<ReserveRecord> reserveRecordQueryWrapper = new QueryWrapper<>();
+        Page<ReserveRecord> reserveRecordPage = new Page<>(page, rows);
+        if (reserveRecord.getUserName() != null) {
             QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-            userQueryWrapper.like("userName", payRecord.getUserName());
+            userQueryWrapper.like("userName", reserveRecord.getUserName());
             List<Integer> userIdList = new ArrayList<>();
             List<User> userList = userService.list(userQueryWrapper);
             if (userList.size() > 0) {
@@ -63,21 +63,22 @@ public class PayRecordAdminController {
             } else {
                 userIdList.add(-1);
             }
-            payRecordQueryWrapper.in("userId", userIdList);
+            reserveRecordQueryWrapper.in("userId", userIdList);
         }
-        List<PayRecord> payRecordList = payRecordService.list(payRecordPage, payRecordQueryWrapper);
-        for (PayRecord record : payRecordList) {
+        reserveRecordQueryWrapper.orderByDesc("reserveTime");
+        List<ReserveRecord> reserveRecordList = reserveRecordService.list(reserveRecordPage, reserveRecordQueryWrapper);
+        for (ReserveRecord record : reserveRecordList) {
             record.setGoodsName(goodsService.findById(record.getGoodsId()).getName());
             record.setUserName(userService.findById(record.getUserId()).getUserName());
         }
-        Integer total = payRecordService.getCount(payRecordQueryWrapper);
-        resultMap.put("rows", payRecordList);
+        Integer total = reserveRecordService.getCount(reserveRecordQueryWrapper);
+        resultMap.put("rows", reserveRecordList);
         resultMap.put("total", total);
         return resultMap;
     }
 
     /**
-     * 删除支付记录,可批量删除
+     * 删除预定记录,可批量删除
      *
      * @param ids
      * @return
@@ -89,12 +90,12 @@ public class PayRecordAdminController {
         int key = 0;
         for (int i = 0; i < idsStr.length; i++) {
             Integer id = Integer.valueOf(idsStr[i]);
-            PayRecord payRecord = payRecordService.findById(id);
+            ReserveRecord reserveRecord = reserveRecordService.findById(id);
             //删除前将对应商品设置为上架状态
-            Goods goods = goodsService.findById(payRecord.getGoodsId());
+            Goods goods = goodsService.findById(reserveRecord.getGoodsId());
             goods.setState(1);
             goodsService.update(goods);
-            payRecordService.deleteById(id);
+            reserveRecordService.deleteById(id);
             key++;
         }
         if (key > 0) {

@@ -2,7 +2,9 @@ package com.ledao.controller.admin;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ledao.entity.Goods;
 import com.ledao.entity.GoodsType;
+import com.ledao.service.GoodsService;
 import com.ledao.service.GoodsTypeService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +29,25 @@ public class GoodsTypeAdminController {
     @Resource
     private GoodsTypeService goodsTypeService;
 
+    @Resource
+    private GoodsService goodsService;
+
+    /**
+     * 下拉框模糊查询
+     *
+     * @param q
+     * @return
+     */
+    @RequestMapping("/comboList")
+    public List<GoodsType> comboList(String q) {
+        if (q == null) {
+            q = "";
+        }
+        QueryWrapper<GoodsType> goodsTypeQueryWrapper = new QueryWrapper<>();
+        goodsTypeQueryWrapper.like("name", q);
+        return goodsTypeService.list(goodsTypeQueryWrapper);
+    }
+
     /**
      * 分页条件查询商品类别
      *
@@ -45,6 +66,11 @@ public class GoodsTypeAdminController {
         goodsTypeQueryWrapper.orderByAsc("sortNum");
         Page<GoodsType> goodsTypePage = new Page<>(page, rows);
         List<GoodsType> goodsTypeList = goodsTypeService.list(goodsTypePage, goodsTypeQueryWrapper);
+        for (GoodsType type : goodsTypeList) {
+            QueryWrapper<Goods> goodsQueryWrapper = new QueryWrapper<>();
+            goodsQueryWrapper.eq("goodsTypeId", type.getId());
+            type.setGoodsNum(goodsService.list(goodsQueryWrapper).size());
+        }
         Integer total = goodsTypeService.getCount(goodsTypeQueryWrapper);
         resultMap.put("rows", goodsTypeList);
         resultMap.put("total", total);
@@ -87,8 +113,14 @@ public class GoodsTypeAdminController {
         int key = 0;
         for (String s : idsStr) {
             Integer id = Integer.valueOf(s);
-            goodsTypeService.deleteById(id);
-            key++;
+            QueryWrapper<Goods> goodsQueryWrapper = new QueryWrapper<>();
+            goodsQueryWrapper.eq("goodsTypeId", id);
+            if (goodsService.list(goodsQueryWrapper).size() == 0) {
+                goodsTypeService.deleteById(id);
+                key++;
+            } else {
+                resultMap.put("errorInfo", "该分类下有商品，不能删除！！");
+            }
         }
         if (key > 0) {
             resultMap.put("success", true);

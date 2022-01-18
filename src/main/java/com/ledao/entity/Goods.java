@@ -41,7 +41,7 @@ public class Goods {
     @TableField(value = "priceLast")
     private double priceLast;
     /**
-     * 商品状态,0为未审核,1为上架中,2为审核不通过,3为已下架,4为已支付,5为成功卖出
+     * 商品状态,0为未审核,1为上架中,2为审核不通过,3为已下架,4为被预定,5为交易成功
      */
     private Integer state;
     /**
@@ -59,6 +59,11 @@ public class Goods {
      */
     @TableField(exist = false)
     private User user;
+    /**
+     * 用户名,用于搜索
+     */
+    @TableField(exist = false)
+    private String userName;
     /**
      * 联系方式列表
      */
