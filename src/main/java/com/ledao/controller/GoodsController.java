@@ -49,6 +49,9 @@ public class GoodsController {
     @Resource
     private ReserveRecordService reserveRecordService;
 
+    @Resource
+    private MessageService messageService;
+
     /**
      * 查看商品详情
      *
@@ -280,9 +283,16 @@ public class GoodsController {
         Map<String, Object> resultMap = new HashMap<>(16);
         Goods goods = goodsService.findById(goodsId);
         if (goods.getState() == 4) {
-            ReserveRecord reserveRecord = reserveRecordService.findByGoodsIdAndIsCancel(goodsId, 0);
-            reserveRecord.setIsCancel(1);
+            ReserveRecord reserveRecord = reserveRecordService.findByGoodsIdAndState(goodsId, 0);
+            reserveRecord.setState(1);
             reserveRecordService.update(reserveRecord);
+            //卖家取消买家的预订，系统给买家发送一条消息
+            Message message = new Message();
+            message.setUserId(userService.findById(reserveRecord.getUserId()).getId());
+            message.setContent("你预订的商品（" + goods.getName() + "）已被卖家取消预订！！");
+            message.setTime(new Date());
+            message.setIsRead(0);
+            messageService.add(message);
         }
         goods.setState(state);
         int key = goodsService.update(goods);

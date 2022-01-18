@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 后台预定记录Controller层
+ * 后台预订记录Controller层
  *
  * @author LeDao
  * @company
@@ -39,7 +39,7 @@ public class ReserveRecordAdminController {
     private GoodsService goodsService;
 
     /**
-     * 分页条件查询预定记录
+     * 分页条件查询预订记录
      *
      * @param reserveRecord
      * @param page
@@ -78,7 +78,7 @@ public class ReserveRecordAdminController {
     }
 
     /**
-     * 删除预定记录,可批量删除
+     * 删除预订记录,可批量删除
      *
      * @param ids
      * @return

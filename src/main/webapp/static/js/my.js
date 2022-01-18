@@ -428,16 +428,16 @@ function deleteGoodsInShoppingCart(goodsId) {
     }
 }
 
-// 预定商品
+// 预订商品
 function reserve(goodsId) {
-    if (confirm("您确定要预定吗?")) {
+    if (confirm("您确定要预订吗?")) {
         $.ajax({
             url: "/reserveRecord/reserve",
             type: "post",
             data: {goodsId: goodsId},
             success: function (result) {
                 if (result.success) {
-                    alert("成功预定，请联系卖家当面交易哦");
+                    alert("成功预订，请联系卖家当面交易哦");
                     $.ajax({
                         url: "/goods/deleteGoodsInShoppingCart",
                         type: "post",
@@ -451,7 +451,7 @@ function reserve(goodsId) {
                         },
                     });
                 } else {
-                    alert("预定失败！！");
+                    alert("预订失败！！");
                 }
             },
         });
@@ -505,12 +505,12 @@ function deleteGoods(goodsId) {
 }
 
 //查看商品详情
-function seeOrModifyGoodsDetails(goodsId,type) {
+function seeOrModifyGoodsDetails(goodsId, type) {
 
     if (type === 1) {
         $("#modalHeadName").html("查看");
         $("#modifyButton").css("display", "none");
-    }else if (type === 2) {
+    } else if (type === 2) {
         $("#modalHeadName").html("修改");
         $("#modifyButton").css("display", "block");
     }
@@ -547,4 +547,32 @@ function getContactInformation(goodsId) {
             }
         },
     });
+}
+
+//修改预订记录状态
+function updateReserveRecordState(reserveRecordId, state, stateNow) {
+
+    let stateName;
+    if (state === 1) {
+        stateName = "预订已取消";
+    }
+    if (stateNow === 1) {
+        alert("无需操作,状态已经是预订已取消！！");
+        return false;
+    }
+    if (confirm("您确定要将预订记录状态设置为" + stateName + "吗?")) {
+        $.ajax({
+            url: "/reserveRecord/updateReserveRecordState",
+            type: "post",
+            data: {reserveRecordId: reserveRecordId, state: state},
+            success: function (result) {
+                if (result.success) {
+                    alert("设置成功！！");
+                    window.location.href = "/toMyReserveRecordPage";
+                } else {
+                    alert("设置失败！！");
+                }
+            },
+        });
+    }
 }

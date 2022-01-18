@@ -7,7 +7,7 @@ import com.ledao.entity.ReserveRecord;
 import java.util.List;
 
 /**
- * 预定记录Service接口
+ * 预订记录Service接口
  *
  * @author LeDao
  * @company
@@ -16,7 +16,7 @@ import java.util.List;
 public interface ReserveRecordService {
 
     /**
-     * 分页条件查询预定记录
+     * 分页条件查询预订记录
      *
      * @param reserveRecordPage
      * @param reserveRecordQueryWrapper
@@ -25,7 +25,7 @@ public interface ReserveRecordService {
     List<ReserveRecord> list(Page<ReserveRecord> reserveRecordPage, QueryWrapper<ReserveRecord> reserveRecordQueryWrapper);
 
     /**
-     * 不分页条件查询预定记录
+     * 不分页条件查询预订记录
      *
      * @param reserveRecordQueryWrapper
      * @return
@@ -41,7 +41,7 @@ public interface ReserveRecordService {
     Integer getCount(QueryWrapper<ReserveRecord> reserveRecordQueryWrapper);
 
     /**
-     * 添加预定记录
+     * 添加预订记录
      *
      * @param reserveRecord
      * @return
@@ -49,7 +49,7 @@ public interface ReserveRecordService {
     int add(ReserveRecord reserveRecord);
 
     /**
-     * 根据id查找预定记录
+     * 根据id查找预订记录
      *
      * @param id
      * @return
@@ -57,7 +57,7 @@ public interface ReserveRecordService {
     ReserveRecord findById(Integer id);
 
     /**
-     * 根据商品id查找预定记录
+     * 根据商品id查找预订记录
      *
      * @param goodsId
      * @return
@@ -65,16 +65,16 @@ public interface ReserveRecordService {
     ReserveRecord findByGoodsId(Integer goodsId);
 
     /**
-     * 根据商品id查找预定记录
+     * 根据商品id查找预订记录
      *
      * @param goodsId
-     * @param isCancel
+     * @param state
      * @return
      */
-    ReserveRecord findByGoodsIdAndIsCancel(Integer goodsId, Integer isCancel);
+    ReserveRecord findByGoodsIdAndState(Integer goodsId, Integer state);
 
     /**
-     * 根据id删除预定记录
+     * 根据id删除预订记录
      *
      * @param id
      * @return
@@ -82,7 +82,7 @@ public interface ReserveRecordService {
     int deleteById(Integer id);
 
     /**
-     * 修改预定记录
+     * 修改预订记录
      *
      * @param reserveRecord
      * @return

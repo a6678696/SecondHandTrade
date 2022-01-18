@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 预定记录实体类
+ * 预订记录实体类
  *
  * @author LeDao
  * @company
@@ -32,7 +32,7 @@ public class ReserveRecord {
     @TableField(exist = false)
     private String goodsName;
     /**
-     * 预定人id
+     * 预订人id
      */
     @TableField(value = "userId")
     private Integer userId;
@@ -42,13 +42,13 @@ public class ReserveRecord {
     @TableField(exist = false)
     private String userName;
     /**
-     * 预定时间
+     * 预订时间
      */
     @TableField(value = "reserveTime")
     private Date reserveTime;
     /**
-     * 是否取消,0代表未取消,1代表已取消
+     * 状态,0代表未取消,1代表已取消,2代表交易完成
      */
-    @TableField(value = "isCancel")
-    private Integer isCancel;
+    @TableField(value = "state")
+    private Integer state;
 }

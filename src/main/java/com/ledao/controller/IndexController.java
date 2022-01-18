@@ -59,6 +59,9 @@ public class IndexController {
     @Resource
     private MessageService messageService;
 
+    @Resource
+    private ReserveRecordService reserveRecordService;
+
     /**
      * 管理员登录
      *
@@ -602,6 +605,56 @@ public class IndexController {
         mav.addObject("goodsRecommendList", goodsRecommendList);
         mav.addObject("title", "我的购物车--LeDao校园二手交易平台");
         mav.addObject("mainPage", "page/myShoppingCart");
+        mav.addObject("mainPageKey", "#b");
+        mav.setViewName("index");
+        return mav;
+    }
+
+
+    /**
+     * 跳转到我的预订界面
+     *
+     * @param session
+     * @param searchReserveRecord
+     * @return
+     */
+    @RequestMapping("/toMyReserveRecordPage")
+    public ModelAndView toMyReserveRecordPage(HttpSession session, ReserveRecord searchReserveRecord) {
+        ModelAndView mav = new ModelAndView();
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser == null) {
+            ModelAndView mav2 = new ModelAndView("redirect:/toLoginPage");
+            return mav2;
+        }
+        QueryWrapper<ReserveRecord> reserveRecordQueryWrapper = new QueryWrapper<>();
+        if (searchReserveRecord.getState() != null) {
+            reserveRecordQueryWrapper.eq("state", searchReserveRecord.getState());
+            mav.addObject("state", searchReserveRecord.getState());
+        }
+        if (searchReserveRecord.getGoodsName() != null) {
+            List<Integer> goodsIdList = new ArrayList<>();
+            QueryWrapper<Goods> goodsQueryWrapper = new QueryWrapper<>();
+            goodsQueryWrapper.like("name", searchReserveRecord.getGoodsName());
+            mav.addObject("goodsName", searchReserveRecord.getGoodsName());
+            List<Goods> goodsList = goodsService.list(goodsQueryWrapper);
+            if (goodsList.size() > 0) {
+                for (Goods goods : goodsList) {
+                    goodsIdList.add(goods.getId());
+                }
+            } else {
+                goodsIdList.add(-1);
+            }
+            reserveRecordQueryWrapper.in("goodsId", goodsIdList);
+        }
+        reserveRecordQueryWrapper.eq("userId", currentUser.getId());
+        reserveRecordQueryWrapper.orderByDesc("reserveTime");
+        List<ReserveRecord> reserveRecordList = reserveRecordService.list(reserveRecordQueryWrapper);
+        for (ReserveRecord reserveRecord : reserveRecordList) {
+            reserveRecord.setGoodsName(goodsService.findById(reserveRecord.getGoodsId()).getName());
+        }
+        mav.addObject("reserveRecordList", reserveRecordList);
+        mav.addObject("title", "我的预订--LeDao校园二手交易平台");
+        mav.addObject("mainPage", "page/myReserveRecord");
         mav.addObject("mainPageKey", "#b");
         mav.setViewName("index");
         return mav;

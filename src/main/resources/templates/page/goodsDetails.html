@@ -36,7 +36,7 @@
                     <p>所属类别：<span th:text="${goods.goodsTypeName}"></span></p>
                     <p>
                         <a th:href="'javascript:addGoodsToShoppingCart('+${goods.id}+')'" style="text-decoration: none"
-                           th:if="${goods.goodsTypeId!=8&&session.currentUser!=null&&session.currentUser.id!=goods.userId}">
+                           th:if="${goods.goodsTypeId!=8&&session.currentUser!=null&&session.currentUser.id!=goods.userId&&goods.state!=4}">
                             <button type="button" class="btn btn-sm btn-primary">加入购物车</button>
                         </a>
                         <strong style="color: red" th:if="${session.currentUser!=null&&session.currentUser.id==goods.userId}">这是你自己的商品，无法购买哦</strong>

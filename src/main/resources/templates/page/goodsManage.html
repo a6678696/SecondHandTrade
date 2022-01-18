@@ -38,7 +38,7 @@
                             <option value="1" th:selected="${state==1}">上架中</option>
                             <option value="2" th:selected="${state==2}">审核不通过</option>
                             <option value="3" th:selected="${state==3}">已下架</option>
-                            <option value="4" th:selected="${state==4}">被预定</option>
+                            <option value="4" th:selected="${state==4}">被预订</option>
                             <option value="5" th:selected="${state==5}">交易完成</option>
                         </div>
                     </select>
@@ -86,7 +86,7 @@
                         </td>
                         <td th:text="${goods.goodsTypeName}" style="text-align: center"
                         ></td>
-                        <td th:text="${goods.state==0?'未审核':(goods.state==1?'上架中':(goods.state==2?'审核不通过':(goods.state==3?'已下架':(goods.state==4?'被预定':'交易完成'))))}"
+                        <td th:text="${goods.state==0?'未审核':(goods.state==1?'上架中':(goods.state==2?'审核不通过':(goods.state==3?'已下架':(goods.state==4?'被预订':'交易完成'))))}"
                             th:style="${goods.state==0?'color:blue;text-align: center':(goods.state==1?'color:green;text-align: center':(goods.state==2?'color:red;text-align: center':(goods.state==3?'color:pink;text-align: center':(goods.state==4?'color:#660066;text-align: center':'color:#669966;text-align: center'))))}"></td>
                         <td th:text="${goods.isRecommend==0?'不推荐':'推荐'}"
                             th:style="${goods.isRecommend==0?'color:red;text-align: center':'color:blue;text-align: center'}"
@@ -131,7 +131,7 @@
                             <a th:href="'javascript:updateGoodsState('+${goods.id}+',1)'" th:if="${goods.state==4}"
                                style="text-decoration: none">
                                 <button type="button" class="btn btn-danger btn-sm status-icon hint--top"
-                                        aria-label="取消预订"><i
+                                        aria-label="取消被预订"><i
                                         class="fa fa-ban"></i></button>
                             </a>
                             <a th:href="'javascript:updateGoodsState('+${goods.id}+',5)'" th:if="${goods.state==4}"

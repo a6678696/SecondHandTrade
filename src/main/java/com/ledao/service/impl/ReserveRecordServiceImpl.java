@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 预定记录Service接口实现类
+ * 预订记录Service接口实现类
  *
  * @author LeDao
  * @company
@@ -56,10 +56,10 @@ public class ReserveRecordServiceImpl implements ReserveRecordService {
     }
 
     @Override
-    public ReserveRecord findByGoodsIdAndIsCancel(Integer goodsId, Integer isCancel) {
+    public ReserveRecord findByGoodsIdAndState(Integer goodsId, Integer state) {
         QueryWrapper<ReserveRecord> reserveRecordQueryWrapper = new QueryWrapper<>();
         reserveRecordQueryWrapper.eq("goodsId", goodsId);
-        reserveRecordQueryWrapper.eq("isCancel", isCancel);
+        reserveRecordQueryWrapper.eq("state", state);
         return reserveRecordMapper.selectOne(reserveRecordQueryWrapper);
     }
 

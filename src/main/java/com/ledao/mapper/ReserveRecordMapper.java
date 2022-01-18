@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ledao.entity.ReserveRecord;
 
 /**
- * 预定记录Mapper接口
+ * 预订记录Mapper接口
  *
  * @author LeDao
  * @company

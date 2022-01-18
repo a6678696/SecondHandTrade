@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<!--suppress ALL-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="b">
+    <div class="row" style="margin-top: 5px">
+        <div class="col-md-3">
+            <div th:include="common/menuPersonalHubs::#m"></div>
+        </div>
+        <div class="col-md-9">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">首页</a></li>
+                <li class="breadcrumb-item"><a href="/toPersonalHubsPage">个人中心</a></li>
+                <li class="breadcrumb-item active">我的预订</li>
+            </ol>
+            <form action="/toMyReserveRecordPage" method="post">
+                <div class="row" style="margin-left: 3px">
+                    <input type="text" class="form-control" id="goodsNameMyReserveRecord" name="goodsName"
+                           style="width: 200px"
+                           th:value="${goodsName}"
+                           placeholder="请输入商品名称...">
+                    <select id="stateMyReserveRecord" name="state" th:value="${state}"
+                            style="width: 160px;margin-left: 2px"
+                            class="form-control">
+                        <option value="">预订状态...</option>
+                        <div>
+                            <option value="0" th:selected="${state==0}">预订中</option>
+                            <option value="1" th:selected="${state==1}">预订已取消</option>
+                            <option value="2" th:selected="${state==2}">完成交易</option>
+                        </div>
+                    </select>
+                    <button type="submit" class="btn btn-primary status-icon hint--top" style="margin-left: 2px"
+                            aria-label="搜索"><i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </form>
+            <span th:if="${reserveRecordList.size()!=0}" style="float: right">当前有&nbsp;<span
+                    style="margin-top: 10px;color: red"
+                    th:text="${reserveRecordList.size()}"></span>&nbsp;条数据</span>
+            <table class="table table-bordered table-striped table-hover table-borderless"
+                   th:if="${reserveRecordList.size()!=0}">
+                <thead>
+                <tr>
+                    <th style="text-align: center">预订时间</th>
+                    <th style="text-align: center">商品名称</th>
+                    <th style="text-align: center">是否被取消</th>
+                    <th style="text-align: center">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <div th:each="reserveRecord:${reserveRecordList}">
+                    <tr>
+                        <td th:text="${#dates.format(reserveRecord.reserveTime,'yyyy-MM-dd HH:mm:ss')}"
+                            style="text-align: center"></td>
+                        <td style="text-align: center"><a th:href="${'/goods/'+reserveRecord.goodsId}"><span
+                                th:text="${reserveRecord.goodsName}"></span></a></td>
+                        <td style="text-align: center"><span
+                                th:text="${reserveRecord.state==0?'预订中':(reserveRecord.state==1?'预订已取消':'完成交易')}"
+                                th:style="${reserveRecord.state==0?'color:blue':(reserveRecord.state==1?'color:red':'color:green')}"></span>
+                        </td>
+                        <td style="text-align: center">
+                            <a th:href="'javascript:updateReserveRecordState('+${reserveRecord.id}+',1,'+${reserveRecord.state}+')'"
+                               style="text-decoration: none">
+                                <button type="button" class="btn btn-danger btn-sm status-icon hint--top"
+                                        aria-label="取消预订"><i
+                                        class="fa fa-ban"></i></button>
+                            </a>
+                        </td>
+                    </tr>
+                </div>
+                </tbody>
+            </table>
+            <div th:if="${reserveRecordList.size()==0}">
+                <span style="color: red">无数据</span>
+            </div>
+        </div>
+    </div>
+    <!-- 查看或修改商品模态框-->
+    <div class="modal fade" id="myModalSeeGoods">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <!-- 模态框头部 -->
+                <div class="modal-header">
+                    <h4 class="modal-title"><span id="modalHeadName"></span>商品</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- 模态框主体 -->
+                <div class="modal-body">
+                    <form role="form" method="post" action="/goods/save" onsubmit="return checkAddGoodsValue()">
+                        <div class="form-group">
+                            <label for="name">商品名称：</label>&nbsp;&nbsp;
+                            <input type="hidden" class="form-control" id="userId" name="userId"
+                                   th:value="${session.currentUser.id}"
+                                   placeholder="请输入用户名" required="required">
+                            <input type="hidden" class="form-control" id="id" name="id"
+                                   placeholder="请输入id" required="required">
+                            <input type="text" class="form-control" id="goodsName" name="name"
+                                   placeholder="请输入商品名称" required="required">
+                        </div>
+                        <div class="form-group form-inline">
+                            <label for="name">商品类别：</label>&nbsp;&nbsp;
+                            <select id="goodsTypeId" name="goodsTypeId" required="required" class="form-control">
+                                <option value="">选择商品类别...</option>
+                                <div th:each="goodsType:${goodsTypeList}">
+                                    <option th:text="${goodsType.name}" th:value="${goodsType.id}"></option>
+                                </div>
+                            </select>
+                        </div>
+                        <div class="form-group form-inline">
+                            <label for="name">价格：</label>&nbsp;&nbsp;
+                            <input type="text" class="form-control" id="priceNow" name="priceNow"
+                                   placeholder="请输入商品价格" required="required">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">商品详情：</label>&nbsp;&nbsp;<span
+                                style="color: red">请至少上传一张图片，不然将采用系统的默认图片</span>
+                            <textarea id="contentGoods" name="content" style="width: 50%"></textarea>
+                        </div>
+                        <div style="text-align: center">
+                            <button type="submit" class="btn btn-primary" id="modifyButton">提交</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--查看卖家联系方式模态框-->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <!-- 模态框头部 -->
+                <div class="modal-header">
+                    <h4 class="modal-title">买家联系方式</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- 模态框主体 -->
+                <div class="modal-body">
+                    <span id="contactInformationStr"></span>
+                </div>
+
+                <!-- 模态框底部 -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
