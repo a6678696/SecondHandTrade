@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 支付记录Controller层
+ * 前台支付记录Controller层
  *
  * @author LeDao
  * @company

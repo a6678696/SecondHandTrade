@@ -48,12 +48,16 @@ public class ContactAdminController {
         QueryWrapper<Contact> contactQueryWrapper = new QueryWrapper<>();
         contactQueryWrapper.orderByDesc("time");
         if (contact.getUserName() != null) {
-            List<String> userIdList = new ArrayList<>();
+            List<Integer> userIdList = new ArrayList<>();
             QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
             userQueryWrapper.like("userName", contact.getUserName());
             List<User> userList = userService.list(userQueryWrapper);
-            for (User user : userList) {
-                userIdList.add(String.valueOf(user.getId()));
+            if (userList.size() > 0) {
+                for (User user : userList) {
+                    userIdList.add(user.getId());
+                }
+            } else {
+                userIdList.add(-1);
             }
             contactQueryWrapper.in("userId", userIdList);
         }

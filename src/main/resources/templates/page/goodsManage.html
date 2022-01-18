@@ -9,7 +9,7 @@
 <div id="b">
     <div class="row" style="margin-top: 5px">
         <div class="col-md-3">
-            <div th:include="common/menuLeft::#m"></div>
+            <div th:include="common/menuPersonalHubs::#m"></div>
         </div>
         <div class="col-md-9">
             <ol class="breadcrumb">
@@ -26,7 +26,8 @@
                             style="width: 200px;margin-left: 2px" class="form-control">
                         <option value="">选择商品类别...</option>
                         <div th:each="goodsType:${goodsTypeList}">
-                            <option th:text="${goodsType.name}" th:value="${goodsType.id}" th:selected="${goodsTypeId==goodsType.id}"></option>
+                            <option th:text="${goodsType.name}" th:value="${goodsType.id}"
+                                    th:selected="${goodsTypeId==goodsType.id}"></option>
                         </div>
                     </select>
                     <select id="stateSearchGoods" name="state" th:value="${state}" style="width: 200px;margin-left: 2px"
@@ -37,10 +38,12 @@
                             <option value="1" th:selected="${state==1}">上架中</option>
                             <option value="2" th:selected="${state==2}">审核不通过</option>
                             <option value="3" th:selected="${state==3}">已下架</option>
-                            <option value="4" th:selected="${state==4}">交易完成</option>
+                            <option value="4" th:selected="${state==4}">被买下</option>
+                            <option value="5" th:selected="${state==5}">交易完成</option>
                         </div>
                     </select>
-                    <select id="isRecommendSearchGoods" name="isRecommend" th:value="${recommend}" style="width: 200px;margin-left: 2px"
+                    <select id="isRecommendSearchGoods" name="isRecommend" th:value="${recommend}"
+                            style="width: 200px;margin-left: 2px"
                             class="form-control">
                         <option value="">商品是否被推荐...</option>
                         <div>
@@ -48,12 +51,17 @@
                             <option value="1" th:selected="${recommend==1}">被推荐</option>
                         </div>
                     </select>
-                    <button type="submit" class="btn btn-primary status-icon hint--top" style="margin-left: 2px" aria-label="搜索"><i class="fa fa-search"></i>
+                    <button type="submit" class="btn btn-primary status-icon hint--top" style="margin-left: 2px"
+                            aria-label="搜索"><i class="fa fa-search"></i>
                     </button>
-                    <a href="javascript:resetSearchGoodsValue()"><button type="button" class="btn btn-info status-icon hint--top" aria-label="重置" style="margin-left: 2px"><i class="fa fa-rotate-right"></i></button></a>
+                    <a href="javascript:resetSearchGoodsValue()">
+                        <button type="button" class="btn btn-info status-icon hint--top" aria-label="重置"
+                                style="margin-left: 2px"><i class="fa fa-rotate-right"></i></button>
+                    </a>
                 </div>
             </form>
-            <span th:if="${goodsList.size()!=0}" style="float: right">当前有&nbsp;<span style="margin-top: 10px;color: red" th:text="${goodsList.size()}"></span>&nbsp;条数据</span>
+            <span th:if="${goodsList.size()!=0}" style="float: right">当前有&nbsp;<span style="margin-top: 10px;color: red"
+                                                                                     th:text="${goodsList.size()}"></span>&nbsp;条数据</span>
             <table class="table table-bordered table-striped table-hover table-borderless"
                    th:if="${goodsList.size()!=0}">
                 <thead>
@@ -72,39 +80,46 @@
                         <td th:text="${#dates.format(goods.addTime,'yyyy-MM-dd HH:mm:ss')}"
                             style="text-align: center"></td>
                         <td style="text-align: center"
-                            th:title="${goods.name}"><a th:href="${'/goods/'+goods.id}" th:text="${#strings.abbreviate(goods.name,15)}" class="status-icon hint--top" th:aria-label="${goods.name}"></a></td>
+                            th:title="${goods.name}"><a th:href="${'/goods/'+goods.id}"
+                                                        th:text="${#strings.abbreviate(goods.name,15)}"
+                                                        class="status-icon hint--top" th:aria-label="${goods.name}"></a>
+                        </td>
                         <td th:text="${goods.goodsTypeName}" style="text-align: center"
                         ></td>
-                        <td th:text="${goods.state==0?'未审核':(goods.state==1?'上架中':(goods.state==2?'审核不通过':'已下架'))}"
-                            th:style="${goods.state==0?'color:blue;text-align: center':(goods.state==1?'color:green;text-align: center':(goods.state==2?'color:red;text-align: center':'color:pink;text-align: center'))}"></td>
-                        <td th:text="${goods.isRecommend==0?'不推荐':'推荐'}" th:style="${goods.isRecommend==0?'color:pink;text-align: center':'color:blue;text-align: center'}"
+                        <td th:text="${goods.state==0?'未审核':(goods.state==1?'上架中':(goods.state==2?'审核不通过':(goods.state==3?'已下架':(goods.state==4?'被买下':'交易完成'))))}"
+                            th:style="${goods.state==0?'color:blue;text-align: center':(goods.state==1?'color:green;text-align: center':(goods.state==2?'color:red;text-align: center':(goods.state==3?'color:pink;text-align: center':(goods.state==4?'color:#660066;text-align: center':'color:#669966;text-align: center'))))}"></td>
+                        <td th:text="${goods.isRecommend==0?'不推荐':'推荐'}"
+                            th:style="${goods.isRecommend==0?'color:red;text-align: center':'color:blue;text-align: center'}"
                         ></td>
                         <td style="text-align: center">
-                            <a th:href="'javascript:seeContactDetails('+${goods.id}+')'">
+                            <a th:href="'javascript:seeContactDetails('+${goods.id}+')'" style="text-decoration: none">
                                 <button type="button" class="btn btn-primary btn-sm status-icon hint--top"
                                         aria-label="查看详情" data-toggle="modal" data-target="#myModal"><i
                                         class="fa fa-search"></i></button>
                             </a>
-                            <a th:href="'javascript:modifyContact('+${goods.id}+')'">
+                            <a th:href="'javascript:modifyContact('+${goods.id}+')'" style="text-decoration: none" th:if="${goods.state!=4&&goods.state!=5}">
                                 <button type="button" class="btn btn-info btn-sm status-icon hint--top" aria-label="修改"
                                         data-toggle="modal" data-target="#myModal2"><i class="fa fa-pencil"></i>
                                 </button>
                             </a>
-                            <a th:href="'javascript:deleteContact('+${goods.id}+')'">
+                            <a th:href="'javascript:deleteContact('+${goods.id}+')'" style="text-decoration: none" th:if="${goods.state==3||goods.state==0||goods.state==2}">
                                 <button type="button" class="btn btn-danger btn-sm status-icon hint--top"
                                         style="margin-left: 2px" aria-label="删除"><i class="fa fa-trash-o"></i></button>
                             </a>
-                            <a th:href="'javascript:deleteContact('+${goods.id}+')'" th:if="${goods.state==1}">
+                            <a th:href="'javascript:deleteContact('+${goods.id}+')'" th:if="${goods.state==1}" style="text-decoration: none">
                                 <button type="button" class="btn btn-secondary btn-sm status-icon hint--top"
-                                        style="margin-left: 2px" aria-label="下架"><i class="fa fa-angle-double-down"></i></button>
+                                        style="margin-left: 2px" aria-label="下架"><i class="fa fa-angle-double-down"></i>
+                                </button>
                             </a>
-                            <a th:href="'javascript:deleteContact('+${goods.id}+')'" th:if="${goods.state==3}">
+                            <a th:href="'javascript:deleteContact('+${goods.id}+')'" th:if="${goods.state==3}" style="text-decoration: none">
                                 <button type="button" class="btn btn-warning btn-sm status-icon hint--top"
-                                        style="margin-left: 2px" aria-label="上架"><i class="fa fa-angle-double-up"></i></button>
+                                        style="margin-left: 2px" aria-label="上架"><i class="fa fa-angle-double-up"></i>
+                                </button>
                             </a>
-                            <a th:href="'javascript:deleteContact('+${goods.id}+')'" th:if="${goods.state==1}">
+                            <a th:href="'javascript:deleteContact('+${goods.id}+')'" th:if="${goods.state==4}" style="text-decoration: none">
                                 <button type="button" class="btn-dark btn-sm status-icon hint--top"
-                                        style="margin-left: 2px" aria-label="完成交易"><i class="fa fa-hand-peace-o"></i></button>
+                                        style="margin-left: 2px" aria-label="完成交易"><i class="fa fa-hand-peace-o"></i>
+                                </button>
                             </a>
                         </td>
                         <!-- 查看模态框 -->

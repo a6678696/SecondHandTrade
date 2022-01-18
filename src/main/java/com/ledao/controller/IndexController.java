@@ -459,6 +459,7 @@ public class IndexController {
         //获取求购列表
         QueryWrapper<Goods> goodsQueryWrapper2 = new QueryWrapper<>();
         goodsQueryWrapper2.eq("goodsTypeId", wantToBuyId);
+        goodsQueryWrapper2.eq("state", 1);
         goodsQueryWrapper2.orderByDesc("addTime");
         List<Goods> goodsWantToBuyList = goodsService.list(goodsQueryWrapper2);
         mav.addObject("isWantToBuy", true);
@@ -543,6 +544,7 @@ public class IndexController {
             getFirstImageInGoodsContent(goods);
         }
         mav.addObject("shoppingCartGoodsList", shoppingCartGoodsList);
+        mav.addObject("shoppingCartGoodsListSize", shoppingCartGoodsList.size());
         //商品分类列表
         QueryWrapper<GoodsType> goodsTypeQueryWrapper = new QueryWrapper<>();
         goodsTypeQueryWrapper.orderByAsc("sortNum");

@@ -27,10 +27,20 @@ public class PayRecord {
     @TableField(value = "goodsId")
     private Integer goodsId;
     /**
+     * 商品名称,用于搜索
+     */
+    @TableField(exist = false)
+    private String goodsName;
+    /**
      * 支付人id
      */
     @TableField(value = "userId")
     private Integer userId;
+    /**
+     * 用户名,用于搜索
+     */
+    @TableField(exist = false)
+    private String userName;
     /**
      * 支付时间
      */

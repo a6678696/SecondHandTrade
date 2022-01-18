@@ -33,10 +33,34 @@ public interface PayRecordService {
     List<PayRecord> list(QueryWrapper<PayRecord> payRecordQueryWrapper);
 
     /**
+     * 获取记录数
+     *
+     * @param payRecordQueryWrapper
+     * @return
+     */
+    Integer getCount(QueryWrapper<PayRecord> payRecordQueryWrapper);
+
+    /**
      * 添加支付记录
      *
      * @param payRecord
      * @return
      */
     int add(PayRecord payRecord);
+
+    /**
+     * 根据id删除支付记录
+     *
+     * @param id
+     * @return
+     */
+    PayRecord findById(Integer id);
+
+    /**
+     * 根据id删除支付记录
+     *
+     * @param id
+     * @return
+     */
+    int deleteById(Integer id);
 }

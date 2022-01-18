@@ -147,6 +147,7 @@ public class GoodsController {
             goodsQueryWrapper.ne("goodsTypeId", wantToBuyId);
         } else if (goodsType == 2) {
             goodsQueryWrapper.eq("goodsTypeId", wantToBuyId);
+            goodsQueryWrapper.eq("state", 1);
         }
         List<Goods> goodsList = goodsService.list(goodsQueryWrapper);
         for (Goods goods : goodsList) {

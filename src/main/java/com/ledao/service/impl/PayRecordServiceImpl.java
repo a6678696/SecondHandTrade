@@ -34,7 +34,22 @@ public class PayRecordServiceImpl implements PayRecordService {
     }
 
     @Override
+    public Integer getCount(QueryWrapper<PayRecord> payRecordQueryWrapper) {
+        return payRecordMapper.selectCount(payRecordQueryWrapper);
+    }
+
+    @Override
     public int add(PayRecord payRecord) {
         return payRecordMapper.insert(payRecord);
+    }
+
+    @Override
+    public PayRecord findById(Integer id) {
+        return payRecordMapper.selectById(id);
+    }
+
+    @Override
+    public int deleteById(Integer id) {
+        return payRecordMapper.deleteById(id);
     }
 }

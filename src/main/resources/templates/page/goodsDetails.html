@@ -10,40 +10,7 @@
     <div class="row" style="margin-top: 5px">
         <!--商品分类列表和推荐商品-->
         <div class="col-md-3">
-            <div class="card">
-                <div class="card-header bg-primary text-white"><i class="fa fa-connectdevelop"></i>商品分类</div>
-                <div class="card-body">
-                    <div>
-                        <p th:each="goodsType:${goodsTypeList}"><a th:href="${'/toSortPage?goodsTypeId='+goodsType.id}"
-                                                                   th:text="${goodsType.name}"
-                                                                   class=" status-icon hint--top"
-                                                                   th:aria-label="${goodsType.name}"></a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="card" style="margin-top: 8px">
-                <div class="card-header bg-primary text-white"><i class="fa fa-houzz"></i>推荐商品</div>
-                <div class="card-body">
-                    <div>
-                        <div class="row" th:each="goodsRecommend:${goodsRecommendList}">
-                            <div class="col-md-4">
-                                <a th:href="${'/goods/'+goodsRecommend.id}"><img
-                                        th:src="@{'/static/images/articleImage/'+${goodsRecommend.imageName}+'.jpg'}"
-                                        alt=""
-                                        style="width: 88px;height: 60px"></a>
-                            </div>
-                            <div class="col-md-8">
-                                <div>
-                                    <a th:href="${'/goods/'+goodsRecommend.id}" class="status-icon hint--top"
-                                       th:aria-label="${goodsRecommend.name}"><span
-                                            th:text="${#strings.abbreviate(goodsRecommend.name,20)}"></span></a>
-                                    <p style="color: #b52b27">￥<span th:text="${goodsRecommend.priceNow}"></span></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div th:include="common/menuSortAndRecommend::#m"></div>
         </div>
         <!--商品详情-->
         <div class="col-md-9 card">
@@ -68,17 +35,17 @@
                     </p>
                     <p>所属类别：<span th:text="${goods.goodsTypeName}"></span></p>
                     <p>
-                        <a th:href="'javascript:addGoodsToShoppingCart('+${goods.id}+')'"
+                        <a th:href="'javascript:addGoodsToShoppingCart('+${goods.id}+')'" style="text-decoration: none"
                            th:if="${goods.goodsTypeId!=8&&session.currentUser!=null&&session.currentUser.id!=goods.userId}">
                             <button type="button" class="btn btn-sm btn-primary">加入购物车</button>
                         </a>
                         <strong style="color: red" th:if="${session.currentUser!=null&&session.currentUser.id==goods.userId}">这是你自己的商品，无法购买哦</strong>
-                        <a href="/toLoginPage" th:if="${goods.goodsTypeId!=8&&session.currentUser==null}">
+                        <a href="/toLoginPage" style="text-decoration: none" th:if="${goods.goodsTypeId!=8&&session.currentUser==null}">
                             <button type="button" class="btn btn-primary btn-sm">
                                 马上登录
                             </button>
                         </a>
-                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal" th:if="${session.currentUser!=null&&session.currentUser.id!=goods.userId}">
+                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal">
                             <span th:text="${goods.goodsTypeId!=8?'获取卖家联系方式':'获取求购者联系方式'}"></span>
                         </button>
                         <span style="color: red"
@@ -103,7 +70,7 @@
 
                     <!-- 模态框主体 -->
                     <div class="modal-body">
-                        <span th:if="${session.currentUser==null}">登录后才能获取卖家的联系方式哦，去<a href="/toLoginPage"><button
+                        <span th:if="${session.currentUser==null}">登录后才能<span th:text="${goods.goodsTypeId!=8?'获取卖家联系方式':'获取求购者联系方式'}"></span>哦，去<a href="/toLoginPage"><button
                                 type="button"
                                 class="btn btn-primary">登录</button></a></span>
                         <table class="table table-bordered table-striped table-hover table-borderless"

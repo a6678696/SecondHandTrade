@@ -9,7 +9,7 @@
 <div id="b">
     <div class="row" style="margin-top: 5px">
         <div class="col-md-3">
-            <div th:include="common/menuLeft::#m"></div>
+            <div th:include="common/menuPersonalHubs::#m"></div>
         </div>
         <div class="col-md-9">
             <ol class="breadcrumb">
@@ -46,12 +46,12 @@
                             <td style="text-align: center" th:text="${contactInformation.name}"></td>
                             <td style="text-align: center" th:text="${contactInformation.content}"></td>
                             <td style="text-align: center">
-                                <a th:href="'javascript:seeContactInformationDetails('+${contactInformation.id}+')'">
+                                <a th:href="'javascript:seeContactInformationDetails('+${contactInformation.id}+')'" style="text-decoration: none">
                                     <button type="button" class="btn btn-primary btn-sm status-icon hint--top"
                                             aria-label="查看详情" data-toggle="modal" data-target="#myModalSee"><i
                                             class="fa fa-search"></i></button>
                                 </a>
-                                <a th:href="'javascript:modifyContactInformation('+${contactInformation.id}+')'">
+                                <a th:href="'javascript:modifyContactInformation('+${contactInformation.id}+')'" style="text-decoration: none">
                                     <button type="button" class="btn btn-info btn-sm status-icon hint--top"
                                             aria-label="修改" data-toggle="modal" data-target="#myModalModify"><i
                                             class="fa fa-pencil"></i></button>
