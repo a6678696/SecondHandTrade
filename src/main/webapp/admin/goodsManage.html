@@ -66,14 +66,8 @@
             if (isRecommend == 0) {
                 $.messager.confirm("系统提示", "你确定要<span style='color: red'>推荐</span>这个商品吗?", function (r) {
                     if (r) {
-                        $.post("/admin/goods/recommendGoodsOrNot", {id: id, isRecommend: 1}, function (result) {
-                            if (result.success) {
-                                $.messager.alert("系统提示", "推荐成功！");
-                                $("#dg").datagrid("reload");
-                            } else {
-                                $.messager.alert("系统提示", "推荐失败！");
-                            }
-                        }, "json");
+                        $("#dlg2").dialog("open").dialog("setTitle", "输入推荐天数");
+                        url = "/admin/goods/recommendGoodsOrNot?id=" + id + "&isRecommend=1&recommendDays=" + $("#recommendDays").numberbox('getValue');
                     }
                 });
             } else {
@@ -181,6 +175,26 @@
             })
         }
 
+        function submitData2() {
+            $("#fm2").form("submit", {
+                url: url,
+                onSubmit: function () {
+                    return $(this).form("validate");
+                },
+                success: function (result) {
+                    var result = eval('(' + result + ')');
+                    if (result.success) {
+                        $.messager.alert("系统提示", "推荐商品成功!");
+                        $("#dg").datagrid("reload");
+                        $("#dlg2").dialog("close");
+                        $("#recommendDays").numberbox('setValue', "")
+                    } else {
+                        $.messager.alert("系统提示", "推荐商品失败！");
+                    }
+                }
+            })
+        }
+
         function formatType(val, row) {
             return val.name;
         }
@@ -189,6 +203,11 @@
             $("#dlg").dialog("close");
             $("#dg").datagrid("reload");
             resetValue();
+        }
+
+        function closeDialog2() {
+            $("#dlg2").dialog("close");
+            $("#recommendDays").numberbox('setValue', "")
         }
 
         $(document).ready(function () {
@@ -338,6 +357,24 @@
 <div id="dlg-buttons">
     <a href="javascript:submitData()" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
     <a href="javascript:closeGoodsDialog()" class="easyui-linkbutton" iconCls="icon-cancel">关闭</a>
+</div>
+<div id="dlg2" class="easyui-dialog" style="width: 400px;height: 200px;padding: 10px 20px"
+     closed="true" buttons="#dlg-buttons2" data-options="onClose:function(){resetValue()}">
+    <form action="" id="fm2" method="post" enctype="multipart/form-data">
+        <table cellspacing="20px">
+            <tr>
+                <td width="80px">推荐天数：</td>
+                <td>
+                    <input type="text" id="recommendDays" name="recommendDays" style="width: 200px" required="true"
+                           class="easyui-numberbox"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div id="dlg-buttons2">
+    <a href="javascript:submitData2()" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
+    <a href="javascript:closeDialog2()" class="easyui-linkbutton" iconCls="icon-cancel">关闭</a>
 </div>
 <script type="text/javascript">
     CKEDITOR.replace("content");

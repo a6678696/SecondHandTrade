@@ -186,8 +186,11 @@ public class IndexController {
         mav.addObject("goodsHotList", goodsHotList);
         //获取推荐商品列表
         QueryWrapper<Goods> goodsQueryWrapper3 = new QueryWrapper<>();
+        //被推荐
         goodsQueryWrapper3.eq("isRecommend", 1);
+        //上架中
         goodsQueryWrapper3.eq("state", 1);
+        //不是求购
         goodsQueryWrapper3.ne("goodsTypeId", wantToBuyId);
         Page<Goods> goodsPage3 = new Page<>(1, 9);
         List<Goods> goodsRecommendList = goodsService.list(goodsPage3, goodsQueryWrapper3);

@@ -51,11 +51,12 @@
                         <div class="row">
                             <div class="card col-md-4" th:each="goodsNew:${goodsNewList}">
                                 <a th:href="${'/goods/'+goodsNew.id}"><img class="card-img-top"
-                                     th:src="@{'/static/images/articleImage/'+${goodsNew.imageName}+'.jpg'}"
-                                     alt="Card image"
-                                     style="width:100%"></a>
+                                                                           th:src="@{'/static/images/articleImage/'+${goodsNew.imageName}+'.jpg'}"
+                                                                           alt="Card image"
+                                                                           style="width:100%"></a>
                                 <div class="card-body">
-                                    <a th:href="${'/goods/'+goodsNew.id}" class="status-icon hint--top" th:aria-label="${goodsNew.name}"><h6
+                                    <a th:href="${'/goods/'+goodsNew.id}" class="status-icon hint--top"
+                                       th:aria-label="${goodsNew.name}"><h6
                                             class="card-title" th:text="${#strings.abbreviate(goodsNew.name,15)}"></h6>
                                     </a>
                                     <p class="card-text">￥<span th:text="${goodsNew.priceNow}"></span>&nbsp;&nbsp;&nbsp;&nbsp;<del
@@ -83,12 +84,13 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="card col-md-4" th:each="goodsHot:${goodsHotList}">
-                                <a  th:href="${'/goods/'+goodsHot.id}"><img class="card-img-top"
-                                     th:src="@{'/static/images/articleImage/'+${goodsHot.imageName}+'.jpg'}"
-                                     alt="Card image"
-                                     style="width:100%"></a>
+                                <a th:href="${'/goods/'+goodsHot.id}"><img class="card-img-top"
+                                                                           th:src="@{'/static/images/articleImage/'+${goodsHot.imageName}+'.jpg'}"
+                                                                           alt="Card image"
+                                                                           style="width:100%"></a>
                                 <div class="card-body">
-                                    <a th:href="${'/goods/'+goodsHot.id}" class="status-icon hint--top" th:aria-label="${goodsHot.name}"><h6
+                                    <a th:href="${'/goods/'+goodsHot.id}" class="status-icon hint--top"
+                                       th:aria-label="${goodsHot.name}"><h6
                                             class="card-title" th:text="${#strings.abbreviate(goodsHot.name,15)}"></h6>
                                     </a>
                                     <p class="card-text">￥<span th:text="${goodsHot.priceNow}"></span>&nbsp;&nbsp;&nbsp;&nbsp;<del
@@ -120,19 +122,22 @@
                     </div>
                 </div>
             </div>
-            <div class="card" style="margin-top: 8px">
+            <div class="card" style="margin-top: 8px" th:if="${goodsRecommendList.size()>0}">
                 <div class="card-header bg-primary text-white"><i class="fa fa-houzz"></i>推荐商品</div>
                 <div class="card-body">
                     <div>
                         <div class="row" th:each="goodsRecommend:${goodsRecommendList}">
                             <div class="col-md-4">
-                                <a th:href="${'/goods/'+goodsRecommend.id}"><img th:src="@{'/static/images/articleImage/'+${goodsRecommend.imageName}+'.jpg'}"
-                                     alt=""
-                                     style="width: 88px;height: 60px"></a>
+                                <a th:href="${'/goods/'+goodsRecommend.id}"><img
+                                        th:src="@{'/static/images/articleImage/'+${goodsRecommend.imageName}+'.jpg'}"
+                                        alt=""
+                                        style="width: 88px;height: 60px"></a>
                             </div>
                             <div class="col-md-8">
                                 <div>
-                                    <a th:href="${'/goods/'+goodsRecommend.id}" class="status-icon hint--top" th:aria-label="${goodsRecommend.name}"><span th:text="${#strings.abbreviate(goodsRecommend.name,20)}"></span></a>
+                                    <a th:href="${'/goods/'+goodsRecommend.id}" class="status-icon hint--top"
+                                       th:aria-label="${goodsRecommend.name}"><span
+                                            th:text="${#strings.abbreviate(goodsRecommend.name,20)}"></span></a>
                                     <p style="color: #b52b27">￥<span th:text="${goodsRecommend.priceNow}"></span></p>
                                 </div>
                             </div>

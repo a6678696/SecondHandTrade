@@ -8,7 +8,7 @@
 <body>
 <div id="b">
     <div class="col-md-6" style="margin-left: 25%">
-        <form role="form" method="post" action="/user/login">
+        <form role="form" method="post" action="/user/login" onsubmit="return checkLoginUserState()">
             <h3 style="text-align: center">用户登录&nbsp;&nbsp;</h3>
             <div class="form-group">
                 <p class="help-block" style="float: right">没有账号?去<a href="/toRegisterPage"><span

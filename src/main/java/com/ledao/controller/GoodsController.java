@@ -323,6 +323,12 @@ public class GoodsController {
         return resultMap;
     }
 
+    /**
+     * 根据商品id获取商品(Ajax请求后返回)
+     *
+     * @param goodsId
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/findById")
     public Map<String, Object> findById(Integer goodsId) {

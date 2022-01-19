@@ -93,13 +93,13 @@ public class GoodsAdminController {
      * @return
      */
     @RequestMapping("/recommendGoodsOrNot")
-    public Map<String, Object> recommendGoodsOrNot(Integer id, Integer isRecommend) {
+    public Map<String, Object> recommendGoodsOrNot(Integer id, Integer isRecommend,Integer recommendDays) {
         Map<String, Object> resultMap = new HashMap<>(16);
         Goods goods = goodsService.findById(id);
         goods.setIsRecommend(isRecommend);
         if (isRecommend == 1) {
             goods.setRecommendTime(new Date());
-            goods.setRecommendDays(10);
+            goods.setRecommendDays(recommendDays);
         }
         int key = goodsService.update(goods);
         if (key > 0) {

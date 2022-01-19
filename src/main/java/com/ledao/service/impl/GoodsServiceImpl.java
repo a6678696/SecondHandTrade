@@ -57,4 +57,9 @@ public class GoodsServiceImpl implements GoodsService {
     public Goods findById(Integer id) {
         return goodsMapper.selectById(id);
     }
+
+    @Override
+    public List<Integer> getGoodsIdRecommendTimeExpired() {
+        return goodsMapper.getGoodsIdRecommendTimeExpired();
+    }
 }
