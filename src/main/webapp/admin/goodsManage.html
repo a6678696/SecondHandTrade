@@ -63,6 +63,16 @@
             }
             var id = selectedRows[0].id;
             var isRecommend = selectedRows[0].isRecommend;
+            var goodsTypeName = selectedRows[0].goodsTypeName;
+            if (goodsTypeName=== "求购") {
+                $.messager.alert("系统提示", "求购类无法被推荐哦!!");
+                return;
+            }
+            var state = selectedRows[0].state;
+            if (state!== 1) {
+                $.messager.alert("系统提示", "只有<span style='color: red'>上架中</span>的商品才能被推荐哦!!");
+                return;
+            }
             if (isRecommend == 0) {
                 $.messager.confirm("系统提示", "你确定要<span style='color: red'>推荐</span>这个商品吗?", function (r) {
                     if (r) {

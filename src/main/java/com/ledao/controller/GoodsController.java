@@ -127,7 +127,13 @@ public class GoodsController {
             goods.setClick(0);
             goodsService.add(goods);
         } else {
+            //数据库中的对应商品,即:修改前的商品
+            Goods trueGoods = goodsService.findById(goods.getId());
             goods.setState(0);
+            //价格进行了修改,就更新上次价格
+            if (goods.getPriceNow() != trueGoods.getPriceNow()) {
+                goods.setPriceLast(trueGoods.getPriceNow());
+            }
             goodsService.update(goods);
         }
         return mav;
