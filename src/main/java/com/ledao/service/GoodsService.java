@@ -3,6 +3,7 @@ package com.ledao.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ledao.entity.Goods;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -71,4 +72,11 @@ public interface GoodsService {
      * @return
      */
     Goods findById(Integer id);
+
+    /**
+     * 获取推荐时间过期的商品id集合
+     *
+     * @return
+     */
+    List<Integer> getGoodsIdRecommendTimeExpired();
 }

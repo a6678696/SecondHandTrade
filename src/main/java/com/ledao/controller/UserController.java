@@ -363,4 +363,24 @@ public class UserController {
         mav.setViewName("index");
         return mav;
     }
+
+    /**
+     * 登录前检验用户的状态
+     *
+     * @param userName
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/checkLoginUserState")
+    public Map<String, Object> checkLoginUserState(String userName) {
+        Map<String, Object> resultMap = new HashMap<>(16);
+        User user = userService.findByUserName(userName);
+        if (user != null) {
+            resultMap.put("success", true);
+            resultMap.put("status", user.getStatus());
+        } else {
+            resultMap.put("success", false);
+        }
+        return resultMap;
+    }
 }

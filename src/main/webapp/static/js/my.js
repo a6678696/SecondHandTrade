@@ -576,3 +576,29 @@ function updateReserveRecordState(reserveRecordId, state, stateNow) {
         });
     }
 }
+
+//登录前检验用户是否被封禁
+function checkLoginUserState() {
+
+    let userName = $("#userName").val();
+    let isBan = false;
+    $.ajax({
+        url: "/user/checkLoginUserState",
+        type: "post",
+        data: {userName: userName},
+        async: false,
+        success: function (result) {
+            if (result.success) {
+                let status = result.status;
+                if (status === 0) {
+                    isBan = true;
+                }
+            }
+        },
+    });
+    if (isBan === true) {
+        alert("你的账号已被封禁，如果要解封，请发邮件到管理员邮箱说明情况，管理员邮箱地址为：123141@qq.com");
+        return false;
+    }
+    return true;
+}
