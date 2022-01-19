@@ -33,7 +33,7 @@ public class GoodsTypeAdminController {
     private GoodsService goodsService;
 
     /**
-     * 下拉框模糊查询
+     * 下拉框模糊查询商品类别
      *
      * @param q
      * @return

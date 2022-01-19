@@ -285,10 +285,11 @@ public class GoodsController {
      */
     @ResponseBody
     @RequestMapping("/updateGoodsState")
-    public Map<String, Object> updateGoodsState(Integer goodsId, Integer state) {
+    public Map<String, Object> updateGoodsState(Integer goodsId, Integer state, String reason) {
         Map<String, Object> resultMap = new HashMap<>(16);
         Goods goods = goodsService.findById(goodsId);
-        if (goods.getState() == 4) {
+        //如果是取消预订,goods.getState()是当前的状态,state是要目标状态
+        if (goods.getState() == 4 && state == 1) {
             ReserveRecord reserveRecord = reserveRecordService.findByGoodsIdAndState(goodsId, 0);
             reserveRecord.setState(1);
             reserveRecordService.update(reserveRecord);
@@ -299,6 +300,10 @@ public class GoodsController {
             message.setTime(new Date());
             message.setIsRead(0);
             messageService.add(message);
+        }
+        //如果将商品状态设置为审核不通过
+        if (state == 2) {
+            goods.setReason(reason.split(",")[0]);
         }
         goods.setState(state);
         int key = goodsService.update(goods);
