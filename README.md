@@ -6,7 +6,9 @@ GitHub地址：[a6678696/SecondHandTrade: 校园二手交易平台 (github.com)]
 
 ### 使用的技术
 
-本项目核心技术采用Spring Boot+Mybatis-Plus；开发工具 idea；数据库MySQL5.6；模版引擎采用的是Thymeleaf；在线编辑器CKEditor；[基于 JavaMail 实现用 QQ 邮箱发送邮件](https://blog.zoutl.cn/64.html)；前台界面采用了Bootstrap4框架；后台界面采用了jQuery EasyUI框架；Redis存储用户购物车信息；Gson处理JSON数据；
+本项目核心技术采用Spring Boot+Mybatis-Plus；开发工具 idea；数据库MySQL5.6；模版引擎采用的是Thymeleaf；在线编辑器CKEditor；[基于 JavaMail 实现用 QQ 邮箱发送邮件](https://blog.zoutl.cn/64.html)；前台界面采用了Bootstrap4框架；后台界面采用了jQuery EasyUI框架；Redis存储用户购物车信息；Gson处理JSON数据；Quartz定时任务；
+
+### 功能介绍
 
 ### 功能介绍
 
