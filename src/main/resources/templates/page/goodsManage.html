@@ -60,6 +60,7 @@
                     </a>
                 </div>
             </form>
+            <span th:if="${goodsList.size()!=0}" style="color: #0c9076">审核不通过的商品需要修改,将鼠标悬停在<span style="color: red">审核不通过字体</span>上会显示审核不通过理由</span>
             <span th:if="${goodsList.size()!=0}" style="float: right">当前有&nbsp;<span style="margin-top: 10px;color: red"
                                                                                      th:text="${goodsList.size()}"></span>&nbsp;条数据</span>
             <table class="table table-bordered table-striped table-hover table-borderless"

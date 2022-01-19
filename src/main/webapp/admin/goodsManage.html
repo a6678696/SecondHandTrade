@@ -12,6 +12,8 @@
     <script type="text/javascript" src="/static/ckeditor/ckeditor.js"></script>
     <script type="text/javascript">
 
+        var url;
+
         function searchGoods() {
             $("#dg").datagrid('load', {
                 "name": $("#s_name").val(),
@@ -28,6 +30,8 @@
             $("#s_state").combobox("setValue", "");
             $("#s_isRecommend").combobox("setValue", "");
             $("#s_goodsTypeId").combobox("setValue", "");
+            $("#recommendDays").numberbox('setValue', "")
+            $("#reason").val("");
         }
 
         function deleteGoods() {
@@ -64,12 +68,12 @@
             var id = selectedRows[0].id;
             var isRecommend = selectedRows[0].isRecommend;
             var goodsTypeName = selectedRows[0].goodsTypeName;
-            if (goodsTypeName=== "求购") {
+            if (goodsTypeName === "求购") {
                 $.messager.alert("系统提示", "求购类无法被推荐哦!!");
                 return;
             }
             var state = selectedRows[0].state;
-            if (state!== 1) {
+            if (state !== 1) {
                 $.messager.alert("系统提示", "只有<span style='color: red'>上架中</span>的商品才能被推荐哦!!");
                 return;
             }
@@ -128,16 +132,16 @@
                 return;
             }
             var id = selectedRows[0].id;
-            $.messager.confirm("系统提示", "你确定要<span style='color: red'>审核不通过</span>这个商品吗?", function (r) {
+            var state = selectedRows[0].state;
+            var reason = $("#reason").val();
+            if (state === 2) {
+                $.messager.alert("系统提示", "该商品的状态已经是<span style='color: red'>审核不通过</span>了!!");
+                return;
+            }
+            $.messager.confirm("系统提示", "你确定要将商品状态设置为<span style='color: red'>审核不通过</span>吗?", function (r) {
                 if (r) {
-                    $.post("/goods/updateGoodsState", {goodsId: id, state: 2}, function (result) {
-                        if (result.success) {
-                            $.messager.alert("系统提示", "审核不通过成功！");
-                            $("#dg").datagrid("reload");
-                        } else {
-                            $.messager.alert("系统提示", "审核不通过失败！");
-                        }
-                    }, "json");
+                    $("#dlg3").dialog("open").dialog("setTitle", "输入审核不通过的理由");
+                    url = "/goods/updateGoodsState?goodsId=" + id + "&state=2&reason=" + reason;
                 }
             });
         }
@@ -205,8 +209,24 @@
             })
         }
 
-        function formatType(val, row) {
-            return val.name;
+        function submitData3() {
+            $("#fm3").form("submit", {
+                url: url,
+                onSubmit: function () {
+                    return $(this).form("validate");
+                },
+                success: function (result) {
+                    var result = eval('(' + result + ')');
+                    if (result.success) {
+                        $.messager.alert("系统提示", "将商品状态设置为审核不通过成功!");
+                        $("#dg").datagrid("reload");
+                        $("#dlg3").dialog("close");
+                        $("#reason").val("");
+                    } else {
+                        $.messager.alert("系统提示", "将商品状态设置为审核不通过失败！");
+                    }
+                }
+            })
         }
 
         function closeGoodsDialog() {
@@ -220,6 +240,11 @@
             $("#recommendDays").numberbox('setValue', "")
         }
 
+        function closeDialog3() {
+            $("#dlg3").dialog("close");
+            $("#reason").val("");
+        }
+
         $(document).ready(function () {
 
             $("#dg").datagrid({
@@ -231,6 +256,10 @@
                 }
             });
         });
+
+        function formatType(val, row) {
+            return val.name;
+        }
 
         function formatName(val, row) {
             if (val.length > 20) {
@@ -385,6 +414,24 @@
 <div id="dlg-buttons2">
     <a href="javascript:submitData2()" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
     <a href="javascript:closeDialog2()" class="easyui-linkbutton" iconCls="icon-cancel">关闭</a>
+</div>
+<div id="dlg3" class="easyui-dialog" style="width: 640px;height: 320px;padding: 10px 20px"
+     closed="true" buttons="#dlg-buttons3" data-options="onClose:function(){resetValue()}">
+    <form action="" id="fm3" method="post" enctype="multipart/form-data">
+        <table cellspacing="20px">
+            <tr>
+                <td valign="top">理由：</td>
+                <td>
+                    <textarea id="reason" name="reason" rows="10" cols="60" class="easyui-validatebox"
+                              required="true"></textarea>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div id="dlg-buttons3">
+    <a href="javascript:submitData3()" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
+    <a href="javascript:closeDialog3()" class="easyui-linkbutton" iconCls="icon-cancel">关闭</a>
 </div>
 <script type="text/javascript">
     CKEDITOR.replace("content");

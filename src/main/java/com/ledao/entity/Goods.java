@@ -45,6 +45,10 @@ public class Goods {
      */
     private Integer state;
     /**
+     * 审核不通过的理由
+     */
+    private String reason;
+    /**
      * 商品类别id
      */
     @TableField(value = "goodsTypeId")
