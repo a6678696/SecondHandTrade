@@ -279,7 +279,7 @@
             } else if (val == 1) {
                 return "<span style='color: #0c9076'>上架中</span>";
             } else if (val == 2) {
-                return "审核不通过";
+                return "<span style='color: red' title='"+row.reason+"'>审核不通过</span>";
             } else if (val == 3) {
                 return "已下架";
             } else if (val == 4) {
