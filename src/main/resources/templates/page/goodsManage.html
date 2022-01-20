@@ -87,7 +87,8 @@
                         </td>
                         <td th:text="${goods.goodsTypeName}" style="text-align: center"
                         ></td>
-                        <td th:text="${goods.state==0?'未审核':(goods.state==1?'上架中':(goods.state==2?'审核不通过':(goods.state==3?'已下架':(goods.state==4?'被预订':'交易完成'))))}"
+                        <td th:title="${goods.state==2?goods.reason:''}"
+                            th:text="${goods.state==0?'未审核':(goods.state==1?'上架中':(goods.state==2?'审核不通过':(goods.state==3?'已下架':(goods.state==4?'被预订':'交易完成'))))}"
                             th:style="${goods.state==0?'color:blue;text-align: center':(goods.state==1?'color:green;text-align: center':(goods.state==2?'color:red;text-align: center':(goods.state==3?'color:pink;text-align: center':(goods.state==4?'color:#660066;text-align: center':'color:#669966;text-align: center'))))}"></td>
                         <td th:text="${goods.isRecommend==0?'不推荐':'推荐'}"
                             th:style="${goods.isRecommend==0?'color:red;text-align: center':'color:blue;text-align: center'}"
@@ -123,9 +124,11 @@
                                         style="margin-left: 2px" aria-label="上架"><i class="fa fa-angle-double-up"></i>
                                 </button>
                             </a>
-                            <a th:href="'javascript:getContactInformation('+${goods.id}+')'" th:if="${goods.state==4||goods.state==5}"
+                            <a th:href="'javascript:getContactInformation('+${goods.id}+')'"
+                               th:if="${goods.state==4||goods.state==5}"
                                style="text-decoration: none">
-                                <button type="button" class="btn-light btn-sm status-icon hint--top" data-toggle="modal" data-target="#myModal"
+                                <button type="button" class="btn-light btn-sm status-icon hint--top" data-toggle="modal"
+                                        data-target="#myModal"
                                         style="margin-left: 2px" aria-label="获取买家联系方式"><i class="fa fa-mobile"></i>
                                 </button>
                             </a>
