@@ -3,6 +3,8 @@ package com.ledao.util;
 import java.util.Random;
 
 /**
+ * 字符串工具类
+ *
  * @author LeDao
  * @company
  * @create 2022-01-09 15:27

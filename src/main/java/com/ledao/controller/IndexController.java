@@ -7,6 +7,7 @@ import com.ledao.entity.*;
 import com.ledao.service.*;
 import com.ledao.util.DateUtil;
 import com.ledao.util.ImageUtil;
+import com.ledao.util.PageUtil;
 import com.ledao.util.RedisUtil;
 import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
@@ -515,13 +516,18 @@ public class IndexController {
      * @return
      */
     @RequestMapping("/toSortPage")
-    public ModelAndView toSortPage(Integer goodsTypeId) {
+    public ModelAndView toSortPage(Integer goodsTypeId, Integer page) {
+        //每页展示的商品数量
+        int pageSize = 9;
+        if (page == null) {
+            page = 1;
+        }
         ModelAndView mav = new ModelAndView();
         //获取商品列表
         QueryWrapper<Goods> goodsQueryWrapper = new QueryWrapper<>();
         goodsQueryWrapper.eq("goodsTypeId", goodsTypeId);
         goodsQueryWrapper.eq("state", 1);
-        Page<Goods> goodsPage = new Page<>(1, 6);
+        Page<Goods> goodsPage = new Page<>(page, pageSize);
         List<Goods> goodsList = goodsService.list(goodsPage, goodsQueryWrapper);
         for (Goods goods : goodsList) {
             getFirstImageInGoodsContent(goods);
@@ -551,6 +557,9 @@ public class IndexController {
         Collections.shuffle(goodsRecommendList);
         mav.addObject("goodsRecommendList", goodsRecommendList);
         mav.addObject("isSort", true);
+        StringBuilder param = new StringBuilder();
+        param.append("&goodsTypeId=").append(goodsTypeId);
+        mav.addObject("pageCode", PageUtil.genPagination1("/toSortPage", goodsService.getCount(goodsQueryWrapper), page, pageSize, param.toString()));
         mav.addObject("title", "分类--LeDao校园二手交易平台");
         mav.addObject("mainPage", "page/sortPage");
         mav.addObject("mainPageKey", "#b");
