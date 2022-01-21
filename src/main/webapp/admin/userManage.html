@@ -120,7 +120,7 @@
             var id = selectedRows[0].id;
             var status = selectedRows[0].status;
             if (status == 1) {
-                $.messager.confirm("系统提示", "您确定要<span style='color: red'>封禁</span>这个条用户吗?", function (r) {
+                $.messager.confirm("系统提示", "您确定要<span style='color: red'>封禁</span>这个用户吗?", function (r) {
                     if (r) {
                         $.post("/admin/user/banUser", {id: id, status: 2}, function (result) {
                             if (result.success) {
@@ -133,7 +133,7 @@
                     }
                 });
             } else {
-                $.messager.confirm("系统提示", "您确定要<span style='color: forestgreen'>解禁</span>这个条用户吗?", function (r) {
+                $.messager.confirm("系统提示", "您确定要<span style='color: forestgreen'>解禁</span>这个用户吗?", function (r) {
                     if (r) {
                         $.post("/admin/user/banUser", {id: id, status: 1}, function (result) {
                             if (result.success) {
