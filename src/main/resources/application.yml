@@ -1,5 +1,5 @@
 server:
-  port: 80
+  port: 8080
   servlet:
     context-path: /
   tomcat:
@@ -26,8 +26,8 @@ spring:
     cache: false
   mail:
     host: smtp.qq.com
-    username: 3519577180@qq.com
-    password: anlpcwvlfmcdfcjjha
+    username: 111@qq.com
+    password: 111
     default-encoding: UTF-8
     protocol: smtp
     properties:
@@ -38,6 +38,11 @@ spring:
           writetimeout: 5000
           ssl:
             enable: true #一定要开启ssl,不然会503 验证失败的（开启加密验证）
+  redis:
+    database: 0
+    host: 121.41.111.111
+    password: 1111
+    port: 6379
 mybatis-plus:
   global-config:
     db-config:

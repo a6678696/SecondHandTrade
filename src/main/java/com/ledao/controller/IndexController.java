@@ -671,4 +671,13 @@ public class IndexController {
         mav.setViewName("index");
         return mav;
     }
+
+    @ResponseBody
+    @RequestMapping("/setRedisKey")
+    public String setRedisKey(){
+        RedisUtil.setKey("a", "1");
+        RedisUtil.setKeyTime("a", 10);
+        System.out.println(new Date()+": "+"设置了key,过期时间为"+10+"秒");
+        return "设置成功";
+    }
 }
