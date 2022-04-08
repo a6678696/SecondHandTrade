@@ -2,10 +2,7 @@ package com.ledao.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.ledao.entity.Announcement;
-import com.ledao.entity.Carousel;
-import com.ledao.entity.Goods;
-import com.ledao.entity.User;
+import com.ledao.entity.*;
 import com.ledao.service.*;
 import com.ledao.util.DateUtil;
 import com.ledao.util.ImageUtil;
@@ -44,11 +41,8 @@ import static com.ledao.controller.IndexController.getFirstImageInGoodsContent;
 @RequestMapping("/user")
 public class UserController {
 
-    @Value("${userImageFilePath}")
-    private String userImageFilePath;
-
-    @Value("${wantToBuyId}")
-    private String wantToBuyId;
+    @Resource
+    private ConfigProperties configProperties;
 
     @Resource
     private JavaMailSender javaMailSender;
@@ -98,7 +92,7 @@ public class UserController {
                 QueryWrapper<Goods> goodsQueryWrapper = new QueryWrapper<>();
                 goodsQueryWrapper.orderByDesc("addTime");
                 goodsQueryWrapper.eq("state", 1);
-                goodsQueryWrapper.ne("goodsTypeId", wantToBuyId);
+                goodsQueryWrapper.ne("goodsTypeId", configProperties.getWantToBuyId());
                 Page<Goods> goodsPage = new Page<>(1, 9);
                 List<Goods> goodsNewList = goodsService.list(goodsPage, goodsQueryWrapper);
                 for (Goods goods : goodsNewList) {
@@ -110,7 +104,7 @@ public class UserController {
                 QueryWrapper<Goods> goodsQueryWrapper2 = new QueryWrapper<>();
                 goodsQueryWrapper2.orderByDesc("click");
                 goodsQueryWrapper2.eq("state", 1);
-                goodsQueryWrapper2.ne("goodsTypeId", wantToBuyId);
+                goodsQueryWrapper2.ne("goodsTypeId", configProperties.getWantToBuyId());
                 Page<Goods> goodsPage2 = new Page<>(1, 9);
                 List<Goods> goodsHotList = goodsService.list(goodsPage2, goodsQueryWrapper2);
                 for (Goods goods : goodsHotList) {
@@ -121,7 +115,7 @@ public class UserController {
                 //获取推荐商品列表
                 QueryWrapper<Goods> goodsQueryWrapper3 = new QueryWrapper<>();
                 goodsQueryWrapper3.eq("isRecommend", 1);
-                goodsQueryWrapper3.ne("goodsTypeId", wantToBuyId);
+                goodsQueryWrapper3.ne("goodsTypeId", configProperties.getWantToBuyId());
                 goodsQueryWrapper3.eq("state", 1);
                 Page<Goods> goodsPage3 = new Page<>(1, 9);
                 List<Goods> goodsRecommendList = goodsService.list(goodsPage3, goodsQueryWrapper3);
@@ -181,7 +175,7 @@ public class UserController {
         if (!file.isEmpty()) {
             //修改用户时,删除原头像
             if (user.getId() != null) {
-                FileUtils.deleteQuietly(new File(userImageFilePath + userService.findById(user.getId()).getImageName()));
+                FileUtils.deleteQuietly(new File(configProperties.getUserImageFilePath() + userService.findById(user.getId()).getImageName()));
             }
             //获取上传的文件名
             String fileName = file.getOriginalFilename();
@@ -193,11 +187,11 @@ public class UserController {
             //新文件名1
             String newFileName1 = DateUtil.getCurrentDateStr2() + System.currentTimeMillis() + "." + suffixName;
             //上传
-            FileUtils.copyInputStreamToFile(file.getInputStream(), new File(userImageFilePath + newFileName1));
+            FileUtils.copyInputStreamToFile(file.getInputStream(), new File(configProperties.getUserImageFilePath() + newFileName1));
             //新文件名2
             String newFileName2 = DateUtil.getCurrentDateStr2() + System.currentTimeMillis() + "." + suffixName;
             //压缩图片
-            ImageUtil.compressImage(new File(userImageFilePath + newFileName1), new File(userImageFilePath + newFileName2));
+            ImageUtil.compressImage(new File(configProperties.getUserImageFilePath() + newFileName1), new File(configProperties.getUserImageFilePath() + newFileName2));
             user.setImageName(newFileName2);
         }
         //添加用户时
@@ -285,7 +279,7 @@ public class UserController {
         String registerCode = StringUtil.genSixRandomNum();
         SimpleMailMessage message = new SimpleMailMessage();
         //发件人QQ邮箱
-        message.setFrom("3519577180@qq.com");
+        message.setFrom(configProperties.getSendMailPerson());
         //收件人邮箱
         message.setTo(email);
         //邮件主题

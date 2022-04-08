@@ -1,10 +1,14 @@
 package com.ledao.util;
 
 import com.google.gson.Gson;
+import com.ledao.entity.ConfigProperties;
+import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -14,11 +18,25 @@ import java.util.List;
  * @company
  * @create 2022-01-17 1:21
  */
+@Component
 public class RedisUtil {
 
-    private static final String HOST = "192.168.0.1";
-    private static final Integer PORT = 6379;
-    private static final String AUTH_PASSWORD = "123456";
+    /**
+     * 维护一个本类的静态变量
+     */
+    private static RedisUtil redisUtil;
+
+    @Resource
+    private ConfigProperties configProperties;
+
+    /**
+     * 并使用@PostConstruct注解标记工具类,初始化Bean
+     */
+    @PostConstruct
+    public void init() {
+        redisUtil = this;
+        redisUtil.configProperties = this.configProperties;
+    }
 
     /**
      * 获取Redis连接
@@ -29,7 +47,7 @@ public class RedisUtil {
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxTotal(100);
         jedisPoolConfig.setMaxIdle(10);
-        return new JedisPool(jedisPoolConfig, HOST, PORT);
+        return new JedisPool(jedisPoolConfig, redisUtil.configProperties.getHost(), redisUtil.configProperties.getPort());
     }
 
     /**
@@ -51,7 +69,7 @@ public class RedisUtil {
      */
     private static Jedis getJedis(JedisPool jedisPool) {
         Jedis jedis = jedisPool.getResource();
-        jedis.auth(AUTH_PASSWORD);
+        jedis.auth(redisUtil.configProperties.getPassword());
         return jedis;
     }
 
@@ -199,5 +217,18 @@ public class RedisUtil {
         List<String> resultList = jedis.lrange(key, start, end);
         closeRedis(jedisPool, jedis);
         return resultList;
+    }
+
+    /**
+     * 给指定key设置过期时间(秒)
+     *
+     * @param key
+     * @param seconds
+     */
+    public static void setKeyTime(String key, int seconds) {
+        JedisPool jedisPool = getRedisLink();
+        Jedis jedis = getJedis(jedisPool);
+        jedis.expire(key, seconds);
+        closeRedis(jedisPool, jedis);
     }
 }
