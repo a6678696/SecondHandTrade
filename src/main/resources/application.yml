@@ -27,7 +27,7 @@ spring:
   mail:
     host: smtp.qq.com
     username: 111@qq.com
-    password: 111
+    password: 11
     default-encoding: UTF-8
     protocol: smtp
     properties:
@@ -40,7 +40,7 @@ spring:
             enable: true #一定要开启ssl,不然会503 验证失败的（开启加密验证）
   redis:
     database: 0
-    host: 121.41.111.111
+    host: 121.41.11.11
     password: 111
     port: 6379
 mybatis-plus:
