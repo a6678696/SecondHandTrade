@@ -590,6 +590,13 @@ public class IndexController {
             shoppingCartGoodsList.add(goods);
             getFirstImageInGoodsContent(goods);
         }
+        Iterator<Goods> iterator = shoppingCartGoodsList.iterator();
+        while (iterator.hasNext()) {
+            Goods goods = goodsService.findById(iterator.next().getId());
+            if (goods == null) {
+                iterator.remove();
+            }
+        }
         mav.addObject("shoppingCartGoodsList", shoppingCartGoodsList);
         mav.addObject("shoppingCartGoodsListSize", shoppingCartGoodsList.size());
         //商品分类列表
@@ -674,10 +681,10 @@ public class IndexController {
 
     @ResponseBody
     @RequestMapping("/setRedisKey")
-    public String setRedisKey(){
+    public String setRedisKey() {
         RedisUtil.setKey("a", "1");
         RedisUtil.setKeyTime("a", 10);
-        System.out.println(new Date()+": "+"设置了key,过期时间为"+10+"秒");
+        System.out.println(new Date() + ": " + "设置了key,过期时间为" + 10 + "秒");
         return "设置成功";
     }
 }

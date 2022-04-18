@@ -56,19 +56,21 @@
                     <tr>
                         <td th:text="${#dates.format(reserveRecord.reserveTime,'yyyy-MM-dd HH:mm:ss')}"
                             style="text-align: center"></td>
-                        <td style="text-align: center"><a th:href="${'/goods/'+reserveRecord.goodsId}"><span
-                                th:text="${reserveRecord.goodsName}"></span></a></td>
+                        <td style="text-align: center"><a th:href="${'/goods/'+reserveRecord.goodsId}"><span th:aria-label="${reserveRecord.goodsName}"
+                                th:text="${#strings.abbreviate(reserveRecord.goodsName,18)}" class="status-icon hint--top"></span></a></td>
                         <td style="text-align: center"><span
                                 th:text="${reserveRecord.state==0?'预订中':(reserveRecord.state==1?'预订已取消':'完成交易')}"
                                 th:style="${reserveRecord.state==0?'color:blue':(reserveRecord.state==1?'color:red':'color:green')}"></span>
                         </td>
                         <td style="text-align: center">
                             <a th:href="'javascript:updateReserveRecordState('+${reserveRecord.id}+',1,'+${reserveRecord.state}+')'"
-                               style="text-decoration: none">
+                               style="text-decoration: none" th:if="${reserveRecord.state==0}">
                                 <button type="button" class="btn btn-danger btn-sm status-icon hint--top"
                                         aria-label="取消预订"><i
                                         class="fa fa-ban"></i></button>
+
                             </a>
+                            <span style="color: rebeccapurple" th:if="${reserveRecord.state!=0}">不可操作</span>
                         </td>
                     </tr>
                 </div>

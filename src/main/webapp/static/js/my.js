@@ -444,7 +444,7 @@ function reserve(goodsId) {
                         data: {goodsId: goodsId},
                         success: function (result) {
                             if (result.success) {
-                                window.location.href = "/toMyShoppingCart";
+                                window.location.href = "/toMyReserveRecordPage";
                             } else {
                                 alert(result.errorInfo);
                             }

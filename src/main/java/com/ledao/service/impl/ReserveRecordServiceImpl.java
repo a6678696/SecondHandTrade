@@ -52,7 +52,7 @@ public class ReserveRecordServiceImpl implements ReserveRecordService {
     public ReserveRecord findByGoodsId(Integer goodsId) {
         QueryWrapper<ReserveRecord> reserveRecordQueryWrapper = new QueryWrapper<>();
         reserveRecordQueryWrapper.eq("goodsId", goodsId);
-        return reserveRecordMapper.selectOne(reserveRecordQueryWrapper);
+        return reserveRecordMapper.selectList(reserveRecordQueryWrapper).get(0);
     }
 
     @Override

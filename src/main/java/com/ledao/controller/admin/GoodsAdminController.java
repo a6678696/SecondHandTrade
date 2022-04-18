@@ -109,4 +109,28 @@ public class GoodsAdminController {
         }
         return resultMap;
     }
+
+    /**
+     * 删除商品
+     *
+     * @param ids
+     * @return
+     */
+    @RequestMapping("/delete")
+    public Map<String, Object> delete(String ids) {
+        Map<String, Object> resultMap = new HashMap<>(16);
+        String[] idsStr = ids.split(",");
+        int key = 0;
+        for (String s : idsStr) {
+            Integer id = Integer.valueOf(s);
+            goodsService.deleteById(id);
+            key++;
+        }
+        if (key > 0) {
+            resultMap.put("success", true);
+        } else {
+            resultMap.put("success", false);
+        }
+        return resultMap;
+    }
 }

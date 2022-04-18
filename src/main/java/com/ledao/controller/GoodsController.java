@@ -305,6 +305,12 @@ public class GoodsController {
         if (state == 2) {
             goods.setReason(reason.split(",")[0]);
         }
+        //如果将商品状态设置为交易成功
+        if (state == 5) {
+            ReserveRecord reserveRecord = reserveRecordService.findByGoodsIdAndState(goodsId, 0);
+            reserveRecord.setState(2);
+            reserveRecordService.update(reserveRecord);
+        }
         goods.setState(state);
         int key = goodsService.update(goods);
         if (key > 0) {
