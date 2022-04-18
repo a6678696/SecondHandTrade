@@ -40,8 +40,8 @@ spring:
             enable: true #一定要开启ssl,不然会503 验证失败的（开启加密验证）
   redis:
     database: 0
-    host: 121.41.11.11
-    password: 111
+    host: 121.11.11.106
+    password: 11
     port: 6379
 mybatis-plus:
   global-config:
