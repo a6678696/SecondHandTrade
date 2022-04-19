@@ -17,7 +17,10 @@
             <div class="card">
                 <div class="card-header bg-primary text-white"><i class="fa fa-list-ol"></i>用户求购</div>
                 <div class="card-body">
-                    <p th:each="goodsWantToBuy:${goodsWantToBuyList}"><span th:text="${#dates.format(goodsWantToBuy.addTime,'yyyy-MM-dd HH:mm:ss')}"></span>&nbsp;&nbsp;&nbsp;&nbsp;<a th:href="${'/goods/'+goodsWantToBuy.id}" th:text="${goodsWantToBuy.name}"></a></p>
+                    <p th:each="goodsWantToBuy:${goodsWantToBuyList}"><span
+                            th:text="${#dates.format(goodsWantToBuy.addTime,'yyyy-MM-dd HH:mm:ss')}"></span>&nbsp;&nbsp;&nbsp;&nbsp;<a
+                            th:href="${'/goods/'+goodsWantToBuy.id}" th:text="${goodsWantToBuy.name}"></a></p>
+                    <p style="color: red" th:if="${goodsWantToBuyList!=null}">无数据</p>
                 </div>
             </div>
         </div>

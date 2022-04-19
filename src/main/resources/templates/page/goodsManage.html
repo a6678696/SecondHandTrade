@@ -127,9 +127,9 @@
                             <a th:href="'javascript:getContactInformation('+${goods.id}+')'"
                                th:if="${goods.state==4||goods.state==5}"
                                style="text-decoration: none">
-                                <button type="button" class="btn-light btn-sm status-icon hint--top" data-toggle="modal"
+                                <button type="button" class="btn btn-warning btn-sm status-icon hint--top" data-toggle="modal"
                                         data-target="#myModal"
-                                        style="margin-left: 2px" aria-label="获取买家联系方式"><i class="fa fa-mobile"></i>
+                                        style="margin-left: 2px" aria-label="获取买家联系方式"><i class="fa fa-phone"></i>
                                 </button>
                             </a>
                             <a th:href="'javascript:updateGoodsState('+${goods.id}+',1)'" th:if="${goods.state==4}"
@@ -140,14 +140,14 @@
                             </a>
                             <a th:href="'javascript:updateGoodsState('+${goods.id}+',5)'" th:if="${goods.state==4}"
                                style="text-decoration: none">
-                                <button type="button" class="btn-success btn-sm status-icon hint--top"
+                                <button type="button" class="btn btn-success btn-sm status-icon hint--top"
                                         style="margin-left: 2px" aria-label="完成交易"><i class="fa fa-hand-peace-o"></i>
                                 </button>
                             </a>
                             <a th:href="'javascript:updateGoodsState('+${goods.id}+',5)'"
                                th:if="${goods.goodsTypeId==8&&goods.state==1}"
                                style="text-decoration: none">
-                                <button type="button" class="btn-success btn-sm status-icon hint--top"
+                                <button type="button" class="btn btn-success btn-sm status-icon hint--top"
                                         style="margin-left: 2px" aria-label="完成交易"><i class="fa fa-hand-peace-o"></i>
                                 </button>
                             </a>

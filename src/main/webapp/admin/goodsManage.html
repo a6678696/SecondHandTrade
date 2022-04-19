@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>商品管理</title>
-    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.7.0/themes/metro-blue/easyui.css">
-    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.7.0/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.7.0/themes/metro-blue/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.7.0/themes/icon.css"/>
     <script type="text/javascript" src="/static/jquery-easyui-1.7.0/jquery.min.js"></script>
     <script type="text/javascript" src="/static/jquery-easyui-1.7.0/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="/static/jquery-easyui-1.7.0/locale/easyui-lang-zh_CN.js"></script>
@@ -36,8 +36,8 @@
 
         function deleteGoods() {
             var selectedRows = $("#dg").datagrid("getSelections");
-            if (selectedRows.length == 0) {
-                $.messager.alert("系统提示", "请选择要删除的商品!");
+            if (selectedRows.length != 1) {
+                $.messager.alert("系统提示", "请选择一个要删除的商品!");
                 return;
             }
             var strIds = [];
@@ -162,12 +162,14 @@
             $("#fm").form("load", row);
             CKEDITOR.instances.content.setData(row.content);
             url = "/admin/goods/save?id=" + row.id;
+            console.log(url);
         }
 
         function submitData() {
             $("#fm").form("submit", {
                 url: url,
                 onSubmit: function () {
+                    console.log(url);
                     var content = CKEDITOR.instances.content.getData();
                     if (content == "") {
                         $.messager.alert("系统提示", "内容不能为空!");
@@ -279,7 +281,7 @@
             } else if (val == 1) {
                 return "<span style='color: #0c9076'>上架中</span>";
             } else if (val == 2) {
-                return "<span style='color: red' title='"+row.reason+"'>审核不通过</span>";
+                return "<span style='color: red' title='" + row.reason + "'>审核不通过</span>";
             } else if (val == 3) {
                 return "已下架";
             } else if (val == 4) {
@@ -300,7 +302,7 @@
 </head>
 <body style="margin: 1px">
 <table id="dg" title="商品管理" class="easyui-datagrid" striped="true"
-       fitColumns="true" pagination="true" rownumbers="true"
+       fitColumns="true" pagination="true" rownumbers="true" singleSelect="true"
        url="/admin/goods/list" fit="true" toolbar="#tb">
     <thead>
     <tr>
@@ -394,7 +396,7 @@
     </form>
 </div>
 <div id="dlg-buttons">
-    <a href="javascript:submitData()" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
+<!--    <a href="javascript:submitData()" class="easyui-linkbutton" iconCls="icon-ok">保存</a>-->
     <a href="javascript:closeGoodsDialog()" class="easyui-linkbutton" iconCls="icon-cancel">关闭</a>
 </div>
 <div id="dlg2" class="easyui-dialog" style="width: 400px;height: 200px;padding: 10px 20px"
