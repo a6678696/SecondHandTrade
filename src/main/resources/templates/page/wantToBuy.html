@@ -20,7 +20,7 @@
                     <p th:each="goodsWantToBuy:${goodsWantToBuyList}"><span
                             th:text="${#dates.format(goodsWantToBuy.addTime,'yyyy-MM-dd HH:mm:ss')}"></span>&nbsp;&nbsp;&nbsp;&nbsp;<a
                             th:href="${'/goods/'+goodsWantToBuy.id}" th:text="${goodsWantToBuy.name}"></a></p>
-                    <p style="color: red" th:if="${goodsWantToBuyList!=null}">无数据</p>
+                    <p style="color: red" th:if="${goodsWantToBuyList.size()==0}">无数据</p>
                 </div>
             </div>
         </div>
