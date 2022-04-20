@@ -602,3 +602,25 @@ function checkLoginUserState() {
     }
     return true;
 }
+
+//下拉框联动
+function getGoodsNameTestPage() {
+    let goodsTypeId = $("#goodsTypeIdTestPage").val();
+    //当goodsTypeId为空,就结束方法并添加默认选项
+    if (goodsTypeId === "") {
+        $("#goodsNameTestPage").empty().append('<option>选择商品名称...</option>');
+        return false;
+    }
+    $.ajax({
+        type: "get",
+        url: "/getGoodsListByGoodsTypeId?goodsTypeId=" + goodsTypeId,
+        success: function (result) {
+            let goods = $("#goodsNameTestPage").empty();
+            //添加默认选项
+            goods.append('<option>选择商品名称...</option>');
+            for (let i = 0; i < result.length; i++) {
+                goods.append("<option value='" + result[i].id + "'>" + result[i].name + "</option>");
+            }
+        }
+    });
+}

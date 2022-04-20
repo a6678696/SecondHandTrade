@@ -687,4 +687,35 @@ public class IndexController {
         System.out.println(new Date() + ": " + "设置了key,过期时间为" + 10 + "秒");
         return "设置成功";
     }
+
+    /**
+     * 跳转到测试界面
+     *
+     * @return
+     */
+    @RequestMapping("/toTestPage")
+    public ModelAndView toTestPage() {
+        ModelAndView mav = new ModelAndView();
+        List<GoodsType> goodsTypeList = goodsTypeService.list(null);
+        mav.addObject("goodsTypeList", goodsTypeList);
+        mav.addObject("title", "测试界面--LeDao校园二手交易平台");
+        mav.addObject("mainPage", "page/test");
+        mav.addObject("mainPageKey", "#b");
+        mav.setViewName("index");
+        return mav;
+    }
+
+    /**
+     * 根据商品类别id获取商品集合
+     *
+     * @param goodsTypeId
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/getGoodsListByGoodsTypeId")
+    public List<Goods> getGoodsListByGoodsTypeId(Integer goodsTypeId) {
+        QueryWrapper<Goods> goodsQueryWrapper = new QueryWrapper<>();
+        goodsQueryWrapper.eq("goodsTypeId", goodsTypeId);
+        return goodsService.list(goodsQueryWrapper);
+    }
 }

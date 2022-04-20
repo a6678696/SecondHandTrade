@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!--suppress ALL-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="b">
+    <div class="col-md-6" style="margin-left: 25%;margin-top: 22px">
+        <div class="form-group form-inline" onchange="getGoodsNameTestPage()">
+            <label for="name">商品类别：</label>&nbsp;&nbsp;
+            <select id="goodsTypeIdTestPage" name="goodsTypeId" required="required" class="form-control">
+                <option value="">选择商品类别...</option>
+                <div th:each="goodsType:${goodsTypeList}">
+                    <option th:text="${goodsType.name}" th:value="${goodsType.id}"></option>
+                </div>
+            </select>
+        </div>
+        <div class="form-group form-inline">
+            <label for="name">商品名称：</label>&nbsp;&nbsp;
+            <select id="goodsNameTestPage" name="goodsTypeId" required="required" class="form-control">
+                <option value="">先选择商品类别...</option>
+            </select>
+        </div>
+    </div>
+</div>
+</body>
+</html>
