@@ -558,6 +558,7 @@ public class IndexController {
         Collections.shuffle(goodsRecommendList);
         mav.addObject("goodsRecommendList", goodsRecommendList);
         mav.addObject("isSort", true);
+        mav.addObject("goodsTypeName", goodsTypeService.findById(goodsTypeId).getName());
         StringBuilder param = new StringBuilder();
         param.append("&goodsTypeId=").append(goodsTypeId);
         mav.addObject("pageCode", PageUtil.genPagination1("/toSortPage", goodsService.getCount(goodsQueryWrapper), page, pageSize, param.toString()));

@@ -15,7 +15,7 @@
         <!--商品详情-->
         <div class="col-md-9">
             <div class="card">
-                <div class="card-header bg-primary text-white"><i class="fa fa-eercast"></i>商品分类</div>
+                <div class="card-header bg-primary text-white"><i class="fa fa-eercast"></i><span th:text="${goodsTypeName}"></span></div>
                 <div class="card-body">
                     <div class="row">
                         <div class="card col-md-4" th:each="goods:${goodsList}">
