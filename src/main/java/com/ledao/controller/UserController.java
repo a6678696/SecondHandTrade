@@ -75,65 +75,74 @@ public class UserController {
         User currentUser = userService.findByUserName(user.getUserName());
         //用户存在时
         if (currentUser != null) {
-            //密码正确时
-            if (user.getPassword().equals(currentUser.getPassword())) {
-                session.setAttribute("currentUser", currentUser);
-                //获取轮播图list
-                QueryWrapper<Carousel> carouselQueryWrapper = new QueryWrapper<>();
-                carouselQueryWrapper.orderByAsc("sortNum");
-                List<Carousel> carouselList = carouselService.list(carouselQueryWrapper);
-                mav.addObject("carouselList", carouselList);
-                //获取公告list
-                QueryWrapper<Announcement> announcementQueryWrapper = new QueryWrapper<>();
-                announcementQueryWrapper.orderByAsc("sortNum");
-                List<Announcement> announcementList = announcementService.list(announcementQueryWrapper);
-                mav.addObject("announcementList", announcementList);
-                //获取9个最近发布的商品
-                QueryWrapper<Goods> goodsQueryWrapper = new QueryWrapper<>();
-                goodsQueryWrapper.orderByDesc("addTime");
-                goodsQueryWrapper.eq("state", 1);
-                goodsQueryWrapper.ne("goodsTypeId", configProperties.getWantToBuyId());
-                Page<Goods> goodsPage = new Page<>(1, 9);
-                List<Goods> goodsNewList = goodsService.list(goodsPage, goodsQueryWrapper);
-                for (Goods goods : goodsNewList) {
-                    getFirstImageInGoodsContent(goods);
-                    goods.setGoodsTypeName(goodsTypeService.findById(goods.getGoodsTypeId()).getName());
-                }
-                mav.addObject("goodsNewList", goodsNewList);
-                //获取9个热门商品
-                QueryWrapper<Goods> goodsQueryWrapper2 = new QueryWrapper<>();
-                goodsQueryWrapper2.orderByDesc("click");
-                goodsQueryWrapper2.eq("state", 1);
-                goodsQueryWrapper2.ne("goodsTypeId", configProperties.getWantToBuyId());
-                Page<Goods> goodsPage2 = new Page<>(1, 9);
-                List<Goods> goodsHotList = goodsService.list(goodsPage2, goodsQueryWrapper2);
-                for (Goods goods : goodsHotList) {
-                    getFirstImageInGoodsContent(goods);
-                    goods.setGoodsTypeName(goodsTypeService.findById(goods.getGoodsTypeId()).getName());
-                }
-                mav.addObject("goodsHotList", goodsHotList);
-                //获取推荐商品列表
-                QueryWrapper<Goods> goodsQueryWrapper3 = new QueryWrapper<>();
-                goodsQueryWrapper3.eq("isRecommend", 1);
-                goodsQueryWrapper3.ne("goodsTypeId", configProperties.getWantToBuyId());
-                goodsQueryWrapper3.eq("state", 1);
-                Page<Goods> goodsPage3 = new Page<>(1, 9);
-                List<Goods> goodsRecommendList = goodsService.list(goodsPage3, goodsQueryWrapper3);
-                for (Goods goods : goodsRecommendList) {
-                    getFirstImageInGoodsContent(goods);
-                    goods.setGoodsTypeName(goodsTypeService.findById(goods.getGoodsTypeId()).getName());
-                }
-                Collections.shuffle(goodsRecommendList);
-                mav.addObject("goodsRecommendList", goodsRecommendList);
-                mav.addObject("title", "首页--LeDao校园二手交易平台");
-                mav.addObject("mainPage", "page/indexFirst");
-                mav.addObject("loginSuccess", true);
-            } else {
+            //登录的用户身份不是普通用户而是管理员
+            if (currentUser.getType() != 2) {
                 mav.addObject("userNameLogin", user.getUserName());
                 mav.addObject("passwordLogin", user.getPassword());
                 mav.addObject("title", "用户登录--LeDao校园二手交易平台");
                 mav.addObject("mainPage", "page/login");
-                mav.addObject("loginSuccess", false);
+                mav.addObject("isUserOrNot", false);
+            }else {
+                //密码正确时
+                if (user.getPassword().equals(currentUser.getPassword())) {
+                    session.setAttribute("currentUser", currentUser);
+                    //获取轮播图list
+                    QueryWrapper<Carousel> carouselQueryWrapper = new QueryWrapper<>();
+                    carouselQueryWrapper.orderByAsc("sortNum");
+                    List<Carousel> carouselList = carouselService.list(carouselQueryWrapper);
+                    mav.addObject("carouselList", carouselList);
+                    //获取公告list
+                    QueryWrapper<Announcement> announcementQueryWrapper = new QueryWrapper<>();
+                    announcementQueryWrapper.orderByAsc("sortNum");
+                    List<Announcement> announcementList = announcementService.list(announcementQueryWrapper);
+                    mav.addObject("announcementList", announcementList);
+                    //获取9个最近发布的商品
+                    QueryWrapper<Goods> goodsQueryWrapper = new QueryWrapper<>();
+                    goodsQueryWrapper.orderByDesc("addTime");
+                    goodsQueryWrapper.eq("state", 1);
+                    goodsQueryWrapper.ne("goodsTypeId", configProperties.getWantToBuyId());
+                    Page<Goods> goodsPage = new Page<>(1, 9);
+                    List<Goods> goodsNewList = goodsService.list(goodsPage, goodsQueryWrapper);
+                    for (Goods goods : goodsNewList) {
+                        getFirstImageInGoodsContent(goods);
+                        goods.setGoodsTypeName(goodsTypeService.findById(goods.getGoodsTypeId()).getName());
+                    }
+                    mav.addObject("goodsNewList", goodsNewList);
+                    //获取9个热门商品
+                    QueryWrapper<Goods> goodsQueryWrapper2 = new QueryWrapper<>();
+                    goodsQueryWrapper2.orderByDesc("click");
+                    goodsQueryWrapper2.eq("state", 1);
+                    goodsQueryWrapper2.ne("goodsTypeId", configProperties.getWantToBuyId());
+                    Page<Goods> goodsPage2 = new Page<>(1, 9);
+                    List<Goods> goodsHotList = goodsService.list(goodsPage2, goodsQueryWrapper2);
+                    for (Goods goods : goodsHotList) {
+                        getFirstImageInGoodsContent(goods);
+                        goods.setGoodsTypeName(goodsTypeService.findById(goods.getGoodsTypeId()).getName());
+                    }
+                    mav.addObject("goodsHotList", goodsHotList);
+                    //获取推荐商品列表
+                    QueryWrapper<Goods> goodsQueryWrapper3 = new QueryWrapper<>();
+                    goodsQueryWrapper3.eq("isRecommend", 1);
+                    goodsQueryWrapper3.ne("goodsTypeId", configProperties.getWantToBuyId());
+                    goodsQueryWrapper3.eq("state", 1);
+                    Page<Goods> goodsPage3 = new Page<>(1, 9);
+                    List<Goods> goodsRecommendList = goodsService.list(goodsPage3, goodsQueryWrapper3);
+                    for (Goods goods : goodsRecommendList) {
+                        getFirstImageInGoodsContent(goods);
+                        goods.setGoodsTypeName(goodsTypeService.findById(goods.getGoodsTypeId()).getName());
+                    }
+                    Collections.shuffle(goodsRecommendList);
+                    mav.addObject("goodsRecommendList", goodsRecommendList);
+                    mav.addObject("title", "首页--LeDao校园二手交易平台");
+                    mav.addObject("mainPage", "page/indexFirst");
+                    mav.addObject("loginSuccess", true);
+                } else {
+                    mav.addObject("userNameLogin", user.getUserName());
+                    mav.addObject("passwordLogin", user.getPassword());
+                    mav.addObject("title", "用户登录--LeDao校园二手交易平台");
+                    mav.addObject("mainPage", "page/login");
+                    mav.addObject("loginSuccess", false);
+                }
             }
         } else {
             mav.addObject("userNameLogin", user.getUserName());

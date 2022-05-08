@@ -80,6 +80,7 @@ public class IndexController {
             User currentUser = userService.findByUserName(user.getUserName());
             //用户存在时
             if (currentUser != null) {
+                //登录的用户身份不是管理员
                 if (currentUser.getType() == 1) {
                     //用户没有被封禁
                     if (currentUser.getStatus() == 1) {

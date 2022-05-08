@@ -25,6 +25,14 @@
             if (loginSuccess == true) {
                 alert("登录成功，跳转到首页");
             }
+            var loginSuccess = [[${loginSuccess}]];
+            if (loginSuccess == false) {
+                alert("用户名或密码错误，请重新输入");
+            }
+            var isUserOrNot = [[${isUserOrNot}]];
+            if (isUserOrNot == false) {
+                alert("管理员不可以登录前台，请使用普通用户身份登录");
+            }
             var successRegister = [[${successRegister}]];
             if (successRegister == true) {
                 alert("注册成功!");
